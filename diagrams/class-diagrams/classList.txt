@@ -68,7 +68,7 @@ package Model {
 }
 
 package Communication {
-	class Server{
+	class Communication{
 		client1 : Client
 		client2 : Client
 		+hitCell(position, myClientId)
