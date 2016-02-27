@@ -1,5 +1,76 @@
-@startuml
-class Server{
-	HashMap cells;
+class Client {
+	cellsHit : ArrayList<String>
+	+generateGridAutomatic() : boolean
+	+generateGridFromFile(filename) : boolean
+	+generateGridByUser(entry) : boolean
+	+hitMyCell(position) : int
+	+hitEnemyCell(position) : int
+	.. -1 - Already tried ..
+	.. 0 - Hit ..
+	.. 1 - Sunk ..
+	.. 2 - Won ..
 }
-@enduml
+
+class Menu {
+	
+}
+
+package Model {
+	class Grid {
+		cells : HashMap<String,Cell>
+		numShipsLeft : int
+		+hitCell(position) : int
+		.. 0 - Hit ..
+		.. 1 - Sunk ..
+		.. 2 - Won ..
+		+putShip(position, ship, orientation) : boolean
+		.. true - Success ..
+		.. false - Couldn't put ..
+	}
+
+	class Cell {
+		position : String
+		visited : boolean
+		+hitCell() : int
+		+putShip(ship) : boolean
+	}
+
+	class Ship{
+		position : String
+		isHorizontal : boolean
+		size : int
+		life = size : int
+		----
+		+loseLife() : boolean
+		.. false - Still alive ..
+		.. true - Sunk ..
+	}
+
+	class AircraftCarrier extends Ship{
+		size=5
+	}
+
+	class Battleship extends Ship{
+		size=4
+	}
+
+	class Submarine extends Ship{
+		size=3
+	}
+
+	class Destroyer extends Ship{
+		size=3
+	}
+
+	class PatrolBoat extends Ship{
+		size=2
+	}
+}
+
+package Communication {
+	class Server{
+		client1 : Client
+		client2 : Client
+		+hitCell(position, myClientId)
+	}	
+}

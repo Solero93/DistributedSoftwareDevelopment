@@ -1,2 +1,10 @@
 @startuml
+!include classList.txt
+
+Client "1"--"1" Communication : exchanges\ninformation
+Client "1"--"1" Menu : shows
+Client "1"--"1" Grid : has
+
+Grid "1"--"*" Cell : has
+Cell "1"--"0..1" Ship : owns
 @enduml
