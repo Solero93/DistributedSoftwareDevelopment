@@ -3,7 +3,7 @@ package model;
 import java.util.HashMap;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Grid Object
  */
 public class Grid {
     private HashMap<String, Cell> cells;

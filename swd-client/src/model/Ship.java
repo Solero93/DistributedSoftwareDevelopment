@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Ship Object
  */
 public class Ship {
     //String position --> no hace falta, porque ya lo vamos colocando, la celda ya tiene esa información

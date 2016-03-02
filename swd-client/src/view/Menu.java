@@ -1,7 +1,7 @@
 package view;
 
 /**
- * Class that represents the -- Object
+ * Main class with the Menu
  */
 public class Menu {
     public static void main(String args[]){

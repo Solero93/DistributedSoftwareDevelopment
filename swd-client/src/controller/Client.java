@@ -6,19 +6,17 @@ import model.Grid;
 import java.util.ArrayList;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Client Object
  */
 public class Client {
+    private Communication server;
     private ArrayList<String> cellsHit;
     private Grid myGrid;
-    private Communication server;
-    private int myId; // Temporal attribute for trying
 
-    public Client(int myId){
+    public Client(){
+        this.server = new Communication();
         this.cellsHit = new ArrayList<>();
         this.myGrid = new Grid();
-        this.server = new Communication();
-        this.myId = myId;
     }
 
     public boolean generateGridAutomatic(){
@@ -39,6 +37,6 @@ public class Client {
     // TODO think about treating communication errors
         // TODO Also add position to cellsHit
     public int hitEnemyCell(String position){
-        return this.server.hitCell(position,this.myId);
+        return this.server.hitCell(position);
     }
 }

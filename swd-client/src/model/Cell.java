@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Cell Object
  */
 public class Cell {
     private String position;

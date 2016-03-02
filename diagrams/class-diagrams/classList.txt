@@ -19,6 +19,7 @@ package Model {
 	class Grid {
 		cells : HashMap<String,Cell>
 		numShipsLeft : int
+		----
 		+hitCell(position) : int
 		.. 0 - Hit ..
 		.. 1 - Sunk ..
@@ -45,32 +46,10 @@ package Model {
 		.. false - Still alive ..
 		.. true - Sunk ..
 	}
-
-	class AircraftCarrier extends Ship{
-		size=5
-	}
-
-	class Battleship extends Ship{
-		size=4
-	}
-
-	class Submarine extends Ship{
-		size=3
-	}
-
-	class Destroyer extends Ship{
-		size=3
-	}
-
-	class PatrolBoat extends Ship{
-		size=2
-	}
 }
 
 package Communication {
 	class Communication{
-		client1 : Client
-		client2 : Client
 		+hitCell(position, myClientId)
 	}	
 }
