@@ -13,6 +13,11 @@ public class Cell {
         this.visited = false;
         this.shipOnCell = null;
     }
+    public Cell(String position, Ship ship){
+        this.position = position;
+        this.visited = false;
+        this.shipOnCell = ship;
+    }
 
     public int hitCell(){
         return -1; // TODO make switch of cases to return
