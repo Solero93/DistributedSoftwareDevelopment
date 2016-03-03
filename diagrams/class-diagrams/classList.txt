@@ -7,8 +7,9 @@ class Client {
 	+hitEnemyCell(position) : int
 	.. -1 - Already tried ..
 	.. 0 - Hit ..
-	.. 1 - Sunk ..
-	.. 2 - Won ..
+	.. 1 - Miss ..
+	.. 2 - Sunk ..
+	.. 3 - Won ..
 }
 
 class Menu {
@@ -22,8 +23,9 @@ package Model {
 		----
 		+hitCell(position) : int
 		.. 0 - Hit ..
-		.. 1 - Sunk ..
-		.. 2 - Won ..
+		.. 1 - Miss ..
+		.. 2 - Sunk ..
+		.. 3 - Won ..
 		+putShip(position, ship, orientation) : boolean
 		.. true - Success ..
 		.. false - Couldn't put ..
@@ -42,6 +44,7 @@ package Model {
 		size : int
 		life = size : int
 		----
+		+getSize() : int
 		+loseLife() : boolean
 		.. false - Still alive ..
 		.. true - Sunk ..
