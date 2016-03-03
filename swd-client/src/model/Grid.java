@@ -11,7 +11,7 @@ public class Grid {
 
     public Grid(){
         this.cells = new HashMap<>();
-        this.numShipsLeft = 9;
+        this.numShipsLeft = 0;
     }
 
     public int hitCell(String position){
@@ -19,8 +19,33 @@ public class Grid {
     }
 
     public boolean putShip(String position, Ship ship, boolean isHorizontal){
-        return false; // TODO check if ship can be put or not
+        char character, number;
+        int characterAscii, numberAscii, shipSize;
+        position=position.toLowerCase();
+        if (position.length()!=2){
+            return false;
+        }
+        character= position.charAt(0);
+        number= position.charAt(1);
+        characterAscii= (int) character;
+        numberAscii= (int) number;
+        shipSize=ship.getSize();
+        if( isHorizontal){
+            if((characterAscii< 97 ) || (characterAscii > 106) || (numberAscii< 48) || ((numberAscii + shipSize )> 57 )){
+                return false;
+            }
+
+
+        }else{
+            if((characterAscii< 97 ) || ((characterAscii + shipSize ) > 106) || (numberAscii< 48) || (numberAscii> 57 )){
+                return false;
+            }
+
+        }
+        return true; // TODO check if ship can be put or not
     }
+
+    public 
 
     // TODO "Generate grid" method missing
 }
