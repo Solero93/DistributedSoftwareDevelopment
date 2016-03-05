@@ -38,7 +38,7 @@ package Model {
 		+putShip(ship) : boolean
 	}
 
-	class Ship{
+	class Ship {
 		position : String
 		isHorizontal : boolean
 		size : int

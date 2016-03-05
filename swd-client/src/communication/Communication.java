@@ -1,8 +1,6 @@
 package communication;
 
-import controller.Client;
-
-import java.util.ArrayList;
+import utils.Const;
 
 /**
  * Class that represents the Communication Object
@@ -11,10 +9,10 @@ import java.util.ArrayList;
 //TODO Fix follón
 public class Communication {
 
-    public Communication(){
+    public Communication() {
     }
 
-    public int hitCell(String position){
-        return -1;
+    public Const.Message hitCell(String position) {
+        return null;
     }
 }
