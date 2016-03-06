@@ -1,12 +1,12 @@
 package model;
 
-import utils.Const;
+import utils.Message;
 
 /**
  * Class that represents the Cell Object
  */
 public class Cell {
-    private String position;
+    private String position; // TODO quitarlo porque el hashmap ya lo guarda
     private boolean visited;
     private Ship shipOnCell;
 
@@ -22,7 +22,7 @@ public class Cell {
         this.shipOnCell = ship;
     }
 
-    public Const.Message hitCell() {
+    public Message hitCell() {
         return null; // TODO make switch of cases to return
     }
 

@@ -1,6 +1,7 @@
 package model;
 
-import utils.Const;
+import utils.Message;
+import utils.Orientation;
 
 import java.util.HashMap;
 
@@ -16,22 +17,22 @@ public class Grid {
         this.numShipsLeft = 0;
     }
 
-    public Const.Message hitCell(String position) {
+    public Message hitCell(String position) {
         return cells.get(position).hitCell(); // TODO switch of cases to return
     }
 
-    public boolean putShip(String position, int shipSize, Const.Orientation orientation) {
+    public boolean putShip(int shipSize, String position, Orientation orientation) {
         char character, number;
         Ship ship = new Ship(shipSize);
         Cell cell;
         String newPosition;
         position = position.toUpperCase();
         if (position.length() != 2) {
-            return false;
+            return false;-
         }
         character = position.charAt(0);
         number = position.charAt(1);
-        if (orientation == Const.Orientation.H) {
+        if (orientation == Orientation.H) {
             if ((character < 'A') || (character > 'J') || (number < '0') || ((number + shipSize - 1) > '9')) {
                 return false;
             }

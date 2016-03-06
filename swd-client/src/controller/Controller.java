@@ -1,12 +1,15 @@
 package controller;
 
 import communication.Communication;
-import utils.Const;
+import controller.gameModes.GameMode;
+import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
 import model.Grid;
+import utils.Message;
+import utils.Orientation;
+import utils.ShipType;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -14,12 +17,11 @@ import java.util.HashMap;
  */
 public class Controller {
     private Communication server;
-    private ArrayList<String> cellsHit;
     private Grid myGrid;
+    private GameMode gm;
 
     public Controller() {
         this.server = new Communication();
-        this.cellsHit = new ArrayList<>();
         this.myGrid = new Grid();
     }
 
@@ -29,49 +31,57 @@ public class Controller {
 
     public void generateGridFromFile(String filename) throws IOException, ReadGridException, IllegalArgumentException {
         String currentLine;
-        HashMap<String, Integer> numShips = new HashMap<>(5);
-        numShips.put("A", Const.ShipType.A.numShips);
-        numShips.put("B", Const.ShipType.B.numShips);
-        numShips.put("S", Const.ShipType.S.numShips);
-        numShips.put("D", Const.ShipType.D.numShips);
-        numShips.put("P", Const.ShipType.P.numShips);
+        HashMap<ShipType, Integer> numShips = new HashMap<>(5);
+        numShips.put(ShipType.A, ShipType.A.numShips);
+        numShips.put(ShipType.B, ShipType.B.numShips);
+        numShips.put(ShipType.S, ShipType.S.numShips);
+        numShips.put(ShipType.D, ShipType.D.numShips);
+        numShips.put(ShipType.P, ShipType.P.numShips);
 
         FileReader fileReader = new FileReader(filename);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         while ((currentLine = bufferedReader.readLine()) != null) {
             String[] shipToPut = currentLine.split(",");
-            String position = shipToPut[0], shipType = shipToPut[1].toUpperCase(), orientation = shipToPut[2].toUpperCase();
-            int shipLeftOfType = numShips.get(shipType);
+            String shipType = shipToPut[0].toUpperCase(), position = shipToPut[1], orientation = shipToPut[2].toUpperCase();
+            int shipLeftOfType = numShips.get(ShipType.valueOf(shipType));
             if (shipLeftOfType == 0 ||
-                    !this.myGrid.putShip(position, Const.ShipType.valueOf(shipType).size, Const.Orientation.valueOf(orientation))) {
+                    !this.myGrid.putShip(ShipType.valueOf(shipType).size, position, Orientation.valueOf(orientation))) {
                 bufferedReader.close();
                 throw new ReadGridException();
             }
-            numShips.put(shipType, shipLeftOfType - 1);
+            numShips.put(ShipType.valueOf(shipType), shipLeftOfType - 1);
         }
     }
 
     // We force user to put all ships in order
-    public void generateGridByUser(ArrayList<String[]> shipsToPut) throws ReadGridException, IllegalArgumentException {
-        for (String[] shipToPut : shipsToPut) {
-            String position = shipToPut[0], shipType = shipToPut[1].toUpperCase(), orientation = shipToPut[2].toUpperCase();
-            if (!this.myGrid.putShip(position, Const.ShipType.valueOf(shipType).size, Const.Orientation.valueOf(orientation))) {
-                throw new ReadGridException();
-            }
+    public void generateGridByUser(String shipType, String position, String orientation) throws ReadGridException, IllegalArgumentException {
+        if (!this.myGrid.putShip(ShipType.valueOf(shipType).size, position, Orientation.valueOf(orientation))) {
+            throw new ReadGridException();
         }
     }
 
-    public Const.Message hitMyCell(String position) {
+    public Message hitMyCell(String position) {
         return this.myGrid.hitCell(position);
     }
 
     // TODO think about treating communication errors
-    // TODO Also add position to cellsHit
-    public Const.Message hitEnemyCell(String position) {
-        if (cellsHit.contains(position)) {
-            return Const.Message.ALREADY_TRIED;
+    public Message hitEnemyCell(String position) {
+        return this.hitMyCell(position); // TODO quitar esto e ir al servidor, solo está para pruebas
+        //return this.server.hitCell(position);
+    }
+
+    public void createGameMode(int mode){
+        this.gm = new GameModeFactory().createGameMode(mode);
+    }
+
+    public Message play(){
+        String position = this.gm.play();
+        Message m = this.hitEnemyCell(position);
+        if (m == Message.ERROR){
+            this.gm.undoMove();
         } else {
-            return this.server.hitCell(position);
+            this.gm.commitMove();
         }
+        return m;
     }
 }

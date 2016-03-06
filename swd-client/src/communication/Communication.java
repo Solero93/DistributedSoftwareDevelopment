@@ -1,6 +1,6 @@
 package communication;
 
-import utils.Const;
+import utils.Message;
 
 /**
  * Class that represents the Communication Object
@@ -12,7 +12,7 @@ public class Communication {
     public Communication() {
     }
 
-    public Const.Message hitCell(String position) {
+    public Message hitCell(String position) {
         return null;
     }
 }
