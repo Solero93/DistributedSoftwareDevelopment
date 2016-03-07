@@ -57,6 +57,15 @@ public class Grid {
         return true; // TODO check if ship can be put or not
     }
 
+
+    public void removeShip(int shipSize, String position, Orientation orientation) {
+        //TODO fill in with code
+    }
+
+    public String nextPosition(String position){
+
+    }
+
     public boolean invalidCell(char character, char number) {
 
         return (cells.containsKey(character + number)

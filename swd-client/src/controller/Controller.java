@@ -10,7 +10,7 @@ import utils.Orientation;
 import utils.ShipType;
 
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Class that represents the Controller Object
@@ -26,19 +26,39 @@ public class Controller {
     }
 
     public void generateGridAutomatic() throws IOException, ReadGridException {
-        this.generateGridFromFile("../res/layout1.txt"); // TODO might do some algorithmic put
+        List<ShipType> ships = Arrays.asList(ShipType.A, ShipType.B, ShipType.B, ShipType.S, ShipType.S,
+                ShipType.D, ShipType.D, ShipType.P, ShipType.P);
+        Collections.shuffle(ships); // Randomizing ships
+        ArrayList<Orientation> orient = new ArrayList<>();
+        for (int i=0; i<ships.size(); i++){ // Randomizing orientation of each ship
+            switch(new Random().nextInt(2)){
+                case 0: orient.add(Orientation.H); break;
+                case 1: orient.add(Orientation.V); break;
+            }
+        }
+        ArrayList<String> shipPositions = new ArrayList<>();
+        String currPosition = "A1";
+        for (int i=0; i<ships.size() && shipPositions.size() < ships.size();
+             i++, currPosition=myGrid.nextPosition(currPosition)){
+            if (!this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))){
+                this.myGrid.removeShip(ships.get(i).size, currPosition, orient.get(i));
+                currPosition=shipPositions.remove(i);
+                i-=2; // we go back to the previous step
+            } else {
+                shipPositions.add(currPosition);
+            }
+        }
     }
 
     public void generateGridFromFile(String filename) throws IOException, ReadGridException, IllegalArgumentException {
-        String currentLine;
         // Create hashmap to count number of created ships
         HashMap<ShipType, Integer> numShips = new HashMap<>();
         for (ShipType ship : ShipType.values()) {
             numShips.put(ship, ship.numShips);
         }
-
         FileReader fileReader = new FileReader(filename);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String currentLine;
         while ((currentLine = bufferedReader.readLine()) != null) {
             String[] shipToPut = currentLine.split(",");
             String shipType = shipToPut[0].toUpperCase(), position = shipToPut[1], orientation = shipToPut[2].toUpperCase();
