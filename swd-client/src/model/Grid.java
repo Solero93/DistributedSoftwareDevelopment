@@ -36,7 +36,17 @@ public class Grid {
 
     public Message hitCell(String position) {
         Message tmp;
+        char character, number;
+        if (position.length() != 2) {
+            return Message.ERROR;
+        }
         position = position.toUpperCase();
+        character = position.charAt(0);
+        number = position.charAt(1);
+        if ((character < 'A') || (character > 'J') || (number < '0') || ((number) > '9')) {
+            return Message.ERROR;
+        }
+
         if (cells.containsKey(position)) {
             tmp = cells.get(position).hitCell();
             if (tmp == Message.SUNK) {
