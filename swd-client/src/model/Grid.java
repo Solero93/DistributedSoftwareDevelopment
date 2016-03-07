@@ -16,22 +16,24 @@ public class Grid {
         this.cells = new HashMap<>();
         this.numShipsLeft = 0;
     }
-    public String toString (){
+
+    public String toString() {
         String mensaje;
-        mensaje=" |0123456789|\n";
-        for(char i='A'; i<='J'; i= (char)(i+1)){
-            mensaje= mensaje+i+"|";
-            for(char j='0'; j<='9'; j= (char)(j+1)){
-                if(cells.containsKey(i+""+j)){
-                    mensaje=mensaje+"X";
-                }else{
-                    mensaje=mensaje + " ";
+        mensaje = " |0123456789|\n";
+        for (char i = 'A'; i <= 'J'; i = (char) (i + 1)) {
+            mensaje = mensaje + i + "|";
+            for (char j = '0'; j <= '9'; j = (char) (j + 1)) {
+                if (cells.containsKey(i + "" + j)) {
+                    mensaje = mensaje + "X";
+                } else {
+                    mensaje = mensaje + " ";
                 }
             }
-            mensaje=mensaje+"|\n";
+            mensaje = mensaje + "|\n";
         }
         return mensaje;
     }
+
     public Message hitCell(String position) {
         return cells.get(position).hitCell(); // TODO switch of cases to return
     }
@@ -56,7 +58,7 @@ public class Grid {
                 if (invalidCell(character, (char) i)) return false;
             }
             for (int i = number; i <= (number + shipSize - 1); i++) {
-                newPosition=(character + "" + ((char) (i)));
+                newPosition = (character + "" + ((char) (i)));
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
 
@@ -71,7 +73,7 @@ public class Grid {
                 if (invalidCell((char) i, number)) return false;
             }
             for (int i = character; i <= (character + shipSize - 1); i++) {
-                newPosition=(((char) (i)) + "" + number);
+                newPosition = (((char) (i)) + "" + number);
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
 
@@ -91,18 +93,18 @@ public class Grid {
         number = position.charAt(1);
         if (orientation == Orientation.H) {
             for (int i = number; i <= (number + shipSize - 1); i++) {
-                newPosition=(character + "" + ((char) (i)));
+                newPosition = (character + "" + ((char) (i)));
                 cells.remove(newPosition);
             }
-        }else{
+        } else {
             for (int i = character; i <= (character + shipSize - 1); i++) {
-                newPosition=(((char) (i)) + "" + number);
+                newPosition = (((char) (i)) + "" + number);
                 cells.remove(newPosition);
             }
         }
     }
 
-    public String nextPosition(String position){
+    public String nextPosition(String position) {
         char character, number;
         if (position.length() != 2) {
             return null;
@@ -110,22 +112,22 @@ public class Grid {
         position = position.toUpperCase();
         character = position.charAt(0);
         number = position.charAt(1);
-        if(number== '9') {
+        if (number == '9') {
             character = ((char) (character + 1));
-            number='0';
+            number = '0';
 
-        }else{
+        } else {
             number = ((char) (number + 1));
         }
-        while(character<= 'J'){
+        while (character <= 'J') {
 
 
-            if(!invalidCell(character, number)) return (character + "" +number);
-            if(number== '9') {
+            if (!invalidCell(character, number)) return (character + "" + number);
+            if (number == '9') {
                 character = ((char) (character + 1));
-                number='0';
+                number = '0';
 
-            }else{
+            } else {
                 number = ((char) (number + 1));
             }
         }
@@ -133,18 +135,16 @@ public class Grid {
     }
 
     /**
-     *
      * @param character
      * @param number
      * @return true if is invalid, false if it is valid
      */
     private boolean invalidCell(char character, char number) {
-
-        return (cells.containsKey(character + number)
-                || cells.containsKey(((char) (character - 1)) + number)
-                || cells.containsKey(((char) (character + 1)) + number)
-                || cells.containsKey(character + ((char) (number - 1)))
-                || cells.containsKey(character - 1 + ((char) (number + 1))));
+        return (cells.containsKey(character + "" + number)
+                || cells.containsKey(((char) (character - 1)) + "" + number)
+                || cells.containsKey(((char) (character + 1)) + "" + number)
+                || cells.containsKey(character + "" + ((char) (number - 1)))
+                || cells.containsKey(character + "" + ((char) (number + 1))));
 
     }
 

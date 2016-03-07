@@ -30,20 +30,27 @@ public class Controller {
                 ShipType.D, ShipType.D, ShipType.P, ShipType.P);
         Collections.shuffle(ships); // Randomizing ships
         ArrayList<Orientation> orient = new ArrayList<>();
-        for (int i=0; i<ships.size(); i++){ // Randomizing orientation of each ship
-            switch(new Random().nextInt(2)){
-                case 0: orient.add(Orientation.H); break;
-                case 1: orient.add(Orientation.V); break;
+        for (int i = 0; i < ships.size(); i++) { // Randomizing orientation of each ship
+            switch (new Random().nextInt(2)) {
+                case 0:
+                    orient.add(Orientation.H);
+                    break;
+                case 1:
+                    orient.add(Orientation.V);
+                    break;
             }
         }
         ArrayList<String> shipPositions = new ArrayList<>();
-        String currPosition = "A1";
-        for (int i=0; i<ships.size() && shipPositions.size() < ships.size();
-             i++, currPosition=myGrid.nextPosition(currPosition)){
-            if (!this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))){
-                this.myGrid.removeShip(ships.get(i).size, currPosition, orient.get(i));
-                currPosition=shipPositions.remove(i);
-                i-=2; // we go back to the previous step
+        String currPosition = "A0";
+        for (int i = 0; i < ships.size() && shipPositions.size() < ships.size();
+             i++, currPosition = myGrid.nextPosition(currPosition)) {
+            if (currPosition == null ||
+                    !this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))) {
+                // If there are no more positions to put a ship
+                // We do backtracking
+                currPosition = shipPositions.remove(i - 1);
+                this.myGrid.removeShip(ships.get(i - 1).size, currPosition, orient.get(i - 1));
+                i -= 2; // we go back to the previous step (counting on for's i++)
             } else {
                 shipPositions.add(currPosition);
             }
@@ -111,5 +118,9 @@ public class Controller {
             this.gm.commitMove();
         }
         return m;
+    }
+
+    public String getCurrentGrid() {
+        return this.myGrid.toString();
     }
 }

@@ -30,7 +30,8 @@ public class Menu {
             System.out.println("Your ships are in place. Yay!");
         } else {
             try {
-                ctrl.generateGridFromFile(layout);
+                ctrl.generateGridAutomatic();
+                //ctrl.generateGridFromFile(layout);
                 System.out.println("Your ships are in place. Yay!");
             } catch (IOException e) {
                 System.out.println("The specified layout file could not be read");
@@ -87,6 +88,7 @@ public class Menu {
                     break;
                 // TODO Need to put case player loses
             }
+            System.out.println(this.ctrl.getCurrentGrid() + "\n");
         }
     }
 }
