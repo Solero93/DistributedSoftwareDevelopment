@@ -23,11 +23,14 @@ public class Cell {
     }
 
     public Message hitCell() {
-        return null; // TODO make switch of cases to return
+        return (shipOnCell.loseLife()) ? Message.SUNK : Message.HIT;
+
+
     }
 
     // No need to return boolean since it's checked in Grid class
     public void putShip(Ship ship) {
         this.shipOnCell = ship;
     }
+
 }

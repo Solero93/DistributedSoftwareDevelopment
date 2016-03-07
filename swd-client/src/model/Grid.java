@@ -35,7 +35,16 @@ public class Grid {
     }
 
     public Message hitCell(String position) {
-        return cells.get(position).hitCell(); // TODO switch of cases to return
+        Message tmp;
+        position = position.toUpperCase();
+        if (cells.containsKey(position)) {
+            tmp = cells.get(position).hitCell();
+            if (tmp == Message.SUNK) {
+                return (--this.numShipsLeft == 0) ? Message.YOU_WIN : tmp;
+            }
+            return tmp;
+        }
+        return Message.MISS;
     }
 
     public boolean putShip(int shipSize, String position, Orientation orientation) {
@@ -81,6 +90,7 @@ public class Grid {
             }
 
         }
+        this.numShipsLeft++;
         return true;
     }
 
