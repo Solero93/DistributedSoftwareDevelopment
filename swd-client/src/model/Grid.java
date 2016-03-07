@@ -28,7 +28,7 @@ public class Grid {
         String newPosition;
         position = position.toUpperCase();
         if (position.length() != 2) {
-            return false;-
+            return false;
         }
         character = position.charAt(0);
         number = position.charAt(1);

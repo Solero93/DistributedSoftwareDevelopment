@@ -1,18 +1,21 @@
 package utils;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Client messages
  */
 public enum Message {
-    HIT, MISS, SUNK, WON, ERROR;
+    START, THROW, FIRE, HIT, MISS, SUNK, YOU_WIN, ERROR;
     public String message;
 
     static {
         // Messages are made up currently
+        START.message = "-1";
+        THROW.message = "-2";
+        FIRE.message = "-3";
         HIT.message = "A";
         MISS.message = "B";
         SUNK.message = "C";
-        WON.message = "D";
+        YOU_WIN.message = "D";
         ERROR.message = "E";
     }
 }

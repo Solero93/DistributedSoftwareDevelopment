@@ -10,15 +10,16 @@ public class Ship {
     private int life; // TODO Shouldn't really need, since size is never consulted ever after
 
 
-    public Ship(int size){
+    public Ship(int size) {
         this.size = size;
         this.life = this.size;
     }
+
     public int getSize() {
         return this.size;
     }
 
-    public boolean loseLife(){
+    public boolean loseLife() {
         return (--this.life == 0);
     }
 }

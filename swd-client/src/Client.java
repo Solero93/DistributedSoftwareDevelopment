@@ -38,7 +38,7 @@ public class Client {
                         return;
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("Error parsing arguments\n" + helpMessage);
+                System.out.println("Error parsing numerical arguments\n" + helpMessage);
                 return;
             }
         }
@@ -48,6 +48,11 @@ public class Client {
         }
         if (mode < 0 || mode > 2) {
             System.out.println("Invalid mode\n" + helpMessage);
+            return;
+        }
+
+        if (mode != 0 && layout == null) {
+            System.out.println("In this mode you have to specify a layout\n" + helpMessage);
             return;
         }
 

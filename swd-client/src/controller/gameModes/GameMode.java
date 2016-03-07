@@ -9,8 +9,9 @@ public abstract class GameMode {
     protected ArrayList<String> cellsHit;
     protected String waitMove;
 
-    public GameMode(){
+    public GameMode() {
         this.cellsHit = new ArrayList<>();
+        this.waitMove = null;
     }
 
     public abstract String play();

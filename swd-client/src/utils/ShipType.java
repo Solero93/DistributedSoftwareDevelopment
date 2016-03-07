@@ -5,6 +5,17 @@ package utils;
  */
 public enum ShipType {
     A, B, S, D, P;
+
+    public String fullName;
+
+    static {
+        A.fullName = "Aircraft Carrier";
+        B.fullName = "Battleship";
+        S.fullName = "Submarine";
+        D.fullName = "Destroyer";
+        P.fullName = "Patrol Boat";
+    }
+
     public int size;
 
     static {
