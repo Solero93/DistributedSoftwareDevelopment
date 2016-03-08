@@ -1,5 +1,7 @@
 package controller.gameModes;
 
+import utils.Message;
+
 import java.util.ArrayList;
 
 /**
@@ -16,14 +18,10 @@ public abstract class GameMode {
 
     public abstract String play();
 
-    public void commitMove() {
-        if (this.waitMove != null) {
+    public void commitMove(Message message) {
+        if (message != Message.ERROR && this.waitMove != null) {
             this.cellsHit.add(this.waitMove);
-            this.waitMove = null;
         }
-    }
-
-    public void undoMove() {
         this.waitMove = null;
     }
 }

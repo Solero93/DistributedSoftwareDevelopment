@@ -41,19 +41,20 @@ public class Controller {
             }
         }
         ArrayList<String> shipPositions = new ArrayList<>();
-        String currPosition = "A0";
-        for (int i = 0; i < ships.size() && shipPositions.size() < ships.size();
-             i++, currPosition = myGrid.nextPosition(currPosition)) {
+        int i = 0;
+        for (String currPosition = "A0"; shipPositions.size() < ships.size();
+             currPosition = myGrid.nextPosition(currPosition)) {
             if (currPosition == null) {
                 // If there are no more positions to put a ship
                 // We do backtracking
                 currPosition = shipPositions.remove(i - 1);
                 this.myGrid.removeShip(ships.get(i - 1).size, currPosition, orient.get(i - 1));
-                i -= 2; // we go back to the previous step (counting on for's i++)
-            } else if (!this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))) {
-                i--; // We stay with the same ship
-            } else {
-                shipPositions.add(currPosition); // Add ship to added ships
+                i--;
+            } else if (this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))) {
+                // If you could put the ship in place
+                // Try to put the next ship
+                shipPositions.add(currPosition);
+                i++;
             }
         }
     }
@@ -72,7 +73,7 @@ public class Controller {
             String shipType = shipToPut[0].toUpperCase(), position = shipToPut[1], orientation = shipToPut[2].toUpperCase();
             int shipLeftOfType = numShips.get(ShipType.valueOf(shipType));
             // If you try to put too many ships of a type or
-            // There has been an error while putting, throw error
+            // there has been an error while putting, throw error
             if (shipLeftOfType == 0 ||
                     !this.myGrid.putShip(ShipType.valueOf(shipType).size, position, Orientation.valueOf(orientation))) {
                 bufferedReader.close();
@@ -113,11 +114,7 @@ public class Controller {
     public Message play() {
         String position = this.gm.play();
         Message m = this.hitEnemyCell(position);
-        if (m == Message.ERROR) {
-            this.gm.undoMove();
-        } else {
-            this.gm.commitMove();
-        }
+        this.gm.commitMove(m);
         return m;
     }
 
