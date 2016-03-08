@@ -44,15 +44,16 @@ public class Controller {
         String currPosition = "A0";
         for (int i = 0; i < ships.size() && shipPositions.size() < ships.size();
              i++, currPosition = myGrid.nextPosition(currPosition)) {
-            if (currPosition == null ||
-                    !this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))) {
+            if (currPosition == null) {
                 // If there are no more positions to put a ship
                 // We do backtracking
                 currPosition = shipPositions.remove(i - 1);
                 this.myGrid.removeShip(ships.get(i - 1).size, currPosition, orient.get(i - 1));
                 i -= 2; // we go back to the previous step (counting on for's i++)
+            } else if (!this.myGrid.putShip(ships.get(i).size, currPosition, orient.get(i))) {
+                i--; // We stay with the same ship
             } else {
-                shipPositions.add(currPosition);
+                shipPositions.add(currPosition); // Add ship to added ships
             }
         }
     }

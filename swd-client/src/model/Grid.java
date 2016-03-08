@@ -122,6 +122,7 @@ public class Grid {
                 cells.remove(newPosition);
             }
         }
+        numShipsLeft--;
     }
 
     public String nextPosition(String position) {

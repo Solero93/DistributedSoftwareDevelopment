@@ -30,7 +30,8 @@ public class Menu {
             System.out.println("Your ships are in place. Yay!");
         } else {
             try {
-                ctrl.generateGridAutomatic();
+                this.ctrl.generateGridAutomatic();
+                System.out.println(this.ctrl.getCurrentGrid() + "\n");
                 //ctrl.generateGridFromFile(layout);
                 System.out.println("Your ships are in place. Yay!");
             } catch (IOException e) {
@@ -88,7 +89,6 @@ public class Menu {
                     break;
                 // TODO Need to put case player loses
             }
-            System.out.println(this.ctrl.getCurrentGrid() + "\n");
         }
     }
 }
