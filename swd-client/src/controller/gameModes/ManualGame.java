@@ -12,7 +12,7 @@ public class ManualGame extends GameMode {
         while (true) {
             System.out.println("Enter the field to fire on: ");
             position = sc.nextLine();
-            if (!this.cellsHit.contains(position)) {
+            if (!this.cellsFired.contains(position)) {
                 this.waitMove = position;
                 return position;
             } else {

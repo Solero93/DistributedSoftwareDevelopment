@@ -8,11 +8,11 @@ import java.util.ArrayList;
  * Class that represents the -- Object
  */
 public abstract class GameMode {
-    protected ArrayList<String> cellsHit;
+    protected ArrayList<String> cellsFired;
     protected String waitMove;
 
     public GameMode() {
-        this.cellsHit = new ArrayList<>();
+        this.cellsFired = new ArrayList<>();
         this.waitMove = null;
     }
 
@@ -20,7 +20,7 @@ public abstract class GameMode {
 
     public void commitMove(Message message) {
         if (message != Message.ERROR && this.waitMove != null) {
-            this.cellsHit.add(this.waitMove);
+            this.cellsFired.add(this.waitMove);
         }
         this.waitMove = null;
     }
