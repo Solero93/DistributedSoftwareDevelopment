@@ -1,26 +1,33 @@
 package communication;
 
-import controller.Controller;
 import exceptions.ReadGridException;
 import utils.ShipType;
 
 import java.io.IOException;
-import java.util.Scanner;
+import java.net.ServerSocket;
+import java.util.*;
 
 /**
  * Class that represents the Communication of the Game
  */
 public class Communication {
-    String server, layout;
+    String layout;
     int port, mode;
+    ServerSocket mySocket;
+    ArrayList<Thread> threads;
 
-    public Communication(String server, int port, String layout, int mode) {
-        this.server = server;
+    public Communication(int port, String layout, int mode) throws IOException{
         this.port = port;
         this.layout = layout;
         this.mode = mode;
+        this.threads = new ArrayList<>();
+        this.mySocket = new ServerSocket();
     }
 
+    public void serveClients(){
+
+    }
+/*
     public void showMenu() {
         if (layout == null) {
             System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
@@ -42,7 +49,7 @@ public class Communication {
         }
         this.playGame();
     }
-
+*/
     private boolean getLayoutFromKeyboard() {
         Scanner sc = new Scanner(System.in);
         String position, orientation;

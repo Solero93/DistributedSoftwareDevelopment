@@ -16,12 +16,10 @@ import java.util.*;
  * Class that represents the Controller Object
  */
 public class Controller {
-    private Communication server;
     private Grid myGrid;
     private GameMode gm;
 
     public Controller() {
-        this.server = new Communication();
         this.myGrid = new Grid();
     }
 
@@ -112,11 +110,12 @@ public class Controller {
     }
 
     // TODO separate commit from play
-    public Message play() {
-        String position = this.gm.play();
-        Message m = this.hitEnemyCell(position);
+    public String play() {
+        return this.gm.play();
+    }
+
+    public void commitMove(Message m){
         this.gm.commitMove(m);
-        return m;
     }
 
     public String getCurrentGrid() {

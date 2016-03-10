@@ -6,14 +6,13 @@ import communication.Communication;
 public class Server {
     public static void main(String args[]) {
         // Parsing command line arguments
-        String helpMessage = "Us: java Server -s <maquina_servidora> -p <port> [-f <layout>] [-i 0|1|2]";
+        String helpMessage = "Us: java Server -p <port> [-f layout] [-i 1|2]";
         for (String s : args) {
             if (s.equals("-h")) {
                 System.out.println(helpMessage);
                 return;
             }
         }
-        String server = null;
         int port = -1;
         String layout = null;
         int mode = 0; // Default value of mode
@@ -21,9 +20,6 @@ public class Server {
         for (int i = 0; i < args.length; i += 2) {
             try {
                 switch (args[i]) {
-                    case "-s":
-                        server = args[i + 1];
-                        break;
                     case "-p":
                         port = Integer.parseInt(args[i + 1]);
                         break;
@@ -42,11 +38,11 @@ public class Server {
                 return;
             }
         }
-        if (server == null || port == -1) {
+        if (port == -1) {
             System.out.println("Missing parametres\n" + helpMessage);
             return;
         }
-        if (mode < 0 || mode > 2) {
+        if (mode != 1 && mode != 2) {
             System.out.println("Invalid mode\n" + helpMessage);
             return;
         }
@@ -56,7 +52,7 @@ public class Server {
             return;
         }
 
-        Communication communication = new Communication(server, port, layout, mode);
+        Communication communication = new Communication(port, layout, mode);
         communication.showMenu();
         System.out.println("Thank you for playing Battleships!");
     }
