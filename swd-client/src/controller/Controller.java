@@ -25,7 +25,7 @@ public class Controller {
         this.myGrid = new Grid();
     }
 
-    public void generateGridAutomatic() throws IOException, ReadGridException {
+    public void generateGridAutomatic() throws ReadGridException {
         List<ShipType> ships = Arrays.asList(ShipType.A, ShipType.B, ShipType.B, ShipType.S, ShipType.S,
                 ShipType.D, ShipType.D, ShipType.P, ShipType.P);
         Collections.shuffle(ships); // Randomizing ships

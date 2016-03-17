@@ -5,7 +5,7 @@ package utils;
  */
 public enum Message {
     START, THROW, FIRE, HIT, MISS, SUNK, YOU_WIN,
-    ERROR, GRID_RDY, HUMAN_FIRST, DRAW, UNKNOW;
+    ERROR, GRID_RDY, HUMAN_FIRST, DRAW, UNKNOWN;
     public String message;
 
     static {
@@ -21,10 +21,9 @@ public enum Message {
         GRID_RDY.message = "GRID";
         HUMAN_FIRST.message = "FRST";
         DRAW.message = "DRAW";
-
     }
 
-    public String toString(){
+    public String toString() {
         return this.message;
     }
 }

@@ -114,7 +114,7 @@ public class Controller {
         return this.gm.play();
     }
 
-    public void commitMove(Message m){
+    public void commitMove(Message m) {
         this.gm.commitMove(m);
     }
 

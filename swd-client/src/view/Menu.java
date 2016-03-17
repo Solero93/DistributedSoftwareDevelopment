@@ -25,14 +25,24 @@ public class Menu {
 
     public void showMenu() {
         if (layout == null) {
-            System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
-            while (!this.getLayoutFromKeyboard()) ;
-            System.out.println("Your ships are in place. Yay!");
+            if (mode == 0) {
+                System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
+                while (!this.getLayoutFromKeyboard()) ;
+                System.out.println("Your ships are in place. Yay!");
+            } else {
+                try {
+                    this.ctrl.generateGridAutomatic();
+                    System.out.println(this.ctrl.getCurrentGrid() + "\n");
+                    System.out.println("Your ships are in place. Yay!");
+                } catch (ReadGridException e) {
+                    System.out.println("There has been an error when autogenerating grid");
+                    return;
+                }
+            }
         } else {
             try {
-                this.ctrl.generateGridAutomatic();
+                this.ctrl.generateGridFromFile(layout);
                 System.out.println(this.ctrl.getCurrentGrid() + "\n");
-                //ctrl.generateGridFromFile(layout);
                 System.out.println("Your ships are in place. Yay!");
             } catch (IOException e) {
                 System.out.println("The specified layout file could not be read");

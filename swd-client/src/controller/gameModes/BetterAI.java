@@ -26,6 +26,7 @@ public class BetterAI extends GameMode {
             RIGHT.y = +1;
         }
     }
+
     private String firstHit;
     private Message lastMessage;
     private Direction currHitDir;
@@ -93,7 +94,7 @@ public class BetterAI extends GameMode {
                 }
                 break;
             case MISS:
-                if (this.firstHit != null){
+                if (this.firstHit != null) {
                     this.lastMessage = message;
                 }
                 break;
