@@ -3,46 +3,50 @@ package communication;
 import controller.Controller;
 import exceptions.ReadGridException;
 import utils.ComUtils;
-import utils.Message;
+import utils.enums.Message;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
 
-public class Game extends Thread{
+public class Game extends Thread {
     private Socket clientSocket;
     private Controller ctrl;
     private ComUtils com;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        ctrl= new Controller();
+        ctrl = new Controller();
         sock.setSoTimeout(30000);
-        com= new ComUtils(sock);
-        if(layout==null){
+        com = new ComUtils(sock);
+        if (layout == null) {
             this.ctrl.generateGridAutomatic();
-        }else{
+        } else {
             this.ctrl.generateGridFromFile(layout);
         }
         this.ctrl.createGameMode(mode);
     }
 
-    public void run(){
+    public void run() {
         Message msg;
-        if(!sendMessage(Message.GRID_RDY.message)) return ;
-        msg= receiveMessage();
-        //TODO Tratar primer mensaje
-        //TODO Hacer metodo par el error i para el Fire
-        //TODO CONTINUAR FLUJO
-
+        if (!sendMessage(Message.GRID_RDY.messageCode)) return;
+        msg = receiveMessage();
+        // TODO Para crear los packets de los mensajes, usa la clase PackageBuilder
+        /* EJEMPLO:
+            String packet = new PackageBuilder()
+                            .setMessage(Message.FIRE)
+                            .setPosition("A9")
+                            .buildPackage();
+            Si se han pasado parámetros que no tocaban para crear el mensaje,
+            devuelve un PackageBuildException.
+        */
     }
 
     /**
-     *
      * @param msg
-     * @return true if we an send the message, false
+     * @return true if we an send the messageCode, false
      */
-    public boolean sendMessage(String msg){
+    public boolean sendMessage(String msg) {
         try {
             com.write_string(msg);
             return true;
@@ -50,59 +54,21 @@ public class Game extends Thread{
             return false;
         }
     }
-    public Message receiveMessage(){
-        Message msg;
-        while(true){
+
+    public Message receiveMessage() {
+        while (true) {
             try {
+                return Message.getMessageFromCode(com.read_string_variable(4));
+            } catch (SocketTimeoutException e) {
 
-                switch (com.read_string_variable(4)) {
-                    case "STRT":
-                        msg= Message.START;
-                        break;
-                    case "THRW":
-                        msg= Message.START;
-                        break;
-                    case "FIRE":
-                        msg= Message.START;
-                        break;
-                    case "HIT_":
-                        msg= Message.START;
-                        break;
-                    case "MISS":
-                        msg= Message.START;
-                        break;
-                    case "SUNK":
-                        msg= Message.START;
-                        break;
-                    case "WIN_":
-                        msg= Message.START;
-                        break;
-                    case "ERRO":
-                        msg= Message.START;
-                        break;
-                    case "GRID":
-                        msg= Message.START;
-                        break;
-                    case "FRST":
-                        msg= Message.START;
-                        break;
-                    case "DRAW":
-                        msg= Message.START;
-                        break;
-                    default:
-                        msg=Message.UNKNOW;
-                        break;
-                }
-                return msg;
-            }catch (SocketTimeoutException e) {
-
-            }catch(IOException e){
+            } catch (IOException e) {
                 return null;
             }
 
         }
     }
-    public void gola(String msg){
+
+    public void gola(String msg) {
 
     }
 }

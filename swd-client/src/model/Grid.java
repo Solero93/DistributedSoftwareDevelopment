@@ -168,6 +168,4 @@ public class Grid {
                 || cells.containsKey(character + "" + ((char) (number + 1))));
 
     }
-
-    // TODO "Generate grid" method missing
 }

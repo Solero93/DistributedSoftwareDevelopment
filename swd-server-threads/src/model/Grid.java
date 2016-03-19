@@ -1,7 +1,7 @@
 package model;
 
-import utils.Message;
-import utils.Orientation;
+import utils.enums.Message;
+import utils.enums.Orientation;
 
 import java.util.HashMap;
 

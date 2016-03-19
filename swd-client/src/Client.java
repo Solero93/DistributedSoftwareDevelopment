@@ -51,13 +51,8 @@ public class Client {
             return;
         }
 
-        if (mode != 0 && layout == null) {
-            System.out.println("In this mode you have to specify a layout\n" + helpMessage);
-            return;
-        }
-
         Menu menu = new Menu(server, port, layout, mode);
-        menu.showMenu();
+        menu.prepareGame();
         System.out.println("Thank you for playing Battleships!");
     }
 }

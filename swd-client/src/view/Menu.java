@@ -23,16 +23,26 @@ public class Menu {
         this.mode = mode;
     }
 
-    public void showMenu() {
+    public void prepareGame() {
         if (layout == null) {
-            System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
-            while (!this.getLayoutFromKeyboard()) ;
-            System.out.println("Your ships are in place. Yay!");
+            if (mode == 0) {
+                System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
+                while (!this.getLayoutFromKeyboard()) ;
+                System.out.println("Your ships are in place. Yay!");
+            } else {
+                try {
+                    this.ctrl.generateGridAutomatic();
+                    System.out.println(this.ctrl.getCurrentGrid() + "\n");
+                    System.out.println("Your ships are in place. Yay!");
+                } catch (ReadGridException e) {
+                    System.out.println("There has been an error when autogenerating grid");
+                    return;
+                }
+            }
         } else {
             try {
-                this.ctrl.generateGridAutomatic();
+                this.ctrl.generateGridFromFile(layout);
                 System.out.println(this.ctrl.getCurrentGrid() + "\n");
-                //ctrl.generateGridFromFile(layout);
                 System.out.println("Your ships are in place. Yay!");
             } catch (IOException e) {
                 System.out.println("The specified layout file could not be read");
@@ -42,7 +52,39 @@ public class Menu {
                 return;
             }
         }
-        this.playGame();
+        try {
+            this.ctrl.createGameMode(mode);
+            this.ctrl.createCommunication(server, port);
+            this.playGame();
+        } catch (IOException e) {
+            System.out.println("There has been an error while trying to communicate with server");
+            return;
+        }
+    }
+
+    private void playGame() {
+        boolean keepPlaying = true;
+        while (keepPlaying) {
+            switch (this.ctrl.play()) {
+                case HIT:
+                    System.out.println("You've hit a ship!");
+                    break;
+                case MISS:
+                    System.out.println("You've missed :-(");
+                    break;
+                case SUNK:
+                    System.out.println("You've sunk a ship!");
+                    break;
+                case YOU_WIN:
+                    System.out.println("You won the game! Yay!");
+                    keepPlaying = false;
+                    break;
+                case ERROR:
+                    System.out.println("There has been error while trying to perform this move.");
+                    break;
+                // TODO Need to put case player loses
+            }
+        }
     }
 
     private boolean getLayoutFromKeyboard() {
@@ -64,31 +106,5 @@ public class Menu {
             }
         }
         return true;
-    }
-
-    private void playGame() {
-        this.ctrl.createGameMode(mode);
-        boolean keepPlaying = true;
-        while (keepPlaying) {
-            switch (this.ctrl.play()) {
-                case HIT:
-                    System.out.println("You've hit a ship!");
-                    break;
-                case MISS:
-                    System.out.println("You've missed :-(");
-                    break;
-                case SUNK:
-                    System.out.println("You've sunk a ship!");
-                    break;
-                case YOU_WIN:
-                    System.out.println("You won the game!");
-                    keepPlaying = false;
-                    break;
-                case ERROR:
-                    System.out.println("There has been error while trying to perform this move.");
-                    break;
-                // TODO Need to put case player loses
-            }
-        }
     }
 }

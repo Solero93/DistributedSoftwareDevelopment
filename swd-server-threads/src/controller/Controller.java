@@ -1,15 +1,16 @@
 package controller;
 
-import communication.Communication;
 import controller.gameModes.GameMode;
 import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
 import model.Grid;
-import utils.Message;
-import utils.Orientation;
-import utils.ShipType;
+import utils.enums.Message;
+import utils.enums.Orientation;
+import utils.enums.ShipType;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -23,13 +24,14 @@ public class Controller {
         this.myGrid = new Grid();
     }
 
-    public void generateGridAutomatic() throws IOException, ReadGridException {
+    public void generateGridAutomatic() throws ReadGridException {
         List<ShipType> ships = Arrays.asList(ShipType.A, ShipType.B, ShipType.B, ShipType.S, ShipType.S,
                 ShipType.D, ShipType.D, ShipType.P, ShipType.P);
         Collections.shuffle(ships); // Randomizing ships
         ArrayList<Orientation> orient = new ArrayList<>();
+        Random orientRandom = new Random();
         for (int i = 0; i < ships.size(); i++) { // Randomizing orientation of each ship
-            switch (new Random().nextInt(2)) {
+            switch (orientRandom.nextInt(2)) {
                 case 0:
                     orient.add(Orientation.H);
                     break;
@@ -109,12 +111,11 @@ public class Controller {
         this.gm = new GameModeFactory().createGameMode(mode);
     }
 
-    // TODO separate commit from play
     public String play() {
         return this.gm.play();
     }
 
-    public void commitMove(Message m){
+    public void commitMove(Message m) {
         this.gm.commitMove(m);
     }
 

@@ -1,5 +1,7 @@
 import communication.Communication;
 
+import java.io.IOException;
+
 /**
  * Main class with the Server
  */
@@ -15,7 +17,7 @@ public class Server {
         }
         int port = -1;
         String layout = null;
-        int mode = 0; // Default value of mode
+        int mode = 1; // Default value of mode
 
         for (int i = 0; i < args.length; i += 2) {
             try {
@@ -47,13 +49,12 @@ public class Server {
             return;
         }
 
-        if (mode != 0 && layout == null) {
-            System.out.println("In this mode you have to specify a layout\n" + helpMessage);
-            return;
+        try {
+            Communication communication = new Communication(port, layout, mode);
+            communication.serveClients();
+        } catch (IOException e) {
+            System.out.println("There has been an error trying to create the server.");
         }
-
-        Communication communication = new Communication(port, layout, mode);
-        communication.showMenu();
-        System.out.println("Thank you for playing Battleships!");
+        System.out.println("Server ended.");
     }
 }
