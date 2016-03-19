@@ -8,7 +8,6 @@ import utils.enums.Message;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
 
 public class Game extends Thread {
     private Socket clientSocket;

@@ -1,6 +1,5 @@
 package utils;
 
-import exceptions.PackageBuildException;
 import utils.enums.Message;
 
 /**
@@ -40,17 +39,12 @@ public class PackageBuilder {
         return this;
     }
 
-    public String buildPackage() throws PackageBuildException {
-        if (this.message == null) throw new PackageBuildException();
+    public String buildPackage() {
         switch (this.message) {
             case FIRE:
-                if (this.position == null) throw new PackageBuildException();
                 return (message.messageCode + ' ' + this.position);
             case ERROR:
-                if (this.errorCode == null || this.errorText == null) throw new PackageBuildException();
                 return (message.messageCode + ' ' + this.errorCode + this.errorText);
-            case UNKNOWN:
-                throw new PackageBuildException();
             default:
                 return message.messageCode;
         }
