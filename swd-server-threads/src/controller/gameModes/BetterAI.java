@@ -1,8 +1,7 @@
 package controller.gameModes;
 
-import utils.Message;
+import utils.enums.Message;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**

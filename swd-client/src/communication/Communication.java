@@ -1,18 +1,24 @@
 package communication;
 
 import utils.Message;
+import utils.ComUtils;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
 
 /**
- * Class that represents the Communication Object
+ * Class that abstracts the Communication
  */
 
-//TODO Fix follón
 public class Communication {
+    Socket clientSocket;
 
-    public Communication() {
+    public Communication(String serverName, int port) throws IOException{
+        clientSocket = new Socket(InetAddress.getByName(serverName),port);
     }
 
-    public Message hitCell(String position) {
+    public Message sendHit(String position) {
         return null;
     }
 }

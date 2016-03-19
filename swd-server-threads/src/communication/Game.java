@@ -3,7 +3,7 @@ package communication;
 import controller.Controller;
 import exceptions.ReadGridException;
 import utils.ComUtils;
-import utils.Message;
+import utils.enums.Message;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,14 +28,22 @@ public class Game extends Thread {
 
     public void run() {
         Message msg;
-        if (!sendMessage(Message.GRID_RDY.message)) return;
+        if (!sendMessage(Message.GRID_RDY.messageCode)) return;
         msg = receiveMessage();
-
+        // TODO Para crear los packets de los mensajes, usa la clase PackageBuilder
+        /* EJEMPLO:
+            String packet = new PackageBuilder()
+                            .setMessage(Message.FIRE)
+                            .setPosition("A9")
+                            .buildPackage();
+            Si se han pasado parámetros que no tocaban para crear el mensaje,
+            devuelve un PackageBuildException.
+        */
     }
 
     /**
      * @param msg
-     * @return true if we an send the message, false
+     * @return true if we an send the messageCode, false
      */
     public boolean sendMessage(String msg) {
         try {
@@ -47,49 +55,9 @@ public class Game extends Thread {
     }
 
     public Message receiveMessage() {
-        Message msg;
         while (true) {
             try {
-
-                switch (com.read_string_variable(4)) {
-                    case "STRT":
-                        msg = Message.START;
-                        break;
-                    case "THRW":
-                        msg = Message.START;
-                        break;
-                    case "FIRE":
-                        msg = Message.START;
-                        break;
-                    case "HIT_":
-                        msg = Message.START;
-                        break;
-                    case "MISS":
-                        msg = Message.START;
-                        break;
-                    case "SUNK":
-                        msg = Message.START;
-                        break;
-                    case "WIN_":
-                        msg = Message.START;
-                        break;
-                    case "ERRO":
-                        msg = Message.START;
-                        break;
-                    case "GRID":
-                        msg = Message.START;
-                        break;
-                    case "FRST":
-                        msg = Message.START;
-                        break;
-                    case "DRAW":
-                        msg = Message.START;
-                        break;
-                    default:
-                        msg = Message.UNKNOWN;
-                        break;
-                }
-                return msg;
+                return Message.getMessageFromCode(com.read_string_variable(4));
             } catch (SocketTimeoutException e) {
 
             } catch (IOException e) {

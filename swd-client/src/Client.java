@@ -52,7 +52,7 @@ public class Client {
         }
 
         Menu menu = new Menu(server, port, layout, mode);
-        menu.showMenu();
+        menu.prepareGame();
         System.out.println("Thank you for playing Battleships!");
     }
 }

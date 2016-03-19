@@ -9,19 +9,20 @@ import utils.Message;
 import utils.Orientation;
 import utils.ShipType;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Class that represents the Controller Object
  */
 public class Controller {
-    private Communication server;
     private Grid myGrid;
     private GameMode gm;
+    private Communication com;
 
     public Controller() {
-        this.server = new Communication();
         this.myGrid = new Grid();
     }
 
@@ -30,8 +31,9 @@ public class Controller {
                 ShipType.D, ShipType.D, ShipType.P, ShipType.P);
         Collections.shuffle(ships); // Randomizing ships
         ArrayList<Orientation> orient = new ArrayList<>();
+        Random orientRandom = new Random();
         for (int i = 0; i < ships.size(); i++) { // Randomizing orientation of each ship
-            switch (new Random().nextInt(2)) {
+            switch (orientRandom.nextInt(2)) {
                 case 0:
                     orient.add(Orientation.H);
                     break;
@@ -97,6 +99,10 @@ public class Controller {
         }
     }
 
+    public void createCommunication(String serverName, int port) throws IOException{
+        this.com = new Communication(serverName, port);
+    }
+
     public Message hitMyCell(String position) {
         return this.myGrid.hitCell(position);
     }
@@ -104,18 +110,19 @@ public class Controller {
     // TODO think about treating communication errors
     public Message hitEnemyCell(String position) {
         return this.hitMyCell(position); // TODO quitar esto e ir al servidor, solo está para pruebas
-        //return this.server.hitCell(position);
+        //return this.com.hitCell(position);
     }
 
     public void createGameMode(int mode) {
         this.gm = new GameModeFactory().createGameMode(mode);
     }
 
-    public Message play() {
-        String position = this.gm.play();
-        Message m = this.hitEnemyCell(position);
+    public String play() {
+        return this.gm.play();
+    }
+
+    public void commitMove(Message m) {
         this.gm.commitMove(m);
-        return m;
     }
 
     public String getCurrentGrid() {

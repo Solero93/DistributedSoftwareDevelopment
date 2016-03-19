@@ -23,7 +23,7 @@ public class Menu {
         this.mode = mode;
     }
 
-    public void showMenu() {
+    public void prepareGame() {
         if (layout == null) {
             if (mode == 0) {
                 System.out.println("Since you haven't specified any layout, you'll have to enter ships one by one: ");
@@ -52,7 +52,39 @@ public class Menu {
                 return;
             }
         }
-        this.playGame();
+        try {
+            this.ctrl.createGameMode(mode);
+            this.ctrl.createCommunication(server, port);
+            this.playGame();
+        } catch (IOException e) {
+            System.out.println("There has been an error while trying to communicate with server");
+            return;
+        }
+    }
+
+    private void playGame() {
+        boolean keepPlaying = true;
+        while (keepPlaying) {
+            switch (this.ctrl.play()) {
+                case HIT:
+                    System.out.println("You've hit a ship!");
+                    break;
+                case MISS:
+                    System.out.println("You've missed :-(");
+                    break;
+                case SUNK:
+                    System.out.println("You've sunk a ship!");
+                    break;
+                case YOU_WIN:
+                    System.out.println("You won the game! Yay!");
+                    keepPlaying = false;
+                    break;
+                case ERROR:
+                    System.out.println("There has been error while trying to perform this move.");
+                    break;
+                // TODO Need to put case player loses
+            }
+        }
     }
 
     private boolean getLayoutFromKeyboard() {
@@ -74,31 +106,5 @@ public class Menu {
             }
         }
         return true;
-    }
-
-    private void playGame() {
-        this.ctrl.createGameMode(mode);
-        boolean keepPlaying = true;
-        while (keepPlaying) {
-            switch (this.ctrl.play()) {
-                case HIT:
-                    System.out.println("You've hit a ship!");
-                    break;
-                case MISS:
-                    System.out.println("You've missed :-(");
-                    break;
-                case SUNK:
-                    System.out.println("You've sunk a ship!");
-                    break;
-                case YOU_WIN:
-                    System.out.println("You won the game!");
-                    keepPlaying = false;
-                    break;
-                case ERROR:
-                    System.out.println("There has been error while trying to perform this move.");
-                    break;
-                // TODO Need to put case player loses
-            }
-        }
     }
 }
