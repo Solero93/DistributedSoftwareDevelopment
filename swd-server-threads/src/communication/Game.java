@@ -31,6 +31,9 @@ public class Game extends Thread{
         Message msg;
         if(!sendMessage(Message.GRID_RDY.message)) return ;
         msg= receiveMessage();
+        //TODO Tratar primer mensaje
+        //TODO Hacer metodo par el error i para el Fire
+        //TODO CONTINUAR FLUJO
 
     }
 
