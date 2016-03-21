@@ -15,13 +15,9 @@ public enum Message {
     GRID_RDY("GRID"),
     HUMAN_FIRST("FRST"),
     DRAW("DRAW"),
-    UNKNOWN;
+    UNKNOWN(null);
 
     public String messageCode;
-
-    // Constructor of Unknown
-    Message() {
-    }
 
     Message(String messageCode) {
         this.messageCode = messageCode;

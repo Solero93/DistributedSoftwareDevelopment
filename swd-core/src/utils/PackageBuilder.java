@@ -39,7 +39,7 @@ public class PackageBuilder {
         return this;
     }
 
-    public String buildPackage() {
+    public String build() {
         switch (this.message) {
             case FIRE:
                 return (message.messageCode + ' ' + this.position);

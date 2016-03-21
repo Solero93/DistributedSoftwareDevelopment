@@ -1,13 +1,12 @@
 package controller;
 
-import communication.Communication;
 import controller.gameModes.GameMode;
 import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
 import model.Grid;
-import utils.Message;
-import utils.Orientation;
-import utils.ShipType;
+import utils.enums.Message;
+import utils.enums.Orientation;
+import utils.enums.ShipType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,9 +17,8 @@ import java.util.*;
  * Class that represents the Controller Object
  */
 public class Controller {
-    private Grid myGrid;
-    private GameMode gm;
-    private Communication com;
+    protected Grid myGrid;
+    protected GameMode gm;
 
     public Controller() {
         this.myGrid = new Grid();
@@ -99,10 +97,6 @@ public class Controller {
         }
     }
 
-    public void createCommunication(String serverName, int port) throws IOException{
-        this.com = new Communication(serverName, port);
-    }
-
     public Message hitMyCell(String position) {
         return this.myGrid.hitCell(position);
     }
@@ -110,7 +104,7 @@ public class Controller {
     // TODO think about treating communication errors
     public Message hitEnemyCell(String position) {
         return this.hitMyCell(position); // TODO quitar esto e ir al servidor, solo está para pruebas
-        //return this.com.hitCell(position);
+        //return this.server.hitCell(position);
     }
 
     public void createGameMode(int mode) {

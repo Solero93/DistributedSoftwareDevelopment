@@ -1,6 +1,6 @@
 package communication;
 
-import controller.Controller;
+import controller.ServerCtrl;
 import exceptions.ReadGridException;
 import utils.ComUtils;
 import utils.enums.Message;
@@ -11,11 +11,11 @@ import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
     private Socket clientSocket;
-    private Controller ctrl;
+    private ServerCtrl ctrl;
     private ComUtils com;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        ctrl = new Controller();
+        ctrl = new ServerCtrl();
         sock.setSoTimeout(30000);
         com = new ComUtils(sock);
         if (layout == null) {

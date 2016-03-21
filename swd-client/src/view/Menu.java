@@ -1,8 +1,8 @@
 package view;
 
-import controller.Controller;
+import controller.ClientCtrl;
 import exceptions.ReadGridException;
-import utils.ShipType;
+import utils.enums.ShipType;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -11,12 +11,12 @@ import java.util.Scanner;
  * Class that represents the Menu of the Game
  */
 public class Menu {
-    Controller ctrl;
+    ClientCtrl ctrl;
     String server, layout;
     int port, mode;
 
     public Menu(String server, int port, String layout, int mode) {
-        this.ctrl = new Controller();
+        this.ctrl = new ClientCtrl();
         this.server = server;
         this.port = port;
         this.layout = layout;
@@ -62,6 +62,7 @@ public class Menu {
         }
     }
 
+    // TODO Fix to get messages that server returns
     private void playGame() {
         boolean keepPlaying = true;
         while (keepPlaying) {
