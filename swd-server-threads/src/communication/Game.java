@@ -15,7 +15,7 @@ public class Game extends Thread {
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
         ctrl = new Controller();
-        sock.setSoTimeout(30000);
+        sock.setSoTimeout(3000);
         com = new ComUtils(sock);
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
@@ -68,7 +68,7 @@ public class Game extends Thread {
     public Command receiveCommand() {
         while (true) {
             try {
-                return Command.getCommandFromCode(com.read_string_variable(4));
+                Command.getCommandFromCode(com.read_string_variable(4));
             } catch (SocketTimeoutException e) {
 
             } catch (IOException e) {

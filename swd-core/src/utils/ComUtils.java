@@ -16,7 +16,10 @@ public class ComUtils {
         dis = new DataInputStream(socket.getInputStream());
         dos = new DataOutputStream(socket.getOutputStream());
     }
-
+    public void endComunications() throws IOException {
+        dis.close();
+        dos.close();
+    }
     /* Llegir un enter de 32 bits */
     public int read_int32() throws IOException {
         byte bytes[] = new byte[4];
