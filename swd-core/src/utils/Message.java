@@ -16,8 +16,12 @@ public class Message {
 
     public Message(String pkg) {
         String[] tmp = pkg.split(" ");
-        this.command = Command.getCommandFromCode(tmp[0]);
-        this.params = tmp[1];
+        this.command = Command.getCommandFromCode(tmp[0].toUpperCase());
+        if (tmp.length >= 1){
+            this.params = tmp[1].toUpperCase();
+        } else {
+            this.params = null;
+        }
     }
 
     public Command getCommand() {
