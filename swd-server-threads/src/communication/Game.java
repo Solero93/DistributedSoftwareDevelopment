@@ -2,7 +2,6 @@ package communication;
 
 import controller.Controller;
 import exceptions.ReadGridException;
-import utils.ComUtils;
 import utils.Message;
 import utils.enums.Command;
 
@@ -29,24 +28,24 @@ public class Game extends Thread {
     public void run() {
 
         Message msg;
-        msg=null;
-        if (!this.sendCommand(Command.GRID_RDY, null)){
+        msg = null;
+        if (!this.sendCommand(Command.GRID_RDY, null)) {
             this.ctrl.closeConnections();
             return;
         }
         while (msg == null) {
             msg = receiveCommand();
-            if(msg==null){
+            if (msg == null) {
                 this.ctrl.closeConnections();
                 return;
-            }else if(msg.getCommand() == Command.THROW){
+            } else if (msg.getCommand() == Command.THROW) {
                 try {
-                    msg= this.ctrl.throwServerDice();
+                    msg = this.ctrl.throwServerDice();
                 } catch (IOException e) {
                     this.ctrl.closeConnections();
                     return;
                 }
-                switch (msg.getCommand()){
+                switch (msg.getCommand()) {
                     case FIRE:
                         break;
                     case HIT:
@@ -60,9 +59,9 @@ public class Game extends Thread {
                         break;
 
                 }
-            }else{
+            } else {
                 //TODO ENVIO DE ERROR
-                msg=null;
+                msg = null;
             }
         }
 
@@ -95,6 +94,7 @@ public class Game extends Thread {
 
         }
     }
+
     public void gola(String msg) {
 
     }

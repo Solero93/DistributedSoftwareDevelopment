@@ -86,7 +86,7 @@ public class Game {
         Message firstResponse;
         try {
             this.ctrl.sendMessage(Command.START, null);
-                firstResponse = this.ctrl.waitForEnemy();
+            firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
             if (!this.throwDice()) return;
         } catch (IOException e) {
@@ -181,7 +181,7 @@ public class Game {
     }
 
     private boolean enemyMove(Message msg) {
-        switch(msg.getCommand()){
+        switch (msg.getCommand()) {
             case FIRE:
                 try {
                     this.ctrl.hitMyCell(msg.getParams());
@@ -224,7 +224,7 @@ public class Game {
         return false;
     }
 
-    public void closeGame(){
+    public void closeGame() {
         this.ctrl.closeConnections();
     }
 }
