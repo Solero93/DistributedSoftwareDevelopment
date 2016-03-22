@@ -6,6 +6,7 @@
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="swd-core" />
+      <element id="dir-copy" path="$PROJECT_DIR$/../swd-client/src" />
     </root>
   </artifact>
 </component>

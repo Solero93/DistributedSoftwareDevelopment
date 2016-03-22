@@ -158,13 +158,13 @@ public class Game {
     private boolean myMove(Message msg) {
         switch (msg.getCommand()) {
             case HIT:
-                System.out.println("You hit a ship at position" + msg.getParams());
+                System.out.println("You hit a ship at position: " + msg.getParams());
                 break;
             case MISS:
-                System.out.println("You missed a ship at position" + msg.getParams());
+                System.out.println("You missed a ship at position: " + msg.getParams());
                 break;
             case SUNK:
-                System.out.println("You sunk a ship at position" + msg.getParams());
+                System.out.println("You sunk a ship at position: " + msg.getParams());
                 break;
             case YOU_WIN:
                 System.out.println("You won the game! :-D");
