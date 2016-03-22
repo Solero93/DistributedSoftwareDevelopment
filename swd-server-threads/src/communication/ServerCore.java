@@ -40,12 +40,13 @@ public class ServerCore {
                 this.threadPool.execute(new Game(sock, layout, mode));
                 System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
             } catch (IOException e) {
-                System.out.println("There has been an error with the client of address" +
+                System.out.println("There has been an error with the client of address: " +
                         (sock != null ? sock.getInetAddress() : null));
                 this.shutDownAll();
                 break;
             } catch (ReadGridException e) {
-                System.out.println("There has been an error when trying to create Grid from specified layout");
+                System.out.println("There has been an error when trying to create Grid from specified layout" +
+                        "of client with address: " + (sock != null ? sock.getInetAddress() : null));
                 this.shutDownAll();
                 break;
             }
