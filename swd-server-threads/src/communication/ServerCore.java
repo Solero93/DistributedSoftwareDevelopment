@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class that represents the ServerCore of the Game
@@ -30,7 +31,7 @@ public class ServerCore {
         while (true) {
             try {
                 Socket sock = serverSocket.accept();
-                this.threadPool.submit(new Game(sock, layout, mode));
+                this.threadPool.execute(new Game(sock, layout, mode));
             } catch (IOException e) {
                 System.out.println("There has been an error with the client socket.");
                 this.shutDownAll();
@@ -45,6 +46,20 @@ public class ServerCore {
 
     private void shutDownAll() {
         this.threadPool.shutdown();
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!this.threadPool.awaitTermination(5, TimeUnit.SECONDS)) {
+                this.threadPool.shutdownNow(); // Cancel currently executing tasks
+                // Wait a while for tasks to respond to being cancelled
+                if (!this.threadPool.awaitTermination(5, TimeUnit.SECONDS))
+                    System.out.println("Pool did not terminate");
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            this.threadPool.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
         try {
             this.serverSocket.close();
         } catch (IOException ex) {

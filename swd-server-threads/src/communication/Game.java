@@ -2,7 +2,6 @@ package communication;
 
 import controller.Controller;
 import exceptions.ReadGridException;
-import utils.ComUtils;
 import utils.Message;
 import utils.enums.Command;
 
