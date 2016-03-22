@@ -16,7 +16,7 @@ public class ComUtils {
         dis = new DataInputStream(socket.getInputStream());
         dos = new DataOutputStream(socket.getOutputStream());
     }
-    public void endComunications() throws IOException {
+    public void close() throws IOException {
         dis.close();
         dos.close();
     }

@@ -52,6 +52,7 @@ public class Client {
         Game game = new Game(server, port, layout, mode);
         game.prepareGame();
         game.playGame();
+        game.closeGame();
         System.out.println("Thank you for playing Battleships!");
     }
 }

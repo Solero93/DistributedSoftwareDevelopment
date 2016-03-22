@@ -14,12 +14,15 @@ import java.net.Socket;
 
 public class Communication {
     ComUtils com;
+    Socket mySocket;
 
     public Communication(String serverName, int port) throws IOException {
-        this.com = new ComUtils(new Socket(InetAddress.getByName(serverName), port));
+        this.mySocket = new Socket(InetAddress.getByName(serverName), port);
+        this.com = new ComUtils(this.mySocket);
     }
 
     public Communication(Socket sock) throws IOException {
+        this.mySocket = sock;
         this.com = new ComUtils(sock);
     }
 
@@ -33,5 +36,14 @@ public class Communication {
 
     public Message waitForMessage() throws IOException {
         return new Message(this.com.read_string());
+    }
+
+    public void close() {
+        try {
+            this.com.close();
+            this.mySocket.close();
+        } catch (IOException e) {
+            //TODO
+        }
     }
 }

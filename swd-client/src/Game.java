@@ -93,8 +93,7 @@ public class Game {
             return; // Shouldn't arrive here
         }
 
-        boolean keepPlaying = true;
-        while (keepPlaying) {
+        while (true) {
             Message enemyResponse;
             try {
                 this.ctrl.play();
@@ -102,7 +101,7 @@ public class Game {
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
-            if (this.myMove(enemyResponse)) keepPlaying = false;
+            if (this.myMove(enemyResponse)) break;
 
             Message myResponse;
             try {
@@ -110,7 +109,7 @@ public class Game {
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
-            if (this.enemyMove(myResponse)) keepPlaying = false;
+            if (this.enemyMove(myResponse)) break;
         }
     }
 
@@ -158,7 +157,7 @@ public class Game {
                 return true;
             case ERROR:
                 System.out.println("There has been an error while trying to perform move" + msg.getParams());
-                break;
+                return true;
             default:
                 System.out.println("Illegal command.");
         }
@@ -181,10 +180,14 @@ public class Game {
                 return true;
             case ERROR:
                 System.out.println("There has been an error while trying to perform move: " + msg.getParams());
-                break;
+                return true;
             default:
                 System.out.println("Illegal command.");
         }
         return false;
+    }
+
+    public void closeGame(){
+        this.ctrl.closeConnections();
     }
 }
