@@ -86,7 +86,7 @@ public class Game {
         Message firstResponse;
         try {
             this.ctrl.sendMessage(Command.START, null);
-            firstResponse = this.ctrl.waitForEnemy();
+                firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
             this.throwDice();
         } catch (IOException e) {

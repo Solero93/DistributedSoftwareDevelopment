@@ -7,6 +7,7 @@ import utils.enums.Command;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
     private Socket clientSocket;
@@ -27,38 +28,36 @@ public class Game extends Thread {
     }
 
     public void run() {
+
         Command msg;
-        /*
-        if (!sendCommand(Command.GRID_RDY.commandCode)) return;
+        if (!this.sendCommand(Command.GRID_RDY, null)) return;
         msg = receiveCommand();
 
-        Si quieres mandar un mensaje:
+        //Si quieres mandar un mensaje:
 
         this.ctrl.sendMessage(Command.GRID_RDY, null);
 
-        Si quieres esperar a que te diga algo el cliente
+        //Si quieres esperar a que te diga algo el cliente
 
         Message response = this.ctrl.waitEnemyToMove();
 
-        El mensaje tienes dos cosas a coger:
-            response.getCommand() -> para coger lo que antes conocías como mensaje
-            response.getParams() -> posición / errores (al final son lo mismo pero depende del comando)
+        //El mensaje tienes dos cosas a coger:
+            response.getCommand()// -> para coger lo que antes conocías como mensaje
+            response.getParams() //-> posición / errores (al final son lo mismo pero depende del comando)
 
-        Puedes ver el ejemplo de uso en la clase Game de swd-client:
-        */
+        //Puedes ver el ejemplo de uso en la clase Game de swd-client:
+
     }
 
     /**
      * @param msg
      * @return true if we an send the messageCode, false
      */
-    /*
 
-    No hace falta! Va a través de controlador!
 
-    public boolean sendCommand(String msg) {
+    public boolean sendCommand(Command cmd, String params) {
         try {
-            com.write_string(msg);
+            this.ctrl.sendMessage(Command.GRID_RDY, null);
             return true;
         } catch (IOException e) {
             return false;
@@ -76,7 +75,7 @@ public class Game extends Thread {
             }
 
         }
-    }*/
+    }
     public void gola(String msg) {
 
     }

@@ -35,7 +35,21 @@ public class Communication {
     }
 
     public Message waitForMessage() throws IOException {
-        return new Message(this.com.read_string());
+        Message msg= new Message();
+        char[] tmp;
+        Command cmd = Command.getCommandFromCode(this.com.read_string_variable(4));
+        msg.setCommand(cmd);
+        switch(cmd){
+            case FIRE:
+                tmp=this.com.read_string_variable(3).toCharArray();
+                msg.setParams(""+tmp[1]+tmp[2]);
+                break;
+            case ERROR:
+                tmp=this.com.read_string_variable(3).toCharArray();
+                msg.setParams(this.com.read_string_variable(Integer.parseInt(""+tmp[1]+tmp[2])));
+                break;
+        }
+        return msg;
     }
 
     public void close() {
