@@ -123,7 +123,6 @@ public class Controller {
 
     public Message waitForEnemy() throws IOException {
         Message response = this.com.waitForMessage();
-        this.gm.commitMove(response.getCommand());
         return response;
     }
 
@@ -132,6 +131,9 @@ public class Controller {
         this.com.sendMessage(Command.FIRE, hitPosition);
     }
 
+    public void commitMove(Message msg) {
+        this.gm.commitMove(msg.getCommand());
+    }
 
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
@@ -147,7 +149,7 @@ public class Controller {
         Message msg = null;
         Boolean loop = true;
         Random rand = new Random();
-        ;
+
         dice1 = rand.nextInt(6) + 1;
         dice2 = rand.nextInt(6) + 1;
         if (dice1 > dice2) {

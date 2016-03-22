@@ -88,7 +88,7 @@ public class Game {
             this.ctrl.sendMessage(Command.START, null);
             firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
-            if (!this.throwDice()) return;
+            this.throwDice();
         } catch (IOException e) {
             return; // Shouldn't arrive here
         }
@@ -126,7 +126,7 @@ public class Game {
         }
     }
 
-    private boolean throwDice() throws IOException {
+    private void throwDice() throws IOException {
         boolean keepThrowing = true;
         while (keepThrowing) {
             this.ctrl.sendMessage(Command.THROW, null);
@@ -147,13 +147,12 @@ public class Game {
                 case ERROR:
                     System.out.println("There has been an error while trying to perform this move: "
                             + throwResponse.getParams());
-                    return false;
+                    throw new IOException();
                 default:
                     System.out.println("Illegal command.");
-                    return false;
+                    throw new IOException();
             }
         }
-        return true;
     }
 
     private boolean myMove(Message msg) {
@@ -176,6 +175,7 @@ public class Game {
                 return true;
             default:
                 System.out.println("Illegal command.");
+                return true;
         }
         return false;
     }
@@ -203,13 +203,13 @@ public class Game {
     private boolean myResponse(Message msg) {
         switch (msg.getCommand()) {
             case HIT:
-                System.out.println("Enemy hit!");
+                System.out.println("Enemy ship hit!");
                 break;
             case MISS:
-                System.out.println("Enemy miss!");
+                System.out.println("Enemy ship miss!");
                 break;
             case SUNK:
-                System.out.println("Enemy sunk!");
+                System.out.println("Enemy ship sunk!");
                 break;
             case YOU_WIN:
                 System.out.println("You lost the game :-(");
@@ -220,6 +220,7 @@ public class Game {
                 return true;
             default:
                 System.out.println("Illegal command.");
+                return true;
         }
         return false;
     }
