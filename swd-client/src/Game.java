@@ -86,59 +86,74 @@ public class Game {
         Message firstResponse;
         try {
             this.ctrl.sendMessage(Command.START, null);
-                firstResponse = this.ctrl.waitForEnemy();
+            firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
-            this.throwDice();
+            if (!this.throwDice()) return;
         } catch (IOException e) {
             return; // Shouldn't arrive here
         }
 
         while (true) {
+            System.out.println("YOUR TURN: ");
             Message enemyResponse;
             try {
                 this.ctrl.play();
                 enemyResponse = this.ctrl.waitForEnemy();
+                this.ctrl.commitMove(enemyResponse);
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
             if (this.myMove(enemyResponse)) break;
 
-            Message myResponse;
+            System.out.println("\nENEMY TURN: ");
+            Message enemyMsg;
             try {
-                myResponse = this.ctrl.waitForEnemy();
+                enemyMsg = this.ctrl.waitForEnemy();
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
-            if (this.enemyMove(myResponse)) break;
+            if (this.enemyMove(enemyMsg)) break;
+
+            Message myResponse;
+            try {
+                myResponse = this.ctrl.hitMyCell(enemyMsg.getParams());
+            } catch (IOException e) {
+                return; // Shouldn't arrive here
+            }
+
+            if (this.myResponse(myResponse)) break;
+            System.out.println("\n");
         }
     }
 
-    private void throwDice() throws IOException {
+    private boolean throwDice() throws IOException {
         boolean keepThrowing = true;
         while (keepThrowing) {
             this.ctrl.sendMessage(Command.THROW, null);
             Message throwResponse = this.ctrl.waitForEnemy();
             switch (throwResponse.getCommand()) {
                 case HUMAN_FIRST:
+                    System.out.println("You start!\n");
                     keepThrowing = false;
-                    System.out.println("You start!");
                     break;
                 case DRAW:
                     break;
                 case FIRE:
+                    System.out.println("Server starts!\n");
                     Message myResponse = this.ctrl.hitMyCell(throwResponse.getParams());
                     this.enemyMove(myResponse);
                     keepThrowing = false;
-                    System.out.println("Server starts!");
                     break;
                 case ERROR:
                     System.out.println("There has been an error while trying to perform this move: "
                             + throwResponse.getParams());
+                    return false;
                 default:
                     System.out.println("Illegal command.");
-                    return; // Shouldn't arrive here
+                    return false;
             }
         }
+        return true;
     }
 
     private boolean myMove(Message msg) {
@@ -156,7 +171,8 @@ public class Game {
                 System.out.println("You won the game! :-D");
                 return true;
             case ERROR:
-                System.out.println("There has been an error while trying to perform move" + msg.getParams());
+                System.out.println("There has been an error while trying to perform move: "
+                        + msg.getParams());
                 return true;
             default:
                 System.out.println("Illegal command.");
@@ -166,20 +182,41 @@ public class Game {
 
     private boolean enemyMove(Message msg) {
         switch (msg.getCommand()) {
+            case FIRE:
+                try {
+                    this.ctrl.hitMyCell(msg.getParams());
+                    System.out.println("Enemy fired the ship at position" + msg.getParams());
+                    return false;
+                } catch (IOException e) {
+                    System.out.println("There has been an error while trying to perform fire of enemy");
+                }
+                break;
+            case ERROR:
+                System.out.println("Enemy sent an error " + msg.getParams());
+                break;
+            default:
+                System.out.println("Illegal command");
+        }
+        return true;
+    }
+
+    private boolean myResponse(Message msg) {
+        switch (msg.getCommand()) {
             case HIT:
-                System.out.println("Enemy hit a ship at position" + msg.getParams());
+                System.out.println("Enemy hit!");
                 break;
             case MISS:
-                System.out.println("Enemy missed a ship at position" + msg.getParams());
+                System.out.println("Enemy miss!");
                 break;
             case SUNK:
-                System.out.println("Enemy sunk a ship at position" + msg.getParams());
+                System.out.println("Enemy sunk!");
                 break;
             case YOU_WIN:
                 System.out.println("You lost the game :-(");
                 return true;
             case ERROR:
-                System.out.println("There has been an error while trying to perform move: " + msg.getParams());
+                System.out.println("There has been an error while trying to perform move: "
+                        + msg.getParams());
                 return true;
             default:
                 System.out.println("Illegal command.");
@@ -187,7 +224,7 @@ public class Game {
         return false;
     }
 
-    public void closeGame(){
+    public void closeGame() {
         this.ctrl.closeConnections();
     }
 }

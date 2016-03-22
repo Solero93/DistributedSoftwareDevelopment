@@ -70,18 +70,18 @@ public class Game extends Thread {
         }
 
         while (true) {
-            Message enemyResponse= new Message();
+            Message enemyResponse = new Message();
             try {
                 this.ctrl.play();
             } catch (IOException e) {
                 this.ctrl.closeConnections();
                 return;
             }
-            loop=true;
+            loop = true;
             while (loop) {
                 try {
                     enemyResponse = this.ctrl.waitForEnemy();
-                    loop=false;
+                    loop = false;
                     if (enemyResponse.getCommand() == Command.YOU_WIN) {
                         this.ctrl.closeConnections();
                         return;
@@ -94,8 +94,8 @@ public class Game extends Thread {
                 }
 
             }
-            loop=true;
-            while(loop) {
+            loop = true;
+            while (loop) {
                 Message myResponse = new Message();
                 try {
                     myResponse = this.ctrl.waitForEnemy();
