@@ -24,8 +24,9 @@ public enum Command {
     }
 
     public static Command getCommandFromCode(String commandCode) {
+        String upperCommandCode = commandCode.toUpperCase();
         for (Command m : Command.values()) {
-            if (m.commandCode.equals(commandCode)) {
+            if (m.commandCode.equals(upperCommandCode)) {
                 return m;
             }
         }

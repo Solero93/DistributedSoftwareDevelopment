@@ -43,7 +43,7 @@ public class Communication {
         switch (cmd) {
             case FIRE:
                 tmp = this.com.read_string_variable(3).toCharArray();
-                msg.setParams("" + tmp[1] + tmp[2]);
+                msg.setParams("" + Character.toUpperCase(tmp[1]) + tmp[2]);
                 break;
             case ERROR:
                 tmp = this.com.read_string_variable(3).toCharArray();
