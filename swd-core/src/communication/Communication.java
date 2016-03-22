@@ -23,14 +23,12 @@ public class Communication {
         this.com = new ComUtils(sock);
     }
 
-    public Message sendMessage(Command c, String params) throws IOException {
+    public void sendMessage(Command c, String params) throws IOException {
         String pkg = new Message()
                 .setCommand(c)
                 .setParams(params)
                 .buildPackage();
         this.com.write_string(pkg);
-        Message response = waitForMessage();
-        return response;
     }
 
     public Message waitForMessage() throws IOException {

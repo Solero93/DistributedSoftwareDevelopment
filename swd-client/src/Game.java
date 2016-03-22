@@ -83,8 +83,10 @@ public class Game {
     }
 
     public void playGame() {
+        Message firstResponse;
         try {
-            Message firstResponse = this.ctrl.sendMessage(Command.START, null);
+            this.ctrl.sendMessage(Command.START, null);
+            firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
             this.throwDice();
         } catch (IOException e) {
@@ -95,7 +97,8 @@ public class Game {
         while (keepPlaying) {
             Message enemyResponse;
             try {
-                enemyResponse = this.ctrl.play();
+                this.ctrl.play();
+                enemyResponse = this.ctrl.waitForEnemy();
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
@@ -103,7 +106,7 @@ public class Game {
 
             Message myResponse;
             try {
-                myResponse = this.ctrl.waitEnemyToMove();
+                myResponse = this.ctrl.waitForEnemy();
             } catch (IOException e) {
                 return; // Shouldn't arrive here
             }
@@ -114,7 +117,8 @@ public class Game {
     private void throwDice() throws IOException {
         boolean keepThrowing = true;
         while (keepThrowing) {
-            Message throwResponse = this.ctrl.sendMessage(Command.THROW, null);
+            this.ctrl.sendMessage(Command.THROW, null);
+            Message throwResponse = this.ctrl.waitForEnemy();
             switch (throwResponse.getCommand()) {
                 case HUMAN_FIRST:
                     keepThrowing = false;
@@ -123,8 +127,8 @@ public class Game {
                 case DRAW:
                     break;
                 case FIRE:
-                    Message response = this.ctrl.hitMyCell(throwResponse.getParams());
-                    this.enemyMove(response);
+                    Message myResponse = this.ctrl.hitMyCell(throwResponse.getParams());
+                    this.enemyMove(myResponse);
                     keepThrowing = false;
                     System.out.println("Server starts!");
                     break;

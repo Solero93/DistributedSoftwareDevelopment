@@ -112,29 +112,33 @@ public class Controller {
         }
     }
 
-    public Message sendMessage(Command c, String params) throws IOException {
-        return this.com.sendMessage(c, params);
+    public void sendMessage(Command c, String params) throws IOException {
+        this.com.sendMessage(c, params);
     }
 
-    public Message waitEnemyToMove() throws IOException {
-        return this.com.waitForMessage();
-    }
-
-    public Message play() throws IOException {
-        String hitPosition = this.gm.generateHitPosition();
-        Message response = this.com.sendMessage(Command.FIRE, hitPosition);
+    public Message waitForEnemy() throws IOException {
+        Message response = this.com.waitForMessage();
         this.gm.commitMove(response.getCommand());
         return response;
+    }
+
+    public void play() throws IOException {
+        String hitPosition = this.gm.generateHitPosition();
+        this.com.sendMessage(Command.FIRE, hitPosition);
+    }
+
+
+    public Message hitMyCell(String position) throws IOException {
+        Command cmd = this.myGrid.hitCell(position);
+        this.com.sendMessage(cmd, null);
+        Message myResponse = new Message()
+                .setCommand(cmd)
+                .setParams(position);
+        return myResponse;
     }
 
     // For debug purposes
     public String getCurrentGrid() {
         return this.myGrid.toString();
-    }
-
-    public Message hitMyCell(String position) throws IOException {
-        Command cmd = this.myGrid.hitCell(position);
-        Message response = this.com.sendMessage(cmd, null);
-        return response;
     }
 }

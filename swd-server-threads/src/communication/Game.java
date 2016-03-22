@@ -32,13 +32,17 @@ public class Game extends Thread {
         if (!sendCommand(Command.GRID_RDY.commandCode)) return;
         msg = receiveCommand();
 
-        Esto se sustituye por:
+        Si quieres mandar un mensaje:
 
-        Message response = this.ctrl.sendMessage(Command.GRID_RDY, null);
+        this.ctrl.sendMessage(Command.GRID_RDY, null);
 
-        Si quieres solo esperar a que te diga algo el cliente
+        Si quieres esperar a que te diga algo el cliente
 
-        Message answer = this.ctrl.waitEnemyToMove();
+        Message response = this.ctrl.waitEnemyToMove();
+
+        El mensaje tienes dos cosas a coger:
+            response.getCommand() -> para coger lo que antes conocías como mensaje
+            response.getParams() -> posición / errores (al final son lo mismo pero depende del comando)
 
         Puedes ver el ejemplo de uso en la clase Game de swd-client:
         */
