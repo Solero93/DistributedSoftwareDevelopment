@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.*;
 
 /**
@@ -142,6 +143,33 @@ public class Controller {
                 .setCommand(cmd)
                 .setParams(position);
         return myResponse;
+    }
+    public Message throwServerDice() throws IOException {
+        int dice1, dice2;
+        Message msg=null;
+        Boolean loop=true
+        Random rand = new Random();;
+        dice1 = rand.nextInt(6) + 1;
+        dice2 = rand.nextInt(6) + 1;
+        if (dice1>dice2){
+            this.sendMessage(Command.HUMAN_FIRST,null);
+
+        }else if (dice1==dice2){
+            this.sendMessage(Command.DRAW,null);
+
+        }else{
+            this.play();
+
+        }
+        while (loop) {
+            try {
+                msg = this.waitForEnemy();
+                loop=false;
+            } catch (SocketTimeoutException e) {
+
+            }
+        }
+        return msg;
     }
 
     // For debug purposes

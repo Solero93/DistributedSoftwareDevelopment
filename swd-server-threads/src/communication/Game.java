@@ -3,6 +3,7 @@ package communication;
 import controller.Controller;
 import exceptions.ReadGridException;
 import utils.ComUtils;
+import utils.Message;
 import utils.enums.Command;
 
 import java.io.IOException;
@@ -12,12 +13,10 @@ import java.net.SocketTimeoutException;
 public class Game extends Thread {
     private Socket clientSocket;
     private Controller ctrl;
-    private ComUtils com;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
         ctrl = new Controller();
         sock.setSoTimeout(3000);
-        com = new ComUtils(sock);
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
@@ -29,28 +28,48 @@ public class Game extends Thread {
 
     public void run() {
 
-        Command msg;
-        if (!this.sendCommand(Command.GRID_RDY, null)) return;
-        msg = receiveCommand();
+        Message msg;
+        msg=null;
+        if (!this.sendCommand(Command.GRID_RDY, null)){
+            this.ctrl.closeConnections();
+            return;
+        }
+        while (msg == null) {
+            msg = receiveCommand();
+            if(msg==null){
+                this.ctrl.closeConnections();
+                return;
+            }else if(msg.getCommand() == Command.THROW){
+                try {
+                    msg= this.ctrl.throwServerDice();
+                } catch (IOException e) {
+                    this.ctrl.closeConnections();
+                    return;
+                }
+                switch (msg.getCommand()){
+                    case FIRE:
+                        break;
+                    case HIT:
+                        break;
+                    case THROW:
+                        msg = null;//
+                        break;
+                    default:
+                        //TODO ERROR
+                        msg = null;
+                        break;
 
-        //Si quieres mandar un mensaje:
+                }
+            }else{
+                //TODO ENVIO DE ERROR
+                msg=null;
+            }
+        }
 
-        this.ctrl.sendMessage(Command.GRID_RDY, null);
-
-        //Si quieres esperar a que te diga algo el cliente
-
-        Message response = this.ctrl.waitEnemyToMove();
-
-        //El mensaje tienes dos cosas a coger:
-            response.getCommand()// -> para coger lo que antes conocías como mensaje
-            response.getParams() //-> posición / errores (al final son lo mismo pero depende del comando)
-
-        //Puedes ver el ejemplo de uso en la clase Game de swd-client:
 
     }
 
     /**
-     * @param msg
      * @return true if we an send the messageCode, false
      */
 
@@ -64,10 +83,10 @@ public class Game extends Thread {
         }
     }
 
-    public Command receiveCommand() {
+    public Message receiveCommand() {
         while (true) {
             try {
-                Command.getCommandFromCode(com.read_string_variable(4));
+                return this.ctrl.waitForEnemy();
             } catch (SocketTimeoutException e) {
 
             } catch (IOException e) {
