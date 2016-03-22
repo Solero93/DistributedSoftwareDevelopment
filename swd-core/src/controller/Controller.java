@@ -144,7 +144,7 @@ public class Controller {
     public Message throwServerDice() throws IOException {
         int dice1, dice2;
         Message msg=null;
-        Boolean loop=true
+        Boolean loop=true;
         Random rand = new Random();;
         dice1 = rand.nextInt(6) + 1;
         dice2 = rand.nextInt(6) + 1;

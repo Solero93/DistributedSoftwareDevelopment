@@ -29,25 +29,28 @@ public class Game extends Thread {
     public void run() {
 
         Message msg;
-        msg=null;
-        if (!this.sendCommand(Command.GRID_RDY, null)){
+        msg = null;
+        boolean loop;
+        if (!this.sendCommand(Command.GRID_RDY, null)) {
             this.ctrl.closeConnections();
             return;
         }
+        //throw---------------------
         while (msg == null) {
             msg = receiveCommand();
-            if(msg==null){
+            if (msg == null) {
                 this.ctrl.closeConnections();
                 return;
-            }else if(msg.getCommand() == Command.THROW){
+            } else if (msg.getCommand() == Command.THROW) {
                 try {
-                    msg= this.ctrl.throwServerDice();
+                    msg = this.ctrl.throwServerDice();
                 } catch (IOException e) {
                     this.ctrl.closeConnections();
                     return;
                 }
-                switch (msg.getCommand()){
+                switch (msg.getCommand()) {
                     case FIRE:
+
                         break;
                     case HIT:
                         break;
@@ -55,14 +58,54 @@ public class Game extends Thread {
                         msg = null;//
                         break;
                     default:
-                        //TODO ERROR
+                        //TODO SEND ERROR
                         msg = null;
                         break;
 
                 }
-            }else{
-                //TODO ENVIO DE ERROR
-                msg=null;
+            } else {
+                //TODO SEND ERROR
+                msg = null;
+            }
+        }
+
+        while (true) {
+            Message enemyResponse= new Message();
+            try {
+                this.ctrl.play();
+            } catch (IOException e) {
+                this.ctrl.closeConnections();
+                return;
+            }
+            loop=true;
+            while (loop) {
+                try {
+                    enemyResponse = this.ctrl.waitForEnemy();
+                    loop=false;
+                    if (enemyResponse.getCommand() == Command.YOU_WIN) {
+                        this.ctrl.closeConnections();
+                        return;
+                    }//TODO TRATAR EL MENSAJE CUANDO ES HIT MISS SUNK O UN ERROR
+                } catch (SocketTimeoutException e) {
+
+                } catch (IOException e) {
+                    this.ctrl.closeConnections();
+                    return;
+                }
+
+            }
+            loop=true;
+            while(loop) {
+                Message myResponse = new Message();
+                try {
+                    myResponse = this.ctrl.waitForEnemy();
+                    //TODO TRATAR flujo
+                } catch (SocketTimeoutException e) {
+
+                } catch (IOException e) {
+                    this.ctrl.closeConnections();
+                    return;
+                }
             }
         }
 
@@ -95,6 +138,7 @@ public class Game extends Thread {
 
         }
     }
+
     public void gola(String msg) {
 
     }
