@@ -49,12 +49,14 @@ public class Server {
             return;
         }
 
+        ServerCore serverCore;
         try {
-            ServerCore serverCore = new ServerCore(port, layout, mode);
-            serverCore.serveClients();
+            serverCore = new ServerCore(port, layout, mode);
         } catch (IOException e) {
             System.out.println("There has been an error trying to create the server.");
+            return;
         }
-        System.out.println("Server ended.");
+        serverCore.serveClients();
+        System.out.println("Server ended. Thank you for playing battleships!");
     }
 }

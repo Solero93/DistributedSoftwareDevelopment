@@ -28,16 +28,24 @@ public class ServerCore {
     }
 
     public void serveClients() {
+        System.out.println("Server serving at");
+        System.out.println("\tAddress " + this.serverSocket.getInetAddress());
+        System.out.println("\tPort " + this.serverSocket.getLocalPort());
+        System.out.println("\n");
         while (true) {
+            Socket sock = null;
             try {
-                Socket sock = serverSocket.accept();
+                sock = serverSocket.accept();
+                System.out.println("Client with address " + sock.getInetAddress() + " connected to server");
                 this.threadPool.execute(new Game(sock, layout, mode));
+                System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
             } catch (IOException e) {
-                System.out.println("There has been an error with the client socket.");
+                System.out.println("There has been an error with the client of address" +
+                        (sock != null ? sock.getInetAddress() : null));
                 this.shutDownAll();
                 break;
             } catch (ReadGridException e) {
-                System.out.println("There has been an error when trying to create Grid from layout");
+                System.out.println("There has been an error when trying to create Grid from specified layout");
                 this.shutDownAll();
                 break;
             }
