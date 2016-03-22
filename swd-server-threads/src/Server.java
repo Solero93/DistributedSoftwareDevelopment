@@ -1,4 +1,4 @@
-import communication.Communication;
+import communication.ServerCore;
 
 import java.io.IOException;
 
@@ -50,8 +50,8 @@ public class Server {
         }
 
         try {
-            Communication communication = new Communication(port, layout, mode);
-            communication.serveClients();
+            ServerCore serverCore = new ServerCore(port, layout, mode);
+            serverCore.serveClients();
         } catch (IOException e) {
             System.out.println("There has been an error trying to create the server.");
         }

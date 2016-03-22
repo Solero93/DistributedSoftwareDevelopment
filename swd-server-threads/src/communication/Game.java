@@ -1,21 +1,20 @@
 package communication;
 
-import controller.ServerCtrl;
+import controller.Controller;
 import exceptions.ReadGridException;
 import utils.ComUtils;
-import utils.enums.Message;
+import utils.enums.Command;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
     private Socket clientSocket;
-    private ServerCtrl ctrl;
+    private Controller ctrl;
     private ComUtils com;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        ctrl = new ServerCtrl();
+        ctrl = new Controller();
         sock.setSoTimeout(30000);
         com = new ComUtils(sock);
         if (layout == null) {
@@ -24,28 +23,35 @@ public class Game extends Thread {
             this.ctrl.generateGridFromFile(layout);
         }
         this.ctrl.createGameMode(mode);
+        this.ctrl.createCommunication(sock);
     }
 
     public void run() {
-        Message msg;
-        if (!sendMessage(Message.GRID_RDY.messageCode)) return;
-        msg = receiveMessage();
-        // TODO Para crear los packets de los mensajes, usa la clase PackageBuilder
-        /* EJEMPLO:
-            String packet = new PackageBuilder()
-                            .setMessage(Message.FIRE)
-                            .setPosition("A9")
-                            .buildPackage();
-            Si se han pasado parámetros que no tocaban para crear el mensaje,
-            devuelve un PackageBuildException.
-        */
+        Command msg;
+        /*
+        Puedes ver el ejemplo en la clase Game de Cliente:
+
+        Pero lo de abajo se sustituye por:
+
+        Message response = this.ctrl.sendMessage(Command.GRID_RDY, null);
+
+        Si quieres solo esperar a que te diga algo el cliente
+
+        Message answer = this.ctrl.waitEnemyToMove();
+         */
+        if (!sendCommand(Command.GRID_RDY.commandCode)) return;
+        msg = receiveCommand();
     }
 
     /**
      * @param msg
      * @return true if we an send the messageCode, false
      */
-    public boolean sendMessage(String msg) {
+    /*
+
+    No hace falta! Va a través de controlador!
+
+    public boolean sendCommand(String msg) {
         try {
             com.write_string(msg);
             return true;
@@ -54,10 +60,10 @@ public class Game extends Thread {
         }
     }
 
-    public Message receiveMessage() {
+    public Command receiveCommand() {
         while (true) {
             try {
-                return Message.getMessageFromCode(com.read_string_variable(4));
+                return Command.getCommandFromCode(com.read_string_variable(4));
             } catch (SocketTimeoutException e) {
 
             } catch (IOException e) {
@@ -65,8 +71,7 @@ public class Game extends Thread {
             }
 
         }
-    }
-
+    }*/
     public void gola(String msg) {
 
     }

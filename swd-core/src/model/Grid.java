@@ -1,6 +1,6 @@
 package model;
 
-import utils.enums.Message;
+import utils.enums.Command;
 import utils.enums.Orientation;
 
 import java.util.HashMap;
@@ -34,27 +34,27 @@ public class Grid {
         return mensaje;
     }
 
-    public Message hitCell(String position) {
-        Message tmp;
+    public Command hitCell(String position) {
+        Command tmp;
         char character, number;
         if (position.length() != 2) {
-            return Message.ERROR;
+            return Command.ERROR;
         }
         position = position.toUpperCase();
         character = position.charAt(0);
         number = position.charAt(1);
         if ((character < 'A') || (character > 'J') || (number < '0') || ((number) > '9')) {
-            return Message.ERROR;
+            return Command.ERROR;
         }
 
         if (cells.containsKey(position)) {
             tmp = cells.get(position).hitCell();
-            if (tmp == Message.SUNK) {
-                return (--this.numShipsLeft == 0) ? Message.YOU_WIN : tmp;
+            if (tmp == Command.SUNK) {
+                return (--this.numShipsLeft == 0) ? Command.YOU_WIN : tmp;
             }
             return tmp;
         }
-        return Message.MISS;
+        return Command.MISS;
     }
 
     public boolean putShip(int shipSize, String position, Orientation orientation) {

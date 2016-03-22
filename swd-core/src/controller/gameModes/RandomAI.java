@@ -6,7 +6,7 @@ import java.util.Random;
  * Class that represents the RandomAI
  */
 public class RandomAI extends GameMode {
-    public String play() {
+    public String generateHitPosition() {
         String letters = "ABCDEFGHIJ", position;
         while (true) {
             Random r = new Random();

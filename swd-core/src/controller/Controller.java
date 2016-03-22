@@ -1,16 +1,19 @@
 package controller;
 
+import communication.Communication;
 import controller.gameModes.GameMode;
 import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
 import model.Grid;
-import utils.enums.Message;
+import utils.Message;
+import utils.enums.Command;
 import utils.enums.Orientation;
 import utils.enums.ShipType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.*;
 
 /**
@@ -19,9 +22,22 @@ import java.util.*;
 public class Controller {
     protected Grid myGrid;
     protected GameMode gm;
+    protected Communication com;
 
     public Controller() {
         this.myGrid = new Grid();
+    }
+
+    public void createGameMode(int mode) {
+        this.gm = new GameModeFactory().createGameMode(mode);
+    }
+
+    public void createCommunication(String serverName, int port) throws IOException {
+        this.com = new Communication(serverName, port);
+    }
+
+    public void createCommunication(Socket sock) throws IOException {
+        this.com = new Communication(sock);
     }
 
     public void generateGridAutomatic() throws ReadGridException {
@@ -90,36 +106,35 @@ public class Controller {
         }
     }
 
-    // We force user to put all ships in order
     public void generateGridByUser(String shipType, String position, String orientation) throws ReadGridException, IllegalArgumentException {
         if (!this.myGrid.putShip(ShipType.valueOf(shipType).size, position, Orientation.valueOf(orientation))) {
             throw new ReadGridException();
         }
     }
 
-    public Message hitMyCell(String position) {
-        return this.myGrid.hitCell(position);
+    public Message sendMessage(Command c, String params) throws IOException {
+        return this.com.sendMessage(c, params);
     }
 
-    // TODO think about treating communication errors
-    public Message hitEnemyCell(String position) {
-        return this.hitMyCell(position); // TODO quitar esto e ir al servidor, solo está para pruebas
-        //return this.server.hitCell(position);
+    public Message waitEnemyToMove() throws IOException {
+        return this.com.waitForMessage();
     }
 
-    public void createGameMode(int mode) {
-        this.gm = new GameModeFactory().createGameMode(mode);
+    public Message play() throws IOException {
+        String hitPosition = this.gm.generateHitPosition();
+        Message response = this.com.sendMessage(Command.FIRE, hitPosition);
+        this.gm.commitMove(response.getCommand());
+        return response;
     }
 
-    public String play() {
-        return this.gm.play();
-    }
-
-    public void commitMove(Message m) {
-        this.gm.commitMove(m);
-    }
-
+    // For debug purposes
     public String getCurrentGrid() {
         return this.myGrid.toString();
+    }
+
+    public Message hitMyCell(String position) throws IOException {
+        Command cmd = this.myGrid.hitCell(position);
+        Message response = this.com.sendMessage(cmd, null);
+        return response;
     }
 }

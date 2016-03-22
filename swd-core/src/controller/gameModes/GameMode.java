@@ -1,6 +1,6 @@
 package controller.gameModes;
 
-import utils.enums.Message;
+import utils.enums.Command;
 
 import java.util.ArrayList;
 
@@ -16,10 +16,10 @@ public abstract class GameMode {
         this.waitMove = null;
     }
 
-    public abstract String play();
+    public abstract String generateHitPosition();
 
-    public void commitMove(Message message) {
-        if (message != Message.ERROR && this.waitMove != null) {
+    public void commitMove(Command command) {
+        if (command != Command.ERROR && this.waitMove != null) {
             this.cellsFired.add(this.waitMove);
         }
         this.waitMove = null;

@@ -3,7 +3,7 @@ package utils.enums;
 /**
  * Class that represents the Server messages
  */
-public enum Message {
+public enum Command {
     START("STRT"),
     THROW("THRW"),
     FIRE("FIRE"),
@@ -17,15 +17,15 @@ public enum Message {
     DRAW("DRAW"),
     UNKNOWN(null);
 
-    public String messageCode;
+    public String commandCode;
 
-    Message(String messageCode) {
-        this.messageCode = messageCode;
+    Command(String commandCode) {
+        this.commandCode = commandCode;
     }
 
-    public static Message getMessageFromCode(String messageCode) {
-        for (Message m : Message.values()) {
-            if (m.messageCode.equals(messageCode)) {
+    public static Command getCommandFromCode(String commandCode) {
+        for (Command m : Command.values()) {
+            if (m.commandCode.equals(commandCode)) {
                 return m;
             }
         }

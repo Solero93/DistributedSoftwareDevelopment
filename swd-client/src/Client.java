@@ -1,5 +1,3 @@
-import view.Menu;
-
 /**
  * Main class with the Client
  */
@@ -51,8 +49,9 @@ public class Client {
             return;
         }
 
-        Menu menu = new Menu(server, port, layout, mode);
-        menu.prepareGame();
+        Game game = new Game(server, port, layout, mode);
+        game.prepareGame();
+        game.playGame();
         System.out.println("Thank you for playing Battleships!");
     }
 }

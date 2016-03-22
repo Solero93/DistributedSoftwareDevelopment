@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Class that represents the -- Object
  */
 public class ManualGame extends GameMode {
-    public String play() {
+    public String generateHitPosition() {
         Scanner sc = new Scanner(System.in);
         String position;
         while (true) {

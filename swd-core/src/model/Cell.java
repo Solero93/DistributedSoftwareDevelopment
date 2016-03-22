@@ -1,6 +1,6 @@
 package model;
 
-import utils.enums.Message;
+import utils.enums.Command;
 
 /**
  * Class that represents the Cell Object
@@ -22,8 +22,8 @@ public class Cell {
         this.shipOnCell = ship;
     }
 
-    public Message hitCell() {
-        return (shipOnCell.loseLife()) ? Message.SUNK : Message.HIT;
+    public Command hitCell() {
+        return (shipOnCell.loseLife()) ? Command.SUNK : Command.HIT;
     }
 
     // No need to return boolean since it's checked in Grid class

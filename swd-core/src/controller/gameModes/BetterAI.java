@@ -1,6 +1,6 @@
 package controller.gameModes;
 
-import utils.enums.Message;
+import utils.enums.Command;
 
 import java.util.Random;
 
@@ -9,25 +9,19 @@ import java.util.Random;
  */
 public class BetterAI extends GameMode {
     private enum Direction {
-        UP, DOWN, LEFT, RIGHT;
+        UP(0, 1), DOWN(0, -1), LEFT(-1, 0), RIGHT(1, 0);
 
         public int x;
         public int y;
 
-        static {
-            UP.x = 0;
-            UP.y = +1;
-            DOWN.x = 0;
-            DOWN.y = -1;
-            LEFT.x = -1;
-            LEFT.y = 0;
-            RIGHT.x = 0;
-            RIGHT.y = +1;
+        Direction(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
 
     private String firstHit;
-    private Message lastMessage;
+    private Command lastCommand;
     private Direction currHitDir;
 
     public BetterAI() {
@@ -36,7 +30,7 @@ public class BetterAI extends GameMode {
         this.currHitDir = null;
     }
 
-    public String play() {
+    public String generateHitPosition() {
         String position;
         // TODO make a more intelligent random algorithm
         if (this.firstHit == null) { // If there's no recent HIT => random
@@ -50,7 +44,7 @@ public class BetterAI extends GameMode {
             }
         }
         // If there's recent HIT => Apply AI
-        if (lastMessage == Message.HIT) {
+        if (lastCommand == Command.HIT) {
             // If the last move was a HIT
             // Keep on hitting on the same direction
             String lastHitPosition = this.cellsFired.get(this.cellsFired.size() - 1);
@@ -83,26 +77,26 @@ public class BetterAI extends GameMode {
         );
     }
 
-    public void commitMove(Message message) {
-        switch (message) {
+    public void commitMove(Command command) {
+        switch (command) {
             case HIT:
                 if (this.firstHit == null) {
                     this.firstHit = this.waitMove;
                 } else {
-                    this.lastMessage = message;
+                    this.lastCommand = command;
                 }
                 break;
             case MISS:
                 if (this.firstHit != null) {
-                    this.lastMessage = message;
+                    this.lastCommand = command;
                 }
                 break;
             case SUNK:
                 this.firstHit = null;
                 this.currHitDir = null;
-                this.lastMessage = null;
+                this.lastCommand = null;
                 break;
         }
-        super.commitMove(message);
+        super.commitMove(command);
     }
 }
