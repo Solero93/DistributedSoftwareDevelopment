@@ -131,6 +131,9 @@ public class Controller {
         this.com.sendMessage(Command.FIRE, hitPosition);
     }
 
+    public void commitMove(Message msg){
+        this.gm.commitMove(msg.getCommand());
+    }
 
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
