@@ -18,6 +18,7 @@ public class Communication {
 
     public Communication(String serverName, int port) throws IOException {
         this.mySocket = new Socket(InetAddress.getByName(serverName), port);
+        this.mySocket.setSoTimeout(3 * 1000);
         this.com = new ComUtils(this.mySocket);
     }
 
