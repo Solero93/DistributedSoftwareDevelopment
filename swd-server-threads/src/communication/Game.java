@@ -29,18 +29,19 @@ public class Game extends Thread {
     public void run() {
         Command msg;
         /*
-        Puedes ver el ejemplo en la clase Game de Cliente:
+        if (!sendCommand(Command.GRID_RDY.commandCode)) return;
+        msg = receiveCommand();
 
-        Pero lo de abajo se sustituye por:
+        Esto se sustituye por:
 
         Message response = this.ctrl.sendMessage(Command.GRID_RDY, null);
 
         Si quieres solo esperar a que te diga algo el cliente
 
         Message answer = this.ctrl.waitEnemyToMove();
-         */
-        if (!sendCommand(Command.GRID_RDY.commandCode)) return;
-        msg = receiveCommand();
+
+        Puedes ver el ejemplo de uso en la clase Game de swd-client:
+        */
     }
 
     /**
