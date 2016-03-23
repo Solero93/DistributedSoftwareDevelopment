@@ -82,9 +82,12 @@ public class Game extends Thread {
                     enemyResponse = this.ctrl.waitForEnemy();
                     loop = false;
                     if (enemyResponse.getCommand() == Command.YOU_WIN) {
+                        //END Game Server Won
                         this.ctrl.closeConnections();
                         return;
-                    }//TODO TRATAR EL MENSAJE CUANDO ES HIT MISS SUNK O UN ERROR
+                    }else{
+                        this.ctrl.commitMove(enemyResponse);
+                    }
                 } catch (SocketTimeoutException e) {
 
                 } catch (IOException e) {
@@ -95,10 +98,18 @@ public class Game extends Thread {
             }
             loop = true;
             while (loop) {
+                Message msg;
                 Message myResponse = new Message();
                 try {
-                    myResponse = this.ctrl.waitForEnemy();
-                    //TODO TRATAR flujo
+                    msg = this.ctrl.waitForEnemy();
+
+                    if (msg.getCommand() == Command.ERROR) {
+                        //TODO TRACTAR ERROR
+                    }else{
+                        myResponse= this.ctrl.hitMyCell(msg.getParams());
+                    }
+                    loop = false;
+
                 } catch (SocketTimeoutException e) {
 
                 } catch (IOException e) {
