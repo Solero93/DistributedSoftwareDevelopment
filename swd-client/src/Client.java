@@ -32,20 +32,20 @@ public class Client {
                         mode = Integer.parseInt(args[i + 1]);
                         break;
                     default:
-                        System.out.println("Error in  command format\n" + helpMessage);
+                        System.err.println("Error in  command format\n" + helpMessage);
                         return;
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("Error parsing numerical arguments\n" + helpMessage);
+                System.err.println("Error parsing numerical arguments\n" + helpMessage);
                 return;
             }
         }
         if (server == null || port == -1) {
-            System.out.println("Missing parametres\n" + helpMessage);
+            System.err.println("Missing parametres\n" + helpMessage);
             return;
         }
         if (mode < 0 || mode > 2) {
-            System.out.println("Invalid mode\n" + helpMessage);
+            System.err.println("Invalid mode\n" + helpMessage);
             return;
         }
 

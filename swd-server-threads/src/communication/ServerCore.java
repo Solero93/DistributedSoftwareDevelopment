@@ -40,11 +40,11 @@ public class ServerCore {
                 this.threadPool.execute(new Game(sock, layout, mode));
                 System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
             } catch (IOException e) {
-                System.out.println("There has been an error with the client of address: " +
+                System.err.println("There has been an error with the client of address: " +
                         (sock != null ? sock.getInetAddress() : null));
                 break;
             } catch (ReadGridException e) {
-                System.out.println("There has been an error when trying to create Grid from specified layout" +
+                System.err.println("There has been an error when trying to create Grid from specified layout" +
                         "of client with address: " + (sock != null ? sock.getInetAddress() : null));
                 break;
             }
@@ -59,7 +59,7 @@ public class ServerCore {
                 this.threadPool.shutdownNow(); // Cancel currently executing tasks
                 // Wait a while for tasks to respond to being cancelled
                 if (!this.threadPool.awaitTermination(5, TimeUnit.SECONDS))
-                    System.out.println("Pool did not terminate");
+                    System.err.println("Pool did not terminate");
             }
         } catch (InterruptedException ie) {
             // (Re-)Cancel if current thread also interrupted
@@ -70,7 +70,7 @@ public class ServerCore {
         try {
             this.serverSocket.close();
         } catch (IOException ex) {
-            System.out.println("Couldn't close server Socket.");
+            System.err.println("Couldn't close server Socket.");
         }
     }
 }

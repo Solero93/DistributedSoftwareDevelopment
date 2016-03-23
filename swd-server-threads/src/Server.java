@@ -32,20 +32,20 @@ public class Server {
                         mode = Integer.parseInt(args[i + 1]);
                         break;
                     default:
-                        System.out.println("Error in  command format\n" + helpMessage);
+                        System.err.println("Error in  command format\n" + helpMessage);
                         return;
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("Error parsing numerical arguments\n" + helpMessage);
+                System.err.println("Error parsing numerical arguments\n" + helpMessage);
                 return;
             }
         }
         if (port == -1) {
-            System.out.println("Missing parametres\n" + helpMessage);
+            System.err.println("Missing parametres\n" + helpMessage);
             return;
         }
         if (mode != 1 && mode != 2) {
-            System.out.println("Invalid mode\n" + helpMessage);
+            System.err.println("Invalid mode\n" + helpMessage);
             return;
         }
 
@@ -53,7 +53,7 @@ public class Server {
         try {
             serverCore = new ServerCore(port, layout, mode);
         } catch (IOException e) {
-            System.out.println("There has been an error trying to create the server.");
+            System.err.println("There has been an error trying to create the server.");
             return;
         }
         serverCore.serveClients();

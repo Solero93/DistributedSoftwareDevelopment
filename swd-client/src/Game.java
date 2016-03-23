@@ -35,7 +35,7 @@ public class Game {
                     System.out.println(this.ctrl.getCurrentGrid() + "\n");
                     System.out.println("Your ships are in place. Yay!");
                 } catch (ReadGridException e) {
-                    System.out.println("There has been an error when autogenerating grid");
+                    System.err.println("There has been an error when autogenerating grid");
                     return;
                 }
             }
@@ -45,10 +45,10 @@ public class Game {
                 System.out.println(this.ctrl.getCurrentGrid() + "\n");
                 System.out.println("Your ships are in place. Yay!");
             } catch (IOException e) {
-                System.out.println("The specified layout file could not be read");
+                System.err.println("The specified layout file could not be read");
                 return;
             } catch (ReadGridException e) {
-                System.out.println("The specified layout file has errors in it");
+                System.err.println("The specified layout file has errors in it");
                 return;
             }
         }
@@ -56,7 +56,7 @@ public class Game {
             this.ctrl.createGameMode(mode);
             this.ctrl.createCommunication(server, port);
         } catch (IOException e) {
-            System.out.println("There has been an error while trying to communicate with server");
+            System.err.println("There has been an error while trying to communicate with server");
             return;
         }
     }
@@ -75,7 +75,7 @@ public class Game {
             try {
                 this.ctrl.generateGridByUser(ships[i].name(), position, orientation);
             } catch (ReadGridException e) {
-                System.out.println("The ship could not be put in its place, you will be asked to enter the ships again.\n");
+                System.err.println("The ship could not be put in its place, you will be asked to enter the ships again.\n");
                 return false;
             }
         }
@@ -101,6 +101,7 @@ public class Game {
                 enemyResponse = this.ctrl.waitForEnemy();
                 this.ctrl.commitMove(enemyResponse);
             } catch (IOException e) {
+                System.err.println("There has been an error while sending your move");
                 return; // Shouldn't arrive here
             }
             if (this.myMove(enemyResponse)) break;
@@ -110,6 +111,7 @@ public class Game {
             try {
                 enemyMsg = this.ctrl.waitForEnemy();
             } catch (IOException e) {
+                System.err.println("There has been an error while receiving enemy move");
                 return; // Shouldn't arrive here
             }
             if (this.enemyMove(enemyMsg)) break;
@@ -118,6 +120,7 @@ public class Game {
             try {
                 myResponse = this.ctrl.hitMyCell(enemyMsg.getParams());
             } catch (IOException e) {
+                System.err.println("There has been an error while sending your response to enemy move");
                 return; // Shouldn't arrive here
             }
 
@@ -145,11 +148,11 @@ public class Game {
                     keepThrowing = false;
                     break;
                 case ERROR:
-                    System.out.println("There has been an error while trying to perform this move: "
+                    System.err.println("There has been an error while trying to perform this move: "
                             + throwResponse.getParams());
                     throw new IOException();
                 default:
-                    System.out.println("Illegal command.");
+                    System.err.println("Illegal command.");
                     throw new IOException();
             }
         }
@@ -161,7 +164,7 @@ public class Game {
                 System.out.println("You hit a ship at position: " + msg.getParams());
                 break;
             case MISS:
-                System.out.println("You missed a ship at position: " + msg.getParams());
+                System.out.println("You missed at position: " + msg.getParams());
                 break;
             case SUNK:
                 System.out.println("You sunk a ship at position: " + msg.getParams());
@@ -170,11 +173,11 @@ public class Game {
                 System.out.println("You won the game! :-D");
                 return true;
             case ERROR:
-                System.out.println("There has been an error while trying to perform move: "
+                System.err.println("There has been an error while trying to perform move: "
                         + msg.getParams());
                 return true;
             default:
-                System.out.println("Illegal command.");
+                System.err.println("You have performed an illegal command.");
                 return true;
         }
         return false;
@@ -185,17 +188,17 @@ public class Game {
             case FIRE:
                 try {
                     this.ctrl.hitMyCell(msg.getParams());
-                    System.out.println("Enemy fired the ship at position" + msg.getParams());
+                    System.out.println("Enemy fired the cell at position: " + msg.getParams());
                     return false;
                 } catch (IOException e) {
-                    System.out.println("There has been an error while trying to perform fire of enemy");
+                    System.err.println("There has been an error while trying to perform fire of enemy");
                 }
                 break;
             case ERROR:
-                System.out.println("Enemy sent an error " + msg.getParams());
+                System.err.println("Enemy sent an error " + msg.getParams());
                 break;
             default:
-                System.out.println("Illegal command");
+                System.err.println("Illegal command of enemy");
         }
         return true;
     }
@@ -203,23 +206,23 @@ public class Game {
     private boolean myResponse(Message msg) {
         switch (msg.getCommand()) {
             case HIT:
-                System.out.println("Enemy ship hit!");
+                System.out.println("Hit!");
                 break;
             case MISS:
-                System.out.println("Enemy ship miss!");
+                System.out.println("Miss!");
                 break;
             case SUNK:
-                System.out.println("Enemy ship sunk!");
+                System.out.println("Sunk!");
                 break;
             case YOU_WIN:
                 System.out.println("You lost the game :-(");
                 return true;
             case ERROR:
-                System.out.println("There has been an error while trying to perform move: "
+                System.err.println("There has been an error while trying to perform move: "
                         + msg.getParams());
                 return true;
             default:
-                System.out.println("Illegal command.");
+                System.err.println("Illegal command of you.");
                 return true;
         }
         return false;
