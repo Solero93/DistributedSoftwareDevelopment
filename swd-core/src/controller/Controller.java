@@ -146,8 +146,6 @@ public class Controller {
 
     public Command throwServerDice() throws IOException {
         int dice1, dice2;
-        Message msg = null;
-        Boolean loop = true;
         Random rand = new Random();
 
         dice1 = rand.nextInt(6) + 1;
@@ -162,7 +160,6 @@ public class Controller {
 
         } else {
             return Command.FIRE;
-
         }
 
     }

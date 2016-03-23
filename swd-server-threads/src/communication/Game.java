@@ -10,12 +10,11 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
-    private Socket clientSocket;
     private Controller ctrl;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        ctrl = new Controller();
-        sock.setSoTimeout(3000);
+        this.ctrl = new Controller();
+        //sock.setSoTimeout(3000); TODO LALALA
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
@@ -116,7 +115,7 @@ public class Game extends Thread {
                 if (enemyResponse.getCommand() == Command.YOU_WIN) {
                     //END Game Server Won
                     return true;
-                }else{
+                } else {
                     this.ctrl.commitMove(enemyResponse);
                 }
             } catch (SocketTimeoutException e) {
@@ -129,21 +128,20 @@ public class Game extends Thread {
         return true;
     }
 
-    public boolean enemyTurn(){
+    private boolean enemyTurn() {
         boolean loop = true;
         while (loop) {
             Message msg;
             Message myResponse = new Message();
             try {
                 msg = this.ctrl.waitForEnemy();
-
                 if (msg.getCommand() == Command.ERROR) {
                     //TODO TRACTAR ERROR
-                }else{
-                    myResponse= this.ctrl.hitMyCell(msg.getParams());
+                } else {
+                    myResponse = this.ctrl.hitMyCell(msg.getParams());
                 }
                 loop = false;
-                if (myResponse.getCommand()== Command.YOU_WIN) return true;
+                if (myResponse.getCommand() == Command.YOU_WIN) return true;
 
             } catch (SocketTimeoutException e) {
 
@@ -155,7 +153,7 @@ public class Game extends Thread {
     }
 
     /**
-     * @return true if we an send the messageCode, false
+     * @return true if we an send the messageCode, false otherwise
      */
     public boolean sendCommand(Command cmd, String params) {
         try {
@@ -177,9 +175,5 @@ public class Game extends Thread {
             }
 
         }
-    }
-
-    public void gola(String msg) {
-
     }
 }
