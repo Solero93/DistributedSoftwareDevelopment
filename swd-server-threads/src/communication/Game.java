@@ -28,32 +28,49 @@ public class Game extends Thread {
     public void run() {
 
         Message msg;
-        msg = null;
+
+        msg = new Message();
+        while(msg.getCommand()!= Command.START){
+            try {
+                msg = this.ctrl.waitForEnemy();
+            } catch (SocketTimeoutException e) {
+
+            } catch (IOException e) {
+                this.ctrl.closeConnections();
+                return;
+            }
+        }
+        Command cmd;
         boolean loop;
         if (!this.sendCommand(Command.GRID_RDY, null)) {
             this.ctrl.closeConnections();
             return;
         }
         //throw---------------------
-        while (msg == null) {
+        loop = true;
+        while (loop) {
             msg = receiveCommand();
             if (msg == null) {
                 this.ctrl.closeConnections();
                 return;
             } else if (msg.getCommand() == Command.THROW) {
                 try {
-                    msg = this.ctrl.throwServerDice();
+                    cmd = this.ctrl.throwServerDice();
                 } catch (IOException e) {
                     this.ctrl.closeConnections();
                     return;
                 }
-                switch (msg.getCommand()) {
+                switch (cmd) {
                     case FIRE:
 
                         break;
-                    case HIT:
+                    case HUMAN_FIRST:
+                        if(this.enemyTurn()){
+                            this.ctrl.closeConnections();
+                            return;
+                        }
                         break;
-                    case THROW:
+                    case DRAW:
                         msg = null;//
                         break;
                     default:
@@ -69,64 +86,77 @@ public class Game extends Thread {
         }
 
         while (true) {
-            Message enemyResponse;
-            try {
-                this.ctrl.play();
-            } catch (IOException e) {
+            if(this.myTurn()){
                 this.ctrl.closeConnections();
                 return;
             }
-            loop = true;
-            while (loop) {
-                try {
-                    enemyResponse = this.ctrl.waitForEnemy();
-                    loop = false;
-                    if (enemyResponse.getCommand() == Command.YOU_WIN) {
-                        //END Game Server Won
-                        this.ctrl.closeConnections();
-                        return;
-                    }else{
-                        this.ctrl.commitMove(enemyResponse);
-                    }
-                } catch (SocketTimeoutException e) {
 
-                } catch (IOException e) {
-                    this.ctrl.closeConnections();
-                    return;
-                }
-
+            if(this.enemyTurn()){
+                this.ctrl.closeConnections();
+                return;
             }
-            loop = true;
-            while (loop) {
-                Message msg;
-                Message myResponse = new Message();
-                try {
-                    msg = this.ctrl.waitForEnemy();
 
-                    if (msg.getCommand() == Command.ERROR) {
-                        //TODO TRACTAR ERROR
-                    }else{
-                        myResponse= this.ctrl.hitMyCell(msg.getParams());
-                    }
-                    loop = false;
-
-                } catch (SocketTimeoutException e) {
-
-                } catch (IOException e) {
-                    this.ctrl.closeConnections();
-                    return;
-                }
-            }
         }
 
 
     }
 
+    public boolean myTurn(){
+        Message enemyResponse;
+        try {
+            this.ctrl.play();
+        } catch (IOException e) {
+            return true;
+        }
+        boolean loop = true;
+        while (loop) {
+            try {
+                enemyResponse = this.ctrl.waitForEnemy();
+                loop = false;
+                if (enemyResponse.getCommand() == Command.YOU_WIN) {
+                    //END Game Server Won
+                    return true;
+                }else{
+                    this.ctrl.commitMove(enemyResponse);
+                }
+            } catch (SocketTimeoutException e) {
+
+            } catch (IOException e) {
+                return true;
+            }
+
+        }
+        return true;
+    }
+
+    public boolean enemyTurn(){
+        boolean loop = true;
+        while (loop) {
+            Message msg;
+            Message myResponse = new Message();
+            try {
+                msg = this.ctrl.waitForEnemy();
+
+                if (msg.getCommand() == Command.ERROR) {
+                    //TODO TRACTAR ERROR
+                }else{
+                    myResponse= this.ctrl.hitMyCell(msg.getParams());
+                }
+                loop = false;
+                if (myResponse.getCommand()== Command.YOU_WIN) return true;
+
+            } catch (SocketTimeoutException e) {
+
+            } catch (IOException e) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @return true if we an send the messageCode, false
      */
-
-
     public boolean sendCommand(Command cmd, String params) {
         try {
             this.ctrl.sendMessage(cmd, params);

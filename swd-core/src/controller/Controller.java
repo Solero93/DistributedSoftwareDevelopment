@@ -144,7 +144,7 @@ public class Controller {
         return myResponse;
     }
 
-    public Message throwServerDice() throws IOException {
+    public Command throwServerDice() throws IOException {
         int dice1, dice2;
         Message msg = null;
         Boolean loop = true;
@@ -154,23 +154,17 @@ public class Controller {
         dice2 = rand.nextInt(6) + 1;
         if (dice1 > dice2) {
             this.sendMessage(Command.HUMAN_FIRST, null);
+            return Command.HUMAN_FIRST;
 
         } else if (dice1 == dice2) {
             this.sendMessage(Command.DRAW, null);
+            return Command.DRAW;
 
         } else {
-            this.play();
+            return Command.FIRE;
 
         }
-        while (loop) {
-            try {
-                msg = this.waitForEnemy();
-                loop = false;
-            } catch (SocketTimeoutException e) {
 
-            }
-        }
-        return msg;
     }
 
     // For debug purposes
