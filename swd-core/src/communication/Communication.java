@@ -49,7 +49,7 @@ public class Communication {
                 tmp = this.com.read_string_util(3).toCharArray();
                 try {
                     msg.setParams(this.com.read_string_util(Integer.parseInt("" + tmp[1] + tmp[2])));
-                } catch (NumberFormatException ex){
+                } catch (NumberFormatException ex) {
                     throw new IOException();
                 }
                 break;

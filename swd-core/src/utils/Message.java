@@ -38,7 +38,7 @@ public class Message {
     }
 
     public Message setParams(String params) {
-        if(params != null){
+        if (params != null) {
             this.params = params.toUpperCase();
         }
         return this;

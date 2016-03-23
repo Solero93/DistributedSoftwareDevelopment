@@ -25,99 +25,57 @@ public class Game extends Thread {
     }
 
     public void run() {
-
-        Message msg;
-
-        msg = new Message();
-        while(msg.getCommand()!= Command.START){
-            try {
-                msg = this.ctrl.waitForEnemy();
-            } catch (SocketTimeoutException e) {
-
-            } catch (IOException e) {
-                this.ctrl.closeConnections();
-                return;
-            }
-        }
-        Command cmd;
-        boolean loop;
-        if (!this.sendCommand(Command.GRID_RDY, null)) {
-            this.ctrl.closeConnections();
-            return;
-        }
-        //throw---------------------
-        loop = true;
-        while (loop) {
-            msg = receiveCommand();
-            if (msg == null) {
-                this.ctrl.closeConnections();
-                return;
-            } else if (msg.getCommand() == Command.THROW) {
-                try {
-                    cmd = this.ctrl.throwServerDice();
-                } catch (IOException e) {
-                    this.ctrl.closeConnections();
-                    return;
-                }
-                switch (cmd) {
-                    case FIRE:
-
-                        break;
-                    case HUMAN_FIRST:
-                        if(this.enemyTurn()){
-                            this.ctrl.closeConnections();
-                            return;
-                        }
-                        break;
-                    case DRAW:
-                        msg = null;//
-                        break;
-                    default:
-                        //TODO SEND ERROR
-                        msg = null;
-                        break;
-
-                }
-            } else {
-                //TODO SEND ERROR
-                msg = null;
-            }
-        }
-
-        while (true) {
-            if(this.myTurn()){
-                this.ctrl.closeConnections();
-                return;
-            }
-
-            if(this.enemyTurn()){
-                this.ctrl.closeConnections();
-                return;
-            }
-
-        }
-
-
+        this.playGame();
+        this.ctrl.closeConnections();
     }
 
-    public boolean myTurn(){
-        Message enemyResponse;
+    private void playGame() {
+        Message firstResponse = new Message();
+        while (firstResponse.getCommand() != Command.START) {
+            firstResponse = this.receiveCommand();
+        }
+        if (!this.sendCommand(Command.GRID_RDY, null) || !this.throwServerDice()) {
+            return;
+        }
+        while (true) {
+            if (this.enemyTurn() || this.myTurn()) {
+                return;
+            }
+        }
+    }
+
+    private boolean throwServerDice() {
+        try {
+            Message enemyMsg = this.ctrl.waitForEnemy();
+            if (enemyMsg.getCommand() == Command.THROW) {
+                this.ctrl.throwServerDice();
+                return true;
+            }
+            // TODO treat errors
+        } catch (SocketTimeoutException ex) {
+        } catch (IOException e) {
+        }
+        return false;
+    }
+
+    private boolean myTurn() {
         try {
             this.ctrl.play();
         } catch (IOException e) {
             return true;
         }
+        Message enemyResponse;
         boolean loop = true;
         while (loop) {
             try {
                 enemyResponse = this.ctrl.waitForEnemy();
-                loop = false;
                 if (enemyResponse.getCommand() == Command.YOU_WIN) {
                     //END Game Server Won
                     return true;
                 } else {
                     this.ctrl.commitMove(enemyResponse);
                 }
+                loop = false;
             } catch (SocketTimeoutException e) {
 
             } catch (IOException e) {
@@ -125,7 +83,7 @@ public class Game extends Thread {
             }
 
         }
-        return true;
+        return false;
     }
 
     private boolean enemyTurn() {
@@ -173,7 +131,6 @@ public class Game extends Thread {
             } catch (IOException e) {
                 return null;
             }
-
         }
     }
 }
