@@ -42,18 +42,16 @@ public class ServerCore {
             } catch (IOException e) {
                 System.out.println("There has been an error with the client of address: " +
                         (sock != null ? sock.getInetAddress() : null));
-                this.shutDownAll();
                 break;
             } catch (ReadGridException e) {
                 System.out.println("There has been an error when trying to create Grid from specified layout" +
                         "of client with address: " + (sock != null ? sock.getInetAddress() : null));
-                this.shutDownAll();
                 break;
             }
         }
     }
 
-    private void shutDownAll() {
+    public void shutDownAll() {
         this.threadPool.shutdown();
         try {
             // Wait a while for existing tasks to terminate

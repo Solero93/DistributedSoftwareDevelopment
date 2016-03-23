@@ -69,7 +69,7 @@ public class Game extends Thread {
         }
 
         while (true) {
-            Message enemyResponse = new Message();
+            Message enemyResponse;
             try {
                 this.ctrl.play();
             } catch (IOException e) {
@@ -129,7 +129,7 @@ public class Game extends Thread {
 
     public boolean sendCommand(Command cmd, String params) {
         try {
-            this.ctrl.sendMessage(Command.GRID_RDY, null);
+            this.ctrl.sendMessage(cmd, params);
             return true;
         } catch (IOException e) {
             return false;
