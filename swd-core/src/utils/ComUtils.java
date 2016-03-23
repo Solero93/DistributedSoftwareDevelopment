@@ -167,4 +167,28 @@ public class ComUtils {
         // Enviem l'string writeBytes de DataOutputStrem no envia el byte més alt dels chars.
         dos.writeBytes(str);
     }
+
+    /* Llegir un string  mida variable size = nombre de bytes especifica la longitud*/
+    public String read_string_util(int numBytes) throws IOException {
+
+
+        // Llegim l'string
+        byte bStr[] = new byte[numBytes];
+        char cStr[] = new char[numBytes];
+        bStr = read_bytes(numBytes);
+        for (int i = 0; i < numBytes; i++)
+            cStr[i] = (char) bStr[i];
+        return String.valueOf(cStr);
+    }
+
+    /* Escriure un string mida variable, size = nombre de bytes especifica la longitud  */
+    /* String str = string a escriure.*/
+    public void write_string_util(String str) throws IOException {
+
+        // Creem la capçalera amb el nombre de bytes que codifiquen la mida
+
+
+        // Enviem l'string writeBytes de DataOutputStrem no envia el byte més alt dels chars.
+        dos.writeBytes(str);
+    }
 }
