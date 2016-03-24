@@ -114,7 +114,7 @@ public class Game {
                 System.err.println("There has been an error while receiving enemy move");
                 return; // Shouldn't arrive here
             }
-            if (this.enemyMove(enemyMsg)) break;
+            //if (this.enemyMove(enemyMsg)) break; //TODO LINEA DEL ERROR
 
             Message myResponse;
             try {

@@ -14,7 +14,7 @@ public class Game extends Thread {
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
         this.ctrl = new Controller();
-        //sock.setSoTimeout(3000); TODO LALALA
+        sock.setSoTimeout(3000); //TODO LALALA
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
@@ -80,7 +80,7 @@ public class Game extends Thread {
             return true;
         }
         Message enemyResponse;
-        while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
+        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
             try {
                 enemyResponse = this.receiveCommand();
                 switch(enemyResponse.getCommand()){
@@ -103,12 +103,12 @@ public class Game extends Thread {
             }catch (IOException e) {
                 return true;
             }
-
-        }
+        return false;
+        //}
     }
 
     private boolean enemyTurn() {
-        while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
+        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
             Message msg;
             Message myResponse = new Message();
             try {
@@ -129,7 +129,8 @@ public class Game extends Thread {
             }catch (IOException e) {
                 return true;
             }
-        }
+        //}
+
     }
 
     /**
