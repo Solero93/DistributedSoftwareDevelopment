@@ -32,7 +32,11 @@ public class Game extends Thread {
     private void playGame() {
         Message firstResponse = new Message();
         while (firstResponse.getCommand() != Command.START) {
-            firstResponse = this.receiveCommand();
+            try {
+                firstResponse = this.receiveCommand();
+            } catch (IOException e) {
+                return;
+            }
         }
         if (!this.sendCommand(Command.GRID_RDY, null) || !this.throwServerDice()) {
             return;
@@ -45,17 +49,28 @@ public class Game extends Thread {
     }
 
     private boolean throwServerDice() {
-        try {
-            Message enemyMsg = this.ctrl.waitForEnemy();
-            if (enemyMsg.getCommand() == Command.THROW) {
-                this.ctrl.throwServerDice();
-                return true;
+        while (true){
+            try {
+                Message msg = this.receiveCommand();
+                if (msg.getCommand() == Command.THROW) {
+                    switch (this.ctrl.throwServerDice()) {
+                        case HUMAN_FIRST:
+                            return true;
+                        case DRAW:
+                            break;
+                        case FIRE:
+                            if (this.myTurn()) return false;
+                            return true;
+                        default:
+                            //ERROR
+                            return false;
+                    }
+                }
+            } catch (IOException e) {
+                return false;
             }
-            // TODO treat errors
-        } catch (SocketTimeoutException ex) {
-        } catch (IOException e) {
         }
-        return false;
+
     }
 
     private boolean myTurn() {
@@ -65,49 +80,56 @@ public class Game extends Thread {
             return true;
         }
         Message enemyResponse;
-        boolean loop = true;
-        while (loop) {
+        while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
             try {
-                enemyResponse = this.ctrl.waitForEnemy();
-                if (enemyResponse.getCommand() == Command.YOU_WIN) {
-                    //END Game Server Won
-                    return true;
-                } else {
-                    this.ctrl.commitMove(enemyResponse);
+                enemyResponse = this.receiveCommand();
+                switch(enemyResponse.getCommand()){
+                    case YOU_WIN:
+                        //END Game Server Won
+                        return true;
+                    case HIT:
+                    case MISS:
+                    case SUNK:
+                        this.ctrl.commitMove(enemyResponse);
+                        break;
+                    case ERROR:
+                        //TODO ERROR
+                        return true;
+                    default:
+                        //TODO ERROR?
+                        return true;
                 }
-                loop = false;
-            } catch (SocketTimeoutException e) {
 
-            } catch (IOException e) {
+            }catch (IOException e) {
                 return true;
             }
 
         }
-        return false;
     }
 
     private boolean enemyTurn() {
-        boolean loop = true;
-        while (loop) {
+        while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
             Message msg;
             Message myResponse = new Message();
             try {
-                msg = this.ctrl.waitForEnemy();
-                if (msg.getCommand() == Command.ERROR) {
-                    //TODO TRACTAR ERROR
-                } else {
-                    myResponse = this.ctrl.hitMyCell(msg.getParams());
+                msg = this.receiveCommand();
+                switch(msg.getCommand()) {
+                    case FIRE:
+                        myResponse = this.ctrl.hitMyCell(msg.getParams());
+                        if( myResponse.getCommand() == Command.YOU_WIN ) return true;
+                        break;
+                    case ERROR:
+                        //TODO ERROR
+                        return true;
+                    default:
+                        //TODO ERROR?
+                        return true;
                 }
-                loop = false;
-                if (myResponse.getCommand() == Command.YOU_WIN) return true;
-
-            } catch (SocketTimeoutException e) {
-
-            } catch (IOException e) {
+                return false;
+            }catch (IOException e) {
                 return true;
             }
         }
-        return false;
     }
 
     /**
@@ -122,14 +144,12 @@ public class Game extends Thread {
         }
     }
 
-    public Message receiveCommand() {
+    public Message receiveCommand() throws IOException {
         while (true) {
             try {
                 return this.ctrl.waitForEnemy();
             } catch (SocketTimeoutException e) {
 
-            } catch (IOException e) {
-                return null;
             }
         }
     }
