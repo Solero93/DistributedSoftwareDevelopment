@@ -1,6 +1,6 @@
 package communication;
 
-import controller.Controller;
+import controller.ServerCtrl;
 import exceptions.ReadGridException;
 import utils.Message;
 import utils.enums.Command;
@@ -10,11 +10,10 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
-    private Controller ctrl;
+    private ServerCtrl ctrl;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        this.ctrl = new Controller();
-        sock.setSoTimeout(3000); //TODO LALALA
+        this.ctrl = new ServerCtrl();
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
@@ -49,7 +48,7 @@ public class Game extends Thread {
     }
 
     private boolean throwServerDice() {
-        while (true){
+        while (true) {
             try {
                 Message msg = this.receiveCommand();
                 if (msg.getCommand() == Command.THROW) {
@@ -70,67 +69,60 @@ public class Game extends Thread {
                 return false;
             }
         }
-
     }
 
     private boolean myTurn() {
+        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
         try {
             this.ctrl.play();
+            Message enemyResponse = this.receiveCommand();
+            this.ctrl.commitMove(enemyResponse);
+            switch (enemyResponse.getCommand()) {
+                case YOU_WIN:
+                    //END Game Server Won
+                    return true;
+                case HIT:
+                    break;
+                case MISS:
+                    break;
+                case SUNK:
+                    break;
+                case ERROR:
+                    //TODO ERROR
+                    return true;
+                default:
+                    //TODO ERROR?
+                    return true;
+            }
+
         } catch (IOException e) {
             return true;
         }
-        Message enemyResponse;
-        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
-            try {
-                enemyResponse = this.receiveCommand();
-                switch(enemyResponse.getCommand()){
-                    case YOU_WIN:
-                        //END Game Server Won
-                        return true;
-                    case HIT:
-                    case MISS:
-                    case SUNK:
-                        this.ctrl.commitMove(enemyResponse);
-                        break;
-                    case ERROR:
-                        //TODO ERROR
-                        return true;
-                    default:
-                        //TODO ERROR?
-                        return true;
-                }
-
-            }catch (IOException e) {
-                return true;
-            }
         return false;
         //}
     }
 
     private boolean enemyTurn() {
         //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
-            Message msg;
-            Message myResponse = new Message();
-            try {
-                msg = this.receiveCommand();
-                switch(msg.getCommand()) {
-                    case FIRE:
-                        myResponse = this.ctrl.hitMyCell(msg.getParams());
-                        if( myResponse.getCommand() == Command.YOU_WIN ) return true;
-                        break;
-                    case ERROR:
-                        //TODO ERROR
-                        return true;
-                    default:
-                        //TODO ERROR?
-                        return true;
-                }
-                return false;
-            }catch (IOException e) {
-                return true;
+        try {
+            Message msg = this.receiveCommand();
+            switch (msg.getCommand()) {
+                case FIRE:
+                    Message myResponse = this.ctrl.hitMyCell(msg.getParams());
+                    if (myResponse.getCommand() == Command.YOU_WIN) return true;
+                    break;
+                case ERROR:
+                    //TODO ERROR
+                    return true;
+                default:
+                    //TODO ERROR?
+                    return true;
             }
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
         //}
-
     }
 
     /**

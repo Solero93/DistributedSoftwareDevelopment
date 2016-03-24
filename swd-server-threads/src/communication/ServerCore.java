@@ -31,7 +31,7 @@ public class ServerCore {
         System.out.println("Server serving at");
         System.out.println("\tAddress " + this.serverSocket.getInetAddress());
         System.out.println("\tPort " + this.serverSocket.getLocalPort());
-        System.out.println("\n");
+        System.out.println("");
         while (true) {
             Socket sock = null;
             try {
@@ -39,6 +39,7 @@ public class ServerCore {
                 System.out.println("Client with address " + sock.getInetAddress() + " connected to server");
                 this.threadPool.execute(new Game(sock, layout, mode));
                 System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
+                System.out.println("");
             } catch (IOException e) {
                 System.err.println("There has been an error with the client of address: " +
                         (sock != null ? sock.getInetAddress() : null));

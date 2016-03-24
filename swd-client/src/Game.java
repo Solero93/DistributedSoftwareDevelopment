@@ -83,10 +83,9 @@ public class Game {
     }
 
     public void playGame() {
-        Message firstResponse;
         try {
             this.ctrl.sendMessage(Command.START, null);
-            firstResponse = this.ctrl.waitForEnemy();
+            Message firstResponse = this.ctrl.waitForEnemy();
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
             this.throwDice();
         } catch (IOException e) {
@@ -128,24 +127,31 @@ public class Game {
             if (this.myResponse(myResponse)) break;
             System.out.println("\n");
         }
+        System.out.println("\nThank you for playing Battleships!");
     }
 
     private void throwDice() throws IOException {
         boolean keepThrowing = true;
+        System.out.println("Throwing dice to decide who starts...");
         while (keepThrowing) {
             this.ctrl.sendMessage(Command.THROW, null);
             Message throwResponse = this.ctrl.waitForEnemy();
             switch (throwResponse.getCommand()) {
                 case HUMAN_FIRST:
-                    System.out.println("You start!\n");
+                    System.out.println("\nYou start!\n");
                     keepThrowing = false;
                     break;
                 case DRAW:
+                    System.out.println("There has been a draw, throwing again...");
                     break;
                 case FIRE:
-                    System.out.println("Server starts!\n");
+                    System.out.println("\nServer starts!\n");
                     Message myResponse = this.ctrl.hitMyCell(throwResponse.getParams());
-                    this.enemyMove(myResponse);
+                    // In first move it's impossible for any of them to win, this is why the throw
+                    if (this.enemyMove(throwResponse)) throw new IOException();
+                    this.ctrl.commitMove(myResponse);
+                    if (this.myResponse(myResponse)) throw new IOException();
+                    System.out.println("");
                     keepThrowing = false;
                     break;
                 case ERROR:
@@ -153,7 +159,7 @@ public class Game {
                             + throwResponse.getParams());
                     throw new IOException();
                 default:
-                    System.err.println("Illegal command.");
+                    System.err.println("Illegal command while throwing dice.");
                     throw new IOException();
             }
         }
@@ -162,26 +168,25 @@ public class Game {
     private boolean myMove(Message msg) {
         switch (msg.getCommand()) {
             case HIT:
-                System.out.println("You hit a ship at position: " + msg.getParams());
-                break;
+                System.out.println("You hit a ship!");
+                return false;
             case MISS:
-                System.out.println("You missed at position: " + msg.getParams());
-                break;
+                System.out.println("You missed! :(");
+                return false;
             case SUNK:
-                System.out.println("You sunk a ship at position: " + msg.getParams());
-                break;
+                System.out.println("You sunk a ship!");
+                return false;
             case YOU_WIN:
-                System.out.println("You won the game! :-D");
-                return true;
+                System.out.println("\nYou won the game! :-D");
+                break;
             case ERROR:
-                System.err.println("There has been an error while trying to perform move: "
+                System.err.println("\nThere has been an error while trying to perform move: "
                         + msg.getParams());
-                return true;
+                break;
             default:
-                System.err.println("You have performed an illegal command.");
-                return true;
+                System.err.println("\nYou have performed an illegal command.");
         }
-        return false;
+        return true;
     }
 
     private boolean enemyMove(Message msg) {
@@ -190,10 +195,10 @@ public class Game {
                 System.out.println("Enemy fired the cell at position: " + msg.getParams());
                 return false;
             case ERROR:
-                System.err.println("Enemy sent an error " + msg.getParams());
+                System.err.println("\nEnemy sent an error " + msg.getParams());
                 break;
             default:
-                System.err.println("Illegal command of enemy");
+                System.err.println("\nIllegal command of enemy");
         }
         return true;
     }
@@ -202,25 +207,24 @@ public class Game {
         switch (msg.getCommand()) {
             case HIT:
                 System.out.println("Hit!");
-                break;
+                return false;
             case MISS:
                 System.out.println("Miss!");
-                break;
+                return false;
             case SUNK:
                 System.out.println("Sunk!");
-                break;
+                return false;
             case YOU_WIN:
-                System.out.println("You lost the game :-(");
-                return true;
+                System.out.println("\nYou lost the game :-(");
+                break;
             case ERROR:
-                System.err.println("There has been an error while trying to perform move: "
+                System.err.println("\nThere has been an error while trying to perform move: "
                         + msg.getParams());
-                return true;
+                break;
             default:
-                System.err.println("Illegal command of you.");
-                return true;
+                System.err.println("\nIllegal command of you.");
         }
-        return false;
+        return true;
     }
 
     public void closeGame() {

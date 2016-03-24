@@ -53,6 +53,5 @@ public class Client {
         game.prepareGame();
         game.playGame();
         game.closeGame();
-        System.out.println("Thank you for playing Battleships!");
     }
 }
