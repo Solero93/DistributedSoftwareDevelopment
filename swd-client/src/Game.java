@@ -114,7 +114,8 @@ public class Game {
                 System.err.println("There has been an error while receiving enemy move");
                 return; // Shouldn't arrive here
             }
-            //if (this.enemyMove(enemyMsg)) break; //TODO LINEA DEL ERROR
+
+            if (this.enemyMove(enemyMsg)) break;
 
             Message myResponse;
             try {
@@ -186,14 +187,8 @@ public class Game {
     private boolean enemyMove(Message msg) {
         switch (msg.getCommand()) {
             case FIRE:
-                try {
-                    this.ctrl.hitMyCell(msg.getParams());
-                    System.out.println("Enemy fired the cell at position: " + msg.getParams());
-                    return false;
-                } catch (IOException e) {
-                    System.err.println("There has been an error while trying to perform fire of enemy");
-                }
-                break;
+                System.out.println("Enemy fired the cell at position: " + msg.getParams());
+                return false;
             case ERROR:
                 System.err.println("Enemy sent an error " + msg.getParams());
                 break;
