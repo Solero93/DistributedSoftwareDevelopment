@@ -15,12 +15,6 @@ public class ServerCtrl extends Controller {
     BufferedWriter logFileWriter;
     private static final String SERVER = "S: ", CLIENT = "C: ";
 
-    public ServerCtrl(String filename) throws IOException {
-        super();
-        this.logFileWriter = new BufferedWriter(
-                new FileWriter(filename));
-    }
-
     public Command throwServerDice() throws IOException {
         int dice1, dice2;
         Random rand = new Random();
@@ -39,6 +33,11 @@ public class ServerCtrl extends Controller {
             return Command.FIRE;
         }
 
+    }
+
+    public void createLog(String filename) throws IOException{
+        this.logFileWriter = new BufferedWriter(
+                new FileWriter(filename));
     }
 
     @Override
