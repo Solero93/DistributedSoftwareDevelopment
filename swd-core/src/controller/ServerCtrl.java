@@ -44,69 +44,20 @@ public class ServerCtrl extends Controller {
     @Override
     public void sendMessage(Command c, String params) throws IOException {
         super.sendMessage(c, params);
-        switch(c){
-            case FIRE:
-                this.logFileWriter.write(SERVER + c.commandCode + " " + params + "\n");
-                break;
-            case MISS:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case HIT:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case SUNK:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case YOU_WIN:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case ERROR:
-                this.logFileWriter.write(CLIENT + c.commandCode + " " + params + "\n");
-                break;
-            case GRID_RDY:
-                this.logFileWriter.write(SERVER + c.commandCode + "\n");
-                break;
-            case HUMAN_FIRST:
-                break;
-            case DRAW:
-                break;
-            case UNKNOWN:
-                break; // TODO maybe?
+        if (params == null){
+            this.logFileWriter.write(SERVER + c.commandCode + "\n");
+        } else {
+            this.logFileWriter.write(SERVER + c.commandCode + " " + params + "\n");
         }
     }
 
     @Override
     public Message waitForEnemy() throws IOException {
         Message msg = super.waitForEnemy();
-        Command c = msg.getCommand();
-        String params = msg.getParams();
-        switch(c){
-            case START:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case THROW:
-                this.logFileWriter.write(CLIENT + c.commandCode + "\n");
-                break;
-            case FIRE:
-                this.logFileWriter.write(CLIENT + c.commandCode + " " + params + "\n");
-                break;
-            case MISS:
-                this.logFileWriter.write(SERVER + c.commandCode + "\n");
-                break;
-            case HIT:
-                this.logFileWriter.write(SERVER + c.commandCode + "\n");
-                break;
-            case SUNK:
-                this.logFileWriter.write(SERVER + c.commandCode + "\n");
-                break;
-            case YOU_WIN:
-                this.logFileWriter.write(SERVER + c.commandCode + "\n");
-                break;
-            case ERROR:
-                this.logFileWriter.write(SERVER + c.commandCode + " " + params + "\n");
-                break;
-            case UNKNOWN:
-                break; // TODO maybe?
+        if (msg.getParams() == null){
+            this.logFileWriter.write(CLIENT + msg.getCommand().commandCode + "\n");
+        } else {
+            this.logFileWriter.write(CLIENT + msg.getCommand().commandCode + " " + msg.getParams() + "\n");
         }
         return msg;
     }
