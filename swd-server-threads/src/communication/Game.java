@@ -13,7 +13,7 @@ public class Game extends Thread {
     private ServerCtrl ctrl;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        this.ctrl = new ServerCtrl();
+        this.ctrl = new ServerCtrl("Server"+Thread.currentThread().getName()+".log");
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
@@ -25,7 +25,7 @@ public class Game extends Thread {
 
     public void run() {
         this.playGame();
-        this.ctrl.closeConnections();
+        this.ctrl.close();
     }
 
     private void playGame() {

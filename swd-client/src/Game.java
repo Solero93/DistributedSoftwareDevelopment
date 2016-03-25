@@ -227,7 +227,7 @@ public class Game {
         return true;
     }
 
-    public void closeGame() {
-        this.ctrl.closeConnections();
+    public void close() {
+        this.ctrl.close();
     }
 }

@@ -40,7 +40,7 @@ public class Controller {
         this.com = new Communication(sock);
     }
 
-    public void closeConnections() {
+    public void close() {
         this.com.close();
     }
 

@@ -52,6 +52,6 @@ public class Client {
         Game game = new Game(server, port, layout, mode);
         game.prepareGame();
         game.playGame();
-        game.closeGame();
+        game.close();
     }
 }
