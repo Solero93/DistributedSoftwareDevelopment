@@ -35,8 +35,7 @@ public class BetterAI extends GameMode {
         // TODO make a more intelligent random algorithm
         if (this.firstHit == null) { // If there's no recent HIT => random
             while (true) {
-                Random r = new Random();
-                position = "ABCDEFGHIJ".charAt(r.nextInt(10)) + Integer.toString(r.nextInt(10));
+                position = "ABCDEFGHIJ".charAt(this.rand.nextInt(10)) + Integer.toString(this.rand.nextInt(10));
                 if (!this.cellsFired.contains(position)) {
                     this.waitMove = position;
                     return position;

@@ -127,7 +127,7 @@ public class Controller {
 
     public void play() throws IOException {
         String hitPosition = this.gm.generateHitPosition();
-        this.com.sendMessage(Command.FIRE, hitPosition);
+        this.sendMessage(Command.FIRE, hitPosition);
     }
 
     public void commitMove(Message msg) {
@@ -136,7 +136,7 @@ public class Controller {
 
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
-        this.com.sendMessage(cmd, null);
+        this.sendMessage(cmd, null);
         Message myResponse = new Message()
                 .setCommand(cmd)
                 .setParams(position);
