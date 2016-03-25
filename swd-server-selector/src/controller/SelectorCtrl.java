@@ -19,4 +19,12 @@ public class SelectorCtrl extends Controller {
     public void writeToLog(Actor a, Command c, String params) throws IOException{
         this.logWriter.writeToLog(a,c,params);
     }
+
+    public void close(){
+        try {
+            this.logWriter.close();
+        } catch (IOException e) {
+            //TODO do something
+        }
+    }
 }
