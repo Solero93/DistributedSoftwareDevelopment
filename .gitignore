@@ -44,6 +44,9 @@
 # IntelliJ
 **/out/
 
+# Generated logs of Battleships
+**/res/*.log
+
 # mpeltonen/sbt-idea plugin
 **/.idea_modules/
 
