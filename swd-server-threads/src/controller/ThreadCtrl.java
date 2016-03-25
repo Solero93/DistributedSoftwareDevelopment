@@ -1,10 +1,10 @@
 package controller;
 
+import utils.LogCreator;
 import utils.Message;
+import utils.enums.Actor;
 import utils.enums.Command;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
@@ -12,8 +12,7 @@ import java.util.Random;
  * Class that represents the -- Object
  */
 public class ThreadCtrl extends ClientCtrl {
-    BufferedWriter logFileWriter;
-    private static final String SERVER = "S: ", CLIENT = "C: ";
+    private LogCreator logWriter;
 
     public Command throwServerDice() throws IOException {
         int dice1, dice2;
@@ -32,32 +31,22 @@ public class ThreadCtrl extends ClientCtrl {
         } else {
             return Command.FIRE;
         }
-
     }
 
     public void createLog(String filename) throws IOException{
-        this.logFileWriter = new BufferedWriter(
-                new FileWriter(filename));
+        this.logWriter = new LogCreator(filename);
     }
 
     @Override
     public void sendMessage(Command c, String params) throws IOException {
         super.sendMessage(c, params);
-        if (params == null){
-            this.logFileWriter.write(SERVER + c.commandCode + "\n");
-        } else {
-            this.logFileWriter.write(SERVER + c.commandCode + " " + params + "\n");
-        }
+        this.logWriter.writeToLog(Actor.SERVER, c, params);
     }
 
     @Override
     public Message waitForEnemy() throws IOException {
         Message msg = super.waitForEnemy();
-        if (msg.getParams() == null){
-            this.logFileWriter.write(CLIENT + msg.getCommand().commandCode + "\n");
-        } else {
-            this.logFileWriter.write(CLIENT + msg.getCommand().commandCode + " " + msg.getParams() + "\n");
-        }
+        this.logWriter.writeToLog(Actor.CLIENT, msg.getCommand(), msg.getParams());
         return msg;
     }
 
@@ -65,8 +54,7 @@ public class ThreadCtrl extends ClientCtrl {
     public void close() {
         super.close();
         try {
-            this.logFileWriter.flush(); // Must write last contents into file
-            this.logFileWriter.close();
+            this.logWriter.close();
         } catch (IOException e) {
             // TODO do something
         }

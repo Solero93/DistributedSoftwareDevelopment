@@ -3,10 +3,7 @@ package communication;
 import exceptions.ReadGridException;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,16 +12,11 @@ import java.util.concurrent.TimeUnit;
 public class ServerCore {
     String layout;
     int port, mode;
-    ServerSocket serverSocket;
-    ExecutorService threadPool;
-    private static final int MAX_THREADS = 10;
 
     public ServerCore(int port, String layout, int mode) throws IOException {
         this.port = port;
         this.layout = layout;
         this.mode = mode;
-        this.threadPool = Executors.newFixedThreadPool(MAX_THREADS);
-        this.serverSocket = new ServerSocket(port);
     }
 
     public void serveClients() {
