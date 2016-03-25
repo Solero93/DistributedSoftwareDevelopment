@@ -1,6 +1,6 @@
 package communication;
 
-import controller.ThreadCtrl;
+import controller.Controller;
 import exceptions.ReadGridException;
 import utils.Message;
 import utils.enums.Command;
@@ -9,18 +9,43 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class Game extends Thread {
-    private ThreadCtrl ctrl;
+public class Game {
+    private Controller ctrl;
+    private Message lastMessageRecived;
+    private Boolean waitingFire;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        this.ctrl = new ThreadCtrl();
+        this.ctrl = new Controller();
+        waitingFire=false;
+        this.lastMessageRecived = null;
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
             this.ctrl.generateGridFromFile(layout);
         }
         this.ctrl.createGameMode(mode);
-        this.ctrl.createCommunication(sock);
+    }
+
+    public Message getNextMessage(Message message){
+        Message msgToSend= new Message();
+        switch(message.getCommand()){
+            case YOU_WIN:
+            case ERROR:
+                //TODO throw excepcion endedgame
+                return null;
+            case MISS:
+            case HIT:
+            case SUNK:
+                if(lastMessageRecived.getCommand()==Command.FIRE && waitingFire){
+                    waitingFire=false;
+                    lastMessageRecived=message;
+                    //TODO REcivir posible contestacion  o no
+                    return null;
+
+                }else{
+                    //TODO ERROR retur
+        //TODO Flujos
+        }
     }
 
     public void run() {
