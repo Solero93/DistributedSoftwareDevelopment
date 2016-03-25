@@ -13,14 +13,13 @@ import java.util.concurrent.TimeUnit;
  * Class that represents the ServerCore of the Game
  */
 public class ServerCore {
-    String layout;
-    int port, mode;
-    ServerSocket serverSocket;
-    ExecutorService threadPool;
+    private String layout;
+    private int mode;
+    private ServerSocket serverSocket;
+    private ExecutorService threadPool;
     private static final int MAX_THREADS = 10;
 
     public ServerCore(int port, String layout, int mode) throws IOException {
-        this.port = port;
         this.layout = layout;
         this.mode = mode;
         this.threadPool = Executors.newFixedThreadPool(MAX_THREADS);
