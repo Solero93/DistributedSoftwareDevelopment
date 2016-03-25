@@ -1,6 +1,6 @@
 package communication;
 
-import controller.ServerCtrl;
+import controller.ThreadCtrl;
 import exceptions.ReadGridException;
 import utils.Message;
 import utils.enums.Command;
@@ -10,10 +10,10 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 public class Game extends Thread {
-    private ServerCtrl ctrl;
+    private ThreadCtrl ctrl;
 
     public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        this.ctrl = new ServerCtrl();
+        this.ctrl = new ThreadCtrl();
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {

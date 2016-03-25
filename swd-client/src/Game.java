@@ -1,4 +1,4 @@
-import controller.Controller;
+import controller.ClientCtrl;
 import exceptions.ReadGridException;
 import utils.Message;
 import utils.enums.Command;
@@ -11,12 +11,12 @@ import java.util.Scanner;
  * Class that represents the Game of the Game
  */
 public class Game {
-    Controller ctrl;
+    ClientCtrl ctrl;
     String server, layout;
     int port, mode;
 
     public Game(String server, int port, String layout, int mode) {
-        this.ctrl = new Controller();
+        this.ctrl = new ClientCtrl();
         this.server = server;
         this.port = port;
         this.layout = layout;

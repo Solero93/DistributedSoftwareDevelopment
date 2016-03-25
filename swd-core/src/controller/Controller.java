@@ -22,7 +22,6 @@ import java.util.*;
 public class Controller {
     protected Grid myGrid;
     protected GameMode gm;
-    protected Communication com;
 
     public Controller() {
         this.myGrid = new Grid();
@@ -30,18 +29,6 @@ public class Controller {
 
     public void createGameMode(int mode) {
         this.gm = new GameModeFactory().createGameMode(mode);
-    }
-
-    public void createCommunication(String serverName, int port) throws IOException {
-        this.com = new Communication(serverName, port);
-    }
-
-    public void createCommunication(Socket sock) throws IOException {
-        this.com = new Communication(sock);
-    }
-
-    public void close() {
-        this.com.close();
     }
 
     public void generateGridAutomatic() throws ReadGridException {
@@ -116,18 +103,11 @@ public class Controller {
         }
     }
 
-    public void sendMessage(Command c, String params) throws IOException {
-        this.com.sendMessage(c, params);
-    }
-
-    public Message waitForEnemy() throws IOException {
-        Message response = this.com.waitForMessage();
-        return response;
-    }
-
-    public void play() throws IOException {
+    public Message play() throws IOException {
         String hitPosition = this.gm.generateHitPosition();
-        this.sendMessage(Command.FIRE, hitPosition);
+        return new Message()
+                .setCommand(Command.FIRE)
+                .setParams(hitPosition);
     }
 
     public void commitMove(Message msg) {
@@ -136,11 +116,9 @@ public class Controller {
 
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
-        this.sendMessage(cmd, null);
-        Message myResponse = new Message()
+        return new Message()
                 .setCommand(cmd)
                 .setParams(position);
-        return myResponse;
     }
 
     // For debug purposes

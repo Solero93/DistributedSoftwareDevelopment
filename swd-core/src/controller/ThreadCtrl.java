@@ -11,7 +11,7 @@ import java.util.Random;
 /**
  * Class that represents the -- Object
  */
-public class ServerCtrl extends Controller {
+public class ThreadCtrl extends ClientCtrl {
     BufferedWriter logFileWriter;
     private static final String SERVER = "S: ", CLIENT = "C: ";
 
