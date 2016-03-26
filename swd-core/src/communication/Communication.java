@@ -2,6 +2,7 @@ package communication;
 
 import utils.ComUtils;
 import utils.Message;
+import utils.enums.Actor;
 import utils.enums.Command;
 
 import java.io.IOException;
@@ -15,17 +16,16 @@ import java.net.Socket;
 public class Communication {
     ComUtils com;
     Socket mySocket;
-    private static final int CLIENT_TIMEOUT = 3, SERVER_TIMEOUT = 3;
 
     public Communication(String serverName, int port) throws IOException {
         this.mySocket = new Socket(InetAddress.getByName(serverName), port);
-        this.mySocket.setSoTimeout(CLIENT_TIMEOUT * 1000);
+        this.mySocket.setSoTimeout(Actor.CLIENT.timeOut * 1000);
         this.com = new ComUtils(this.mySocket);
     }
 
     public Communication(Socket sock) throws IOException {
         this.mySocket = sock;
-        this.mySocket.setSoTimeout(SERVER_TIMEOUT * 1000);
+        this.mySocket.setSoTimeout(Actor.SERVER.timeOut * 1000);
         this.com = new ComUtils(sock);
     }
 

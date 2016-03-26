@@ -88,15 +88,12 @@ public class ServerCore {
                                 + client.socket().getInetAddress() + " sent a message to server: "
                                 + request);
                         Game clientGame = (Game)key.attachment();
-                        ArrayList<Message> clientMessages = this.readRequest(request);
                         try {
-                            for (Message clientMsg : clientMessages) {
-                                ArrayList<Message> messagesToSend = clientGame.getNextMessages(clientMsg);
-                                for (Message serverMsg : messagesToSend) {
-                                    String response = serverMsg.buildPackage();
-                                    client.write(encoder.encode(CharBuffer.wrap(response)));
-                                    if (serverMsg.getCommand() == Command.YOU_WIN) throw new EndGameException();
-                                }
+                            ArrayList<Message> messagesToSend = clientGame.getNextMessages(request);
+                            for (Message serverMsg : messagesToSend) {
+                                String response = serverMsg.buildPackage();
+                                client.write(encoder.encode(CharBuffer.wrap(response)));
+                                if (serverMsg.getCommand() == Command.YOU_WIN) throw new EndGameException();
                             }
                         } catch (EndGameException ex){
                             clientGame.close();
@@ -119,7 +116,6 @@ public class ServerCore {
         this.buffer.clear();
         try {
             for (SelectionKey key : this.selector.keys()){
-                key.channel().close();
                 key.cancel();
             }
             this.server.close();
@@ -128,30 +124,5 @@ public class ServerCore {
             //TODO do something
         }
 
-    }
-
-    private ArrayList<Message> readRequest(String req) throws StringIndexOutOfBoundsException{
-        ArrayList<Message> finalMessages = new ArrayList<>(2);
-        for (int i=0; i<req.length() && finalMessages.size() < 2;){
-            String commandCode = req.substring(i,i+4);
-            Command cmd = Command.getCommandFromCode(commandCode);
-            i+=4;
-            String params = null;
-            switch(cmd){
-                case FIRE:
-                    i++;
-                    params = req.substring(i,i+2);
-                    i+=2;
-                    break;
-                case ERROR:
-                    i++;
-                    int numChars = Integer.parseInt("" + req.charAt(i) + req.charAt(i+1));
-                    params = req.substring(i,i+numChars);
-                    i+=numChars;
-                    break;
-            }
-            finalMessages.add(new Message().setCommand(cmd).setParams(params));
-        }
-        return finalMessages;
     }
 }
