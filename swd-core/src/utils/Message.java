@@ -17,7 +17,7 @@ public class Message {
     public Message(String pkg) {
         String[] tmp = pkg.split(" ");
         this.command = Command.getCommandFromCode(tmp[0]);
-        if (tmp.length >= 1) {
+        if (tmp.length > 1) {
             this.params = tmp[1];
         } else {
             this.params = null;
