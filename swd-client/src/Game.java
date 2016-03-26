@@ -89,6 +89,7 @@ public class Game {
             if (firstResponse.getCommand() != Command.GRID_RDY) return;
             this.throwDice();
         } catch (IOException e) {
+            System.err.println("There has been error starting game with server.");
             return; // Shouldn't arrive here
         }
 
