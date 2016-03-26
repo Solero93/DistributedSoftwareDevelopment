@@ -3,9 +3,16 @@ package controller.gameModes;
 import java.util.Scanner;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Manual Game
  */
 public class ManualGame extends GameMode {
+    /**
+     * Makes user enter the position to Hit.
+     * If the user tries to enter an already Hit position, it'll ask it again.
+     *
+     * @return Position to Hit.
+     */
+    @Override
     public String generateHitPosition() {
         Scanner sc = new Scanner(System.in);
         String position;

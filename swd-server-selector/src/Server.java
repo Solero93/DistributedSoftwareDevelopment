@@ -1,4 +1,4 @@
-import communication.ServerCore;
+import communication.ServerSelector;
 
 import java.io.IOException;
 
@@ -49,15 +49,15 @@ public class Server {
             return;
         }
 
-        ServerCore serverCore;
+        ServerSelector serverSelector;
         try {
-            serverCore = new ServerCore(port, layout, mode);
+            serverSelector = new ServerSelector(port, layout, mode);
         } catch (IOException e) {
             System.err.println("There has been an error trying to create the server.");
             return;
         }
-        serverCore.serveClients();
-        serverCore.shutDownAll();
+        serverSelector.serveClients();
+        serverSelector.shutDownAll();
         System.out.println("Server ended. Thank you for playing battleships!");
     }
 }

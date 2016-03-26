@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Class that represents the ServerCore of the Game
+ * Class that represents the Server with Selectors
  */
-public class ServerCore {
+public class ServerSelector {
     private String layout;
     private int mode;
     private Selector selector;
@@ -33,7 +33,15 @@ public class ServerCore {
     private ByteBuffer buffer;
     private int numGame;
 
-    public ServerCore(int port, String layout, int mode) throws IOException {
+    /**
+     * Constructs a Server with a Selector.
+     *
+     * @param port   : Port it'll be assigned to
+     * @param layout : Layout file it'll use
+     * @param mode   : Mode it'll play in
+     * @throws IOException
+     */
+    public ServerSelector(int port, String layout, int mode) throws IOException {
         this.layout = layout;
         this.mode = mode;
         this.selector = Selector.open();
@@ -48,6 +56,9 @@ public class ServerCore {
         this.numGame = 0;
     }
 
+    /**
+     * Main logic of the Server with Selectors
+     */
     public void serveClients() {
         System.out.println("Server serving at");
         System.out.println("\tAddress " + this.server.socket().getInetAddress());
@@ -112,6 +123,9 @@ public class ServerCore {
         }
     }
 
+    /**
+     * Shuts down all components of Server
+     */
     public void shutDownAll() {
         this.buffer.clear();
         try {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Class that represents the -- Object
+ * Class that abstracts all the Game modes
  */
 public abstract class GameMode {
     protected ArrayList<String> cellsFired;
@@ -14,14 +14,30 @@ public abstract class GameMode {
     protected Random rand;
     protected static final int RANDOM_SEED = 42;
 
+    /**
+     * Abstract constructor of gameModes.
+     * Seed 42 because of reasons.
+     */
     public GameMode() {
         this.cellsFired = new ArrayList<>();
         this.waitMove = null;
         this.rand = new Random(RANDOM_SEED);
     }
 
+    /**
+     * Logic that returns a position to hit
+     *
+     * @return Position to Hit
+     */
     public abstract String generateHitPosition();
 
+    /**
+     * Validates a move with the enemy's response.
+     * This is to prevent assuming that when a move was sent, it must have been done.
+     * If an error happened, the move is undone.
+     *
+     * @param command : Response Command of enemy
+     */
     public void commitMove(Command command) {
         if (command != Command.ERROR && this.waitMove != null) {
             this.cellsFired.add(this.waitMove);

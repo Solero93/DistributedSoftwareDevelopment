@@ -25,7 +25,7 @@ public class Game extends Thread {
 
     public void run() {
         try {
-            this.ctrl.createLog("Server"+Thread.currentThread().getName()+".log");
+            this.ctrl.createLog("Server" + Thread.currentThread().getName() + ".log");
             this.playGame();
         } catch (IOException e) {
             //TODO treat errors

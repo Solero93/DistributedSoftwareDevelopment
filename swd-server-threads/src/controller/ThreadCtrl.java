@@ -9,11 +9,17 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * Class that represents the -- Object
+ * Class that represents the Controller of Thread
  */
 public class ThreadCtrl extends ClientCtrl {
     private LogCreator logWriter;
 
+    /**
+     * Throws the dice and decides who begings
+     *
+     * @return HUMAN_FIRST-Client begins, DRAW-throw again , FIRE-Server begins
+     * @throws IOException
+     */
     public Command throwServerDice() throws IOException {
         int dice1, dice2;
         Random rand = new Random();
@@ -33,16 +39,25 @@ public class ThreadCtrl extends ClientCtrl {
         }
     }
 
-    public void createLog(String filename) throws IOException{
+    /**
+     * @see LogCreator#LogCreator(String)
+     */
+    public void createLog(String filename) throws IOException {
         this.logWriter = new LogCreator(filename);
     }
 
+    /**
+     * @see ClientCtrl#sendMessage(Command, String)
+     */
     @Override
     public void sendMessage(Command c, String params) throws IOException {
         super.sendMessage(c, params);
         this.logWriter.writeToLog(Actor.SERVER, c, params);
     }
 
+    /**
+     * @see ClientCtrl#waitForEnemy()
+     */
     @Override
     public Message waitForEnemy() throws IOException {
         Message msg = super.waitForEnemy();
@@ -50,6 +65,9 @@ public class ThreadCtrl extends ClientCtrl {
         return msg;
     }
 
+    /**
+     * @see ClientCtrl#close()
+     */
     @Override
     public void close() {
         super.close();

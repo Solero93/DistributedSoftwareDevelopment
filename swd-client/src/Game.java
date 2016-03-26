@@ -15,6 +15,14 @@ public class Game {
     String server, layout;
     int port, mode;
 
+    /**
+     * Constructs the Game to play for Client
+     *
+     * @param server : Server's name
+     * @param port   : Server's port
+     * @param layout : Layout file (null if not specified)
+     * @param mode   : 0-Manual , 1-Random , 2-BetterAI
+     */
     public Game(String server, int port, String layout, int mode) {
         this.ctrl = new ClientCtrl();
         this.server = server;
@@ -23,6 +31,12 @@ public class Game {
         this.mode = mode;
     }
 
+    /**
+     * Prepares the game
+     * 1. Constructs the Grid
+     * 2. Constructs the Mode
+     * 3. Constructs the Communication
+     */
     public void prepareGame() {
         if (layout == null) {
             if (mode == 0) {
@@ -30,14 +44,9 @@ public class Game {
                 while (!this.getLayoutFromKeyboard()) ;
                 System.out.println("Your ships are in place. Yay!");
             } else {
-                try {
-                    this.ctrl.generateGridAutomatic();
-                    System.out.println(this.ctrl.getCurrentGrid() + "\n");
-                    System.out.println("Your ships are in place. Yay!");
-                } catch (ReadGridException e) {
-                    System.err.println("There has been an error when autogenerating grid");
-                    return;
-                }
+                this.ctrl.generateGridAutomatic();
+                System.out.println(this.ctrl.getCurrentGrid() + "\n");
+                System.out.println("Your ships are in place. Yay!");
             }
         } else {
             try {
@@ -82,6 +91,9 @@ public class Game {
         return true;
     }
 
+    /**
+     * Main logic of the Game
+     */
     public void playGame() {
         try {
             this.ctrl.sendMessage(Command.START, null);
@@ -228,6 +240,9 @@ public class Game {
         return true;
     }
 
+    /**
+     * Closes the Game
+     */
     public void close() {
         this.ctrl.close();
     }

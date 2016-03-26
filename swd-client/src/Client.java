@@ -1,5 +1,5 @@
 /**
- * Main class with the Client
+ * Main class for the Client
  */
 public class Client {
     public static void main(String args[]) {

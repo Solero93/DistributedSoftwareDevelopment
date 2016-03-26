@@ -4,6 +4,8 @@ import utils.enums.Command;
 
 /**
  * Class that represents the BetterAI
+ *
+ * @see GameMode
  */
 public class BetterAI extends GameMode {
     private enum Direction {
@@ -28,6 +30,13 @@ public class BetterAI extends GameMode {
         this.currHitDir = null;
     }
 
+    /**
+     * Uses a better AI to generate a position to Hit.
+     * Basically it uses random logic until it Hits a ship, then it explores until its SUNK.
+     *
+     * @return Position to Hit
+     */
+    @Override
     public String generateHitPosition() {
         String position;
         // TODO make a more intelligent random algorithm
@@ -74,6 +83,14 @@ public class BetterAI extends GameMode {
         );
     }
 
+    /**
+     * Validates a move with the enemy's response.
+     * This is to prevent assuming that when a move was sent, it must have been done.
+     * If an error happened, the move is undone.
+     *
+     * @param command : Response Command of enemy
+     */
+    @Override
     public void commitMove(Command command) {
         switch (command) {
             case HIT:

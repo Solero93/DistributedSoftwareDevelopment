@@ -3,25 +3,18 @@ package utils;
 import utils.enums.Command;
 
 /**
- * Class that represents the Message Object
+ * Class that represents the Messages
  */
 public class Message {
     private Command command;
     private String params;
 
+    /**
+     * Constructs an empty message object.
+     */
     public Message() {
         this.command = null;
         this.params = null;
-    }
-
-    public Message(String pkg) {
-        String[] tmp = pkg.split(" ");
-        this.command = Command.getCommandFromCode(tmp[0]);
-        if (tmp.length > 1) {
-            this.params = tmp[1];
-        } else {
-            this.params = null;
-        }
     }
 
     public Command getCommand() {
@@ -44,6 +37,11 @@ public class Message {
         return this;
     }
 
+    /**
+     * Builds the string to send over the network.
+     *
+     * @return String to send
+     */
     public String buildPackage() {
         switch (this.command) {
             case FIRE:

@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class Game {
     private SelectorCtrl ctrl;
-    int id;
-    String bufferMessages;
+    private int id;
+    private String bufferMessages;
 
     public Game(String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new SelectorCtrl();
