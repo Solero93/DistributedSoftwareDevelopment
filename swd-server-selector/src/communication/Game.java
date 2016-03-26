@@ -1,179 +1,116 @@
 package communication;
 
 import controller.Controller;
+import controller.SelectorCtrl;
+import exceptions.EndGameException;
 import exceptions.ReadGridException;
 import utils.Message;
+
+import utils.enums.Actor;
 import utils.enums.Command;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
-    private Controller ctrl;
-    private Message lastMessageRecived;
-    private Boolean waitingFire;
+    private SelectorCtrl ctrl;
+    int id;
 
-    public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
-        this.ctrl = new Controller();
-        waitingFire=false;
-        this.lastMessageRecived = null;
+    public Game(String layout, int mode, int id) throws IOException, ReadGridException {
+        this.ctrl = new SelectorCtrl();
+        this.id=id;
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
             this.ctrl.generateGridFromFile(layout);
         }
         this.ctrl.createGameMode(mode);
+        this.ctrl.createLog("ServerGame-"+id+".log");
     }
 
-    public Message getNextMessage(Message message){
-        Message msgToSend= new Message();
-        switch(message.getCommand()){
-            case YOU_WIN:
-            case ERROR:
-                //TODO throw excepcion endedgame
-                return null;
-            case MISS:
-            case HIT:
-            case SUNK:
-                if(lastMessageRecived.getCommand()==Command.FIRE && waitingFire){
-                    waitingFire=false;
-                    lastMessageRecived=message;
-                    //TODO REcivir posible contestacion  o no
-                    return null;
-
-                }else{
-                    //TODO ERROR retur
-        //TODO Flujos
-        }
-    }
-
-    public void run() {
+    public ArrayList<Message> getNextMessages(Message message) throws EndGameException {
+        ArrayList<Message> msgToSend=new ArrayList<Message>();
         try {
-            this.ctrl.createLog("Server"+Thread.currentThread().getName()+".log");
-            this.playGame();
+            this.ctrl.writeToLog(Actor.CLIENT, message.getCommand(), message.getParams());
+
+            msgToSend = this.getMessages(message);
+            for (Message temp : msgToSend) {
+                this.ctrl.writeToLog(Actor.SERVER, temp.getCommand(), temp.getParams());
+            }
         } catch (IOException e) {
-            //TODO treat errors
-        }
-        this.ctrl.close();
-    }
 
-    private void playGame() {
-        Message firstResponse = new Message();
-        while (firstResponse.getCommand() != Command.START) {
-            try {
-                firstResponse = this.receiveCommand();
-            } catch (IOException e) {
-                return;
-            }
         }
-        if (!this.sendCommand(Command.GRID_RDY, null) || !this.throwServerDice()) {
-            return;
-        }
-        while (true) {
-            if (this.enemyTurn() || this.myTurn()) {
-                return;
-            }
-        }
+        return msgToSend;
     }
-
-    private boolean throwServerDice() {
-        while (true) {
-            try {
-                Message msg = this.receiveCommand();
-                if (msg.getCommand() == Command.THROW) {
-                    switch (this.ctrl.throwServerDice()) {
-                        case HUMAN_FIRST:
-                            return true;
-                        case DRAW:
-                            break;
-                        case FIRE:
-                            if (this.myTurn()) return false;
-                            return true;
-                        default:
-                            //ERROR
-                            return false;
-                    }
-                }
-            } catch (IOException e) {
-                return false;
-            }
-        }
-    }
-
-    private boolean myTurn() {
-        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
+    public ArrayList<Message> getMessages(Message message) throws EndGameException {
+        ArrayList<Message> msgToSend= new ArrayList<Message>();
         try {
-            this.ctrl.play();
-            Message enemyResponse = this.receiveCommand();
-            this.ctrl.commitMove(enemyResponse);
-            switch (enemyResponse.getCommand()) {
+            switch (message.getCommand()) {
                 case YOU_WIN:
-                    //END Game Server Won
-                    return true;
-                case HIT:
-                    break;
+                case ERROR:
+                    this.ctrl.close();
+                    throw new EndGameException();
                 case MISS:
-                    break;
+                case HIT:
                 case SUNK:
-                    break;
-                case ERROR:
-                    //TODO ERROR
-                    return true;
-                default:
-                    //TODO ERROR?
-                    return true;
-            }
+                    this.ctrl.commitMove(message);
+                    return msgToSend;
 
-        } catch (IOException e) {
-            return true;
-        }
-        return false;
-        //}
-    }
-
-    private boolean enemyTurn() {
-        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
-        try {
-            Message msg = this.receiveCommand();
-            switch (msg.getCommand()) {
                 case FIRE:
-                    Message myResponse = this.ctrl.hitMyCell(msg.getParams());
-                    if (myResponse.getCommand() == Command.YOU_WIN) return true;
-                    break;
-                case ERROR:
-                    //TODO ERROR
-                    return true;
-                default:
-                    //TODO ERROR?
-                    return true;
+                    msgToSend.add(this.ctrl.hitMyCell(message.getParams()));
+                    if(msgToSend.get(0).getCommand() == Command.YOU_WIN ) {
+                        this.ctrl.close();
+                        return msgToSend;
+                    }
+                    msgToSend.add(this.ctrl.play());
+                    return msgToSend;
+                case THROW:
+                    switch (this.throwServerDice()){
+                        case DRAW:
+                            msgToSend.add(new Message().setCommand(Command.DRAW));
+                            return msgToSend;
+                        case HUMAN_FIRST:
+                            msgToSend.add(new Message().setCommand(Command.HUMAN_FIRST));
+                            return msgToSend;
+                        case FIRE:
+                            msgToSend.add(this.ctrl.hitMyCell(message.getParams()));
+                            if(msgToSend.get(0).getCommand() == Command.YOU_WIN ) {
+                                this.ctrl.close();
+                                return msgToSend;
+                            }
+                            return msgToSend;
+                    }
+                    return msgToSend;
+                case START:
+                    msgToSend.add(new Message().setCommand(Command.GRID_RDY));
+                    return msgToSend;
+                //TODO Flujos
             }
-            return false;
         } catch (IOException e) {
-            return true;
+
         }
-        //}
+        return msgToSend;
     }
 
-    /**
-     * @return true if we an send the messageCode, false otherwise
-     */
-    public boolean sendCommand(Command cmd, String params) {
-        try {
-            this.ctrl.sendMessage(cmd, params);
-            return true;
-        } catch (IOException e) {
-            return false;
+    public Command throwServerDice() throws IOException {
+        int dice1, dice2;
+        Random rand = new Random();
+
+        dice1 = rand.nextInt(6) + 1;
+        dice2 = rand.nextInt(6) + 1;
+        if (dice1 > dice2) {
+            return Command.HUMAN_FIRST;
+
+        } else if (dice1 == dice2) {
+            return Command.DRAW;
+
+        } else {
+            return Command.FIRE;
         }
     }
 
-    public Message receiveCommand() throws IOException {
-        while (true) {
-            try {
-                return this.ctrl.waitForEnemy();
-            } catch (SocketTimeoutException e) {
 
-            }
-        }
-    }
 }
