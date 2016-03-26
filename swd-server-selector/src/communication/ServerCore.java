@@ -1,69 +1,126 @@
 package communication;
 
+import exceptions.EndGameException;
 import exceptions.ReadGridException;
+import utils.Message;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.util.concurrent.TimeUnit;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Class that represents the ServerCore of the Game
  */
 public class ServerCore {
-    String layout;
-    int port, mode;
+    private String layout;
+    private int mode;
+    private Selector selector;
+    private ServerSocketChannel server;
+    private SelectionKey serverKey;
+    private CharsetEncoder encoder;
+    private CharsetDecoder decoder;
+    private ByteBuffer buffer;
+    private HashMap<SelectionKey, Game> games;
+    private int numGame;
 
     public ServerCore(int port, String layout, int mode) throws IOException {
-        this.port = port;
         this.layout = layout;
         this.mode = mode;
+        this.selector = Selector.open();
+        this.server = ServerSocketChannel.open();
+        this.server.socket().bind(new java.net.InetSocketAddress(port)); //TODO revisar
+        this.server.configureBlocking(false);
+        this.serverKey = this.server.register(selector, SelectionKey.OP_ACCEPT);
+        Charset charset = Charset.forName("ISO-8859-1");
+        this.encoder = charset.newEncoder();
+        this.decoder = charset.newDecoder();
+        this.buffer = ByteBuffer.allocate(512);
+        this.games = new HashMap<>();
+        this.numGame = 0;
     }
 
     public void serveClients() {
         System.out.println("Server serving at");
-        System.out.println("\tAddress " + this.serverSocket.getInetAddress());
-        System.out.println("\tPort " + this.serverSocket.getLocalPort());
-        System.out.println("");
+        System.out.println("\tAddress " + this.server.socket().getInetAddress());
+        System.out.println("\tPort " + this.server.socket().getLocalPort());
+        System.out.println();
         while (true) {
-            Socket sock = null;
             try {
-                sock = serverSocket.accept();
-                System.out.println("Client with address " + sock.getInetAddress() + " connected to server");
-                this.threadPool.execute(new Game(sock, layout, mode));
-                System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
-                System.out.println("");
+                this.selector.select();
+                Set keys = selector.selectedKeys();
+                for (Iterator i = keys.iterator(); i.hasNext();) {
+                    SelectionKey key = (SelectionKey) i.next();
+                    i.remove();
+
+                    if (key == this.serverKey) {
+                        if (key.isAcceptable()) {
+                            SocketChannel client = this.server.accept();
+                            client.configureBlocking(false);
+                            SelectionKey clientKey = client.register(this.selector, SelectionKey.OP_READ);
+                            this.games.put(clientKey, new Game(this.layout, this.mode, this.numGame++));
+                            System.out.println("Client with address "
+                                    + client.socket().getInetAddress() + " connected to server");
+                        }
+                    } else {
+                        SocketChannel client = (SocketChannel) key.channel();
+                        if (!key.isReadable() || client.read(this.buffer) == -1) {
+                            key.cancel();
+                            client.close();
+                            continue;
+                        }
+                        this.buffer.flip();
+                        String request = this.decoder.decode(this.buffer).toString();
+                        this.buffer.clear();
+                        System.out.println("Client with address "
+                                + client.socket().getInetAddress() + " sent a message to server: "
+                                + request);
+                        Game clientGame = this.games.get(key);
+                        Message clientMessage = new Message(request);
+                        try {
+                            ArrayList<Message> messagesToSend = clientGame.getNextMessages(clientMessage);
+                            for (Message msg : messagesToSend){
+                                String response = msg.buildPackage();
+                                client.write(encoder.encode(CharBuffer.wrap(response)));
+                            }
+                        } catch (EndGameException ex){
+                            key.cancel();
+                            client.close();
+                            this.games.remove(key);
+                        }
+                    }
+                }
             } catch (IOException e) {
-                System.err.println("There has been an error with the client of address: " +
-                        (sock != null ? sock.getInetAddress() : null));
+                System.err.println("There has been an error while selecting.");
                 break;
             } catch (ReadGridException e) {
-                System.err.println("There has been an error when trying to create Grid from specified layout" +
-                        "of client with address: " + (sock != null ? sock.getInetAddress() : null));
+                System.err.println("There has been an error when trying to create Grid from specified layout");
                 break;
             }
         }
     }
 
     public void shutDownAll() {
-        this.threadPool.shutdown();
+        this.buffer.clear();
         try {
-            // Wait a while for existing tasks to terminate
-            if (!this.threadPool.awaitTermination(5, TimeUnit.SECONDS)) {
-                this.threadPool.shutdownNow(); // Cancel currently executing tasks
-                // Wait a while for tasks to respond to being cancelled
-                if (!this.threadPool.awaitTermination(5, TimeUnit.SECONDS))
-                    System.err.println("Pool did not terminate");
+            for (SelectionKey key : this.selector.keys()){
+                key.channel().close();
             }
-        } catch (InterruptedException ie) {
-            // (Re-)Cancel if current thread also interrupted
-            this.threadPool.shutdownNow();
-            // Preserve interrupt status
-            Thread.currentThread().interrupt();
+            this.server.close();
+            this.selector.close();
+        } catch (IOException e) {
+            //TODO do something
         }
-        try {
-            this.serverSocket.close();
-        } catch (IOException ex) {
-            System.err.println("Couldn't close server Socket.");
-        }
+
     }
 }
