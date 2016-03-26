@@ -5,11 +5,13 @@ package utils.enums;
  * Class that represents the -- Object
  */
 public enum Actor {
-    SERVER("S: "),
-    CLIENT("C: ");
+    SERVER("S: ",3),
+    CLIENT("C: ",3);
 
     public String logTxt;
-    Actor(String logTxt){
+    public int timeOut;
+    Actor(String logTxt, int timeOut){
         this.logTxt = logTxt;
+        this.timeOut = timeOut;
     }
 }

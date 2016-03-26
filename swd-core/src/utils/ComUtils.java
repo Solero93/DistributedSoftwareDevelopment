@@ -19,6 +19,7 @@ public class ComUtils {
 
     public void close() throws IOException {
         dis.close();
+        dos.flush();
         dos.close();
     }
 
