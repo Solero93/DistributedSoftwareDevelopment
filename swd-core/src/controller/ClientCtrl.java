@@ -45,7 +45,7 @@ public class ClientCtrl extends Controller {
     @Override
     public Message hitMyCell(String position) throws IOException {
         Message msg = super.hitMyCell(position);
-        this.sendMessage(msg.getCommand(),null);
+        this.sendMessage(msg.getCommand(), null);
         return msg;
     }
 }

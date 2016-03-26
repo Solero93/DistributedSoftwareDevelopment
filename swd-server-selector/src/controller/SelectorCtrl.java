@@ -16,11 +16,11 @@ public class SelectorCtrl extends Controller {
         this.logWriter = new LogCreator(filename);
     }
 
-    public void writeToLog(Actor a, Command c, String params) throws IOException{
-        this.logWriter.writeToLog(a,c,params);
+    public void writeToLog(Actor a, Command c, String params) throws IOException {
+        this.logWriter.writeToLog(a, c, params);
     }
 
-    public void close(){
+    public void close() {
         try {
             this.logWriter.close();
         } catch (IOException e) {

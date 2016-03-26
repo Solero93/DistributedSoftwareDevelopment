@@ -16,7 +16,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -58,7 +57,7 @@ public class ServerCore {
             try {
                 this.selector.select();
                 Set keys = selector.selectedKeys();
-                for (Iterator i = keys.iterator(); i.hasNext();) {
+                for (Iterator i = keys.iterator(); i.hasNext(); ) {
                     SelectionKey key = (SelectionKey) i.next();
                     i.remove();
 
@@ -67,7 +66,7 @@ public class ServerCore {
                             SocketChannel client = this.server.accept();
                             client.configureBlocking(false);
                             SelectionKey clientKey = client.register(this.selector, SelectionKey.OP_READ);
-                            key.attach(new Game(this.layout, this.mode, this.numGame++));
+                            clientKey.attach(new Game(this.layout, this.mode, this.numGame++));
                             System.out.println("Client with address "
                                     + client.socket().getInetAddress() + " connected to server");
                         }
@@ -76,7 +75,7 @@ public class ServerCore {
                         if (!key.isReadable()) {
                             continue;
                         }
-                        if (client.read(this.buffer) == -1){
+                        if (client.read(this.buffer) == -1) {
                             key.cancel();
                             client.close();
                             continue;
@@ -88,7 +87,7 @@ public class ServerCore {
                         System.out.println("Client with address "
                                 + client.socket().getInetAddress() + " sent a message to server: "
                                 + request);
-                        Game clientGame = (Game)key.attachment();
+                        Game clientGame = (Game) key.attachment();
                         try {
                             ArrayList<Message> messagesToSend = clientGame.getNextMessages(request);
                             for (Message serverMsg : messagesToSend) {
@@ -96,7 +95,7 @@ public class ServerCore {
                                 client.write(encoder.encode(CharBuffer.wrap(response)));
                                 if (serverMsg.getCommand() == Command.YOU_WIN) throw new EndGameException();
                             }
-                        } catch (EndGameException ex){
+                        } catch (EndGameException ex) {
                             clientGame.close();
                             key.cancel();
                             client.close();
@@ -116,7 +115,7 @@ public class ServerCore {
     public void shutDownAll() {
         this.buffer.clear();
         try {
-            for (SelectionKey key : this.selector.keys()){
+            for (SelectionKey key : this.selector.keys()) {
                 key.cancel();
             }
             this.server.close();

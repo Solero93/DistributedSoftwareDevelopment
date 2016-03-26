@@ -12,7 +12,7 @@ public abstract class GameMode {
     protected ArrayList<String> cellsFired;
     protected String waitMove;
     protected Random rand;
-    protected static final int RANDOM_SEED=42;
+    protected static final int RANDOM_SEED = 42;
 
     public GameMode() {
         this.cellsFired = new ArrayList<>();

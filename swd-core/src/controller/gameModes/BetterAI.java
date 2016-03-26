@@ -2,8 +2,6 @@ package controller.gameModes;
 
 import utils.enums.Command;
 
-import java.util.Random;
-
 /**
  * Class that represents the BetterAI
  */

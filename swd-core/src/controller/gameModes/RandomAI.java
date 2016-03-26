@@ -1,7 +1,5 @@
 package controller.gameModes;
 
-import java.util.Random;
-
 /**
  * Class that represents the RandomAI
  */

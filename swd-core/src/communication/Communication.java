@@ -2,7 +2,6 @@ package communication;
 
 import utils.ComUtils;
 import utils.Message;
-import utils.enums.Actor;
 import utils.enums.Command;
 
 import java.io.IOException;

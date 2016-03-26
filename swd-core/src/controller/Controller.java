@@ -1,6 +1,5 @@
 package controller;
 
-import communication.Communication;
 import controller.gameModes.GameMode;
 import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
@@ -13,7 +12,6 @@ import utils.enums.ShipType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 /**
