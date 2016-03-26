@@ -3,6 +3,7 @@ package communication;
 import exceptions.EndGameException;
 import exceptions.ReadGridException;
 import utils.Message;
+import utils.enums.Command;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -92,6 +93,12 @@ public class ServerCore {
                             for (Message msg : messagesToSend){
                                 String response = msg.buildPackage();
                                 client.write(encoder.encode(CharBuffer.wrap(response)));
+                                if (msg.getCommand() == Command.YOU_WIN){
+                                    key.cancel();
+                                    client.close();
+                                    this.games.remove(key);
+                                    break;
+                                }
                             }
                         } catch (EndGameException ex){
                             key.cancel();
