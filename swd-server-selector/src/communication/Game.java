@@ -30,6 +30,9 @@ public class Game {
         this.ctrl.createGameMode(mode);
         this.ctrl.createLog("ServerGame-"+id+".log");
     }
+    public void close(){
+        this.ctrl.close();
+    }
 
     public ArrayList<Message> getNextMessages(Message message) throws EndGameException {
         ArrayList<Message> msgToSend=new ArrayList<Message>();
