@@ -47,7 +47,8 @@ public class Message {
             case FIRE:
                 return (command.commandCode + ' ' + this.params);
             case ERROR:
-                return (command.commandCode + ' ' + this.params);
+                String length = String.format("%02d", this.params.length());
+                return (command.commandCode + ' ' + length + this.params);
             default:
                 return command.commandCode;
         }
