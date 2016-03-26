@@ -76,11 +76,7 @@ public class Game {
                             msgToSend.add(new Message().setCommand(Command.HUMAN_FIRST));
                             return msgToSend;
                         case FIRE:
-                            msgToSend.add(this.ctrl.hitMyCell(message.getParams()));
-                            if(msgToSend.get(0).getCommand() == Command.YOU_WIN ) {
-                                this.ctrl.close();
-                                return msgToSend;
-                            }
+                            msgToSend.add(this.ctrl.play());
                             return msgToSend;
                     }
                     return msgToSend;
