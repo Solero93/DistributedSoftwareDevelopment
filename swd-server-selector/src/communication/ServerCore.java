@@ -74,10 +74,11 @@ public class ServerCore {
                     } else {
                         SocketChannel client = (SocketChannel) key.channel();
                         if (!key.isReadable()) {
-                            if (client.read(this.buffer) == -1){
-                                key.cancel();
-                                client.close();
-                            }
+                            continue;
+                        }
+                        if (client.read(this.buffer) == -1){
+                            key.cancel();
+                            client.close();
                             continue;
                         }
 
