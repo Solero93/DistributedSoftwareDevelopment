@@ -12,6 +12,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
@@ -46,7 +47,7 @@ public class ServerSelector {
         this.mode = mode;
         this.selector = Selector.open();
         this.server = ServerSocketChannel.open();
-        this.server.socket().bind(new java.net.InetSocketAddress(port)); //TODO revisar
+        this.server.socket().bind(new java.net.InetSocketAddress(port));
         this.server.configureBlocking(false);
         this.serverKey = this.server.register(selector, SelectionKey.OP_ACCEPT);
         Charset charset = Charset.forName("ISO-8859-1");
@@ -67,58 +68,90 @@ public class ServerSelector {
         while (true) {
             try {
                 this.selector.select();
-                Set keys = selector.selectedKeys();
-                for (Iterator i = keys.iterator(); i.hasNext(); ) {
-                    SelectionKey key = (SelectionKey) i.next();
-                    i.remove();
-
-                    if (key == this.serverKey) {
-                        if (key.isAcceptable()) {
-                            SocketChannel client = this.server.accept();
-                            client.configureBlocking(false);
-                            SelectionKey clientKey = client.register(this.selector, SelectionKey.OP_READ);
-                            clientKey.attach(new Game(this.layout, this.mode, this.numGame++));
-                            System.out.println("Client with address "
-                                    + client.socket().getInetAddress() + " connected to server");
-                        }
-                    } else {
-                        SocketChannel client = (SocketChannel) key.channel();
-                        if (!key.isReadable()) {
-                            continue;
-                        }
-                        if (client.read(this.buffer) == -1) {
-                            key.cancel();
-                            client.close();
-                            continue;
-                        }
-
-                        this.buffer.flip();
-                        String request = this.decoder.decode(this.buffer).toString();
-                        this.buffer.clear();
-                        System.out.println("Client with address "
-                                + client.socket().getInetAddress() + " sent a message to server: "
-                                + request);
-                        Game clientGame = (Game) key.attachment();
-                        try {
-                            ArrayList<Message> messagesToSend = clientGame.getNextMessages(request);
-                            for (Message serverMsg : messagesToSend) {
-                                String response = serverMsg.buildPackage();
-                                client.write(encoder.encode(CharBuffer.wrap(response)));
-                                if (serverMsg.getCommand() == Command.YOU_WIN) throw new EndGameException();
-                            }
-                        } catch (EndGameException ex) {
-                            clientGame.close();
-                            key.cancel();
-                            client.close();
-                        }
-                    }
-                }
             } catch (IOException e) {
                 System.err.println("There has been an error while selecting.");
-                break;
-            } catch (ReadGridException e) {
-                System.err.println("There has been an error when trying to create Grid from specified layout");
-                break;
+                continue;
+            }
+            Set keys = selector.selectedKeys();
+            for (Iterator i = keys.iterator(); i.hasNext(); ) {
+                SelectionKey key = (SelectionKey) i.next();
+                i.remove();
+
+                if (key == this.serverKey) {
+                    if (key.isAcceptable()) {
+                        SocketChannel client;
+                        SelectionKey clientKey = null;
+                        try {
+                            client = this.server.accept();
+                            client.configureBlocking(false);
+                            clientKey = client.register(this.selector, SelectionKey.OP_READ);
+                            clientKey.attach(new Game(this.layout, this.mode, this.numGame++));
+                        } catch (IOException e) {
+                            System.err.println("There has been an error while trying to accept client");
+                            continue;
+                        } catch (ReadGridException e) {
+                            System.err.println("Couldn't generate grid for client");
+                            closeConnection(clientKey);
+                            continue;
+                        }
+                        System.out.println("Client with address: " +
+                            client.socket().getInetAddress() + " connected to server.");
+                    }
+                } else {
+                    SocketChannel client = (SocketChannel) key.channel();
+                    if (!key.isReadable()) {
+                        continue;
+                    }
+                    int numBytes;
+                    try {
+                        numBytes = client.read(this.buffer);
+                    } catch (IOException e) {
+                        System.err.println("Couldn't read to buffer from client with address: " +
+                                client.socket().getInetAddress());
+                        continue;
+                    }
+                    if (numBytes == -1) {
+                        this.closeConnection(key);
+                        continue;
+                    }
+
+                    this.buffer.flip();
+                    String request;
+                    try {
+                        request = this.decoder.decode(this.buffer).toString();
+                    } catch (CharacterCodingException e) {
+                        System.err.println("Error while receiving message");
+                        try {
+                            client.write(encoder.encode(CharBuffer.wrap(
+                                    new Message()
+                                            .setCommand(Command.ERROR)
+                                            .setParams("Encoding error")
+                                            .buildPackage()
+                            )));
+                        } catch (IOException ex) {
+                            System.err.println("Error while writing response");
+                            continue;
+                        }
+                        continue;
+                    }
+                    this.buffer.clear();
+                    Game clientGame = (Game) key.attachment();
+                    try {
+                        ArrayList<Message> messagesToSend = clientGame.getNextMessages(request);
+                        for (Message serverMsg : messagesToSend) {
+                            String response = serverMsg.buildPackage();
+                            try {
+                                client.write(encoder.encode(CharBuffer.wrap(response)));
+                            } catch (IOException e) {
+                                System.err.println("Error while writing response.");
+                                continue;
+                            }
+                            if (serverMsg.getCommand() == Command.YOU_WIN) throw new EndGameException();
+                        }
+                    } catch (EndGameException e) {
+                        this.closeConnection(key);
+                    }
+                }
             }
         }
     }
@@ -128,15 +161,27 @@ public class ServerSelector {
      */
     public void shutDownAll() {
         this.buffer.clear();
+        for (SelectionKey key : this.selector.keys()) {
+            closeConnection(key);
+        }
         try {
-            for (SelectionKey key : this.selector.keys()) {
-                key.cancel();
-            }
             this.server.close();
             this.selector.close();
         } catch (IOException e) {
+            System.err.println("There has been an error while shutting down server.");
+        }
+    }
+
+    public void closeConnection(SelectionKey key) {
+        Game clientGame = (Game) key.attachment();
+        clientGame.close();
+        key.cancel();
+        SocketChannel client = (SocketChannel) key.channel();
+        try {
+            client.close();
+        } catch (IOException e) {
             //TODO do something
         }
-
+        System.out.println("Client disconnected.");
     }
 }

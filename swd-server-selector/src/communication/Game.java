@@ -34,11 +34,11 @@ public class Game {
     }
 
     public ArrayList<Message> getNextMessages(String request) throws EndGameException {
-        ArrayList<Message> msgToSend = new ArrayList<Message>();
-        ArrayList<Message> msgRecived = new ArrayList<Message>();
+        ArrayList<Message> msgToSend = new ArrayList<>();
+        ArrayList<Message> msgReceived = new ArrayList<>();
         bufferMessages = bufferMessages + request;
-        msgRecived = readMessages(msgRecived);
-        for (Message message : msgRecived) {
+        msgReceived = readMessages(msgReceived);
+        for (Message message : msgReceived) {
             try {
                 this.ctrl.writeToLog(Actor.CLIENT, message.getCommand(), message.getParams());
 
@@ -149,6 +149,4 @@ public class Game {
             return Command.FIRE;
         }
     }
-
-
 }

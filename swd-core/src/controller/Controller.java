@@ -160,9 +160,14 @@ public class Controller {
      */
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
-        return new Message()
-                .setCommand(cmd)
-                .setParams(position);
+        if (cmd == Command.ERROR) {
+            return new Message()
+                    .setCommand(cmd)
+                    .setParams("Error while hitting cell");
+        } else {
+            return new Message()
+                    .setCommand(cmd);
+        }
     }
 
     /**

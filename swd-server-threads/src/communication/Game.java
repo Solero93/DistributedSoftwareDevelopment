@@ -93,10 +93,8 @@ public class Game extends Thread {
                 case SUNK:
                     break;
                 case ERROR:
-                    //TODO ERROR
                     return true;
                 default:
-                    //TODO ERROR?
                     return true;
             }
 
@@ -117,10 +115,8 @@ public class Game extends Thread {
                     if (myResponse.getCommand() == Command.YOU_WIN) return true;
                     break;
                 case ERROR:
-                    //TODO ERROR
                     return true;
                 default:
-                    //TODO ERROR?
                     return true;
             }
             return false;

@@ -15,7 +15,7 @@ public class ThreadCtrl extends ClientCtrl {
     private LogCreator logWriter;
 
     /**
-     * Throws the dice and decides who begings
+     * Throws the dice and decides who begins
      *
      * @return HUMAN_FIRST-Client begins, DRAW-throw again , FIRE-Server begins
      * @throws IOException
