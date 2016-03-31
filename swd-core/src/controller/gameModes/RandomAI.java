@@ -1,11 +1,15 @@
 package controller.gameModes;
 
-import java.util.Random;
-
 /**
  * Class that represents the RandomAI
  */
 public class RandomAI extends GameMode {
+    /**
+     * Picks randomly a hit position that's not been hit yet.
+     *
+     * @return Position to Hit
+     */
+    @Override
     public String generateHitPosition() {
         String letters = "ABCDEFGHIJ", position;
         while (true) {

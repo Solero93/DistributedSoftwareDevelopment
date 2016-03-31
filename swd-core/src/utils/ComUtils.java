@@ -146,7 +146,6 @@ public class ComUtils {
     /* Escriure un string mida variable, size = nombre de bytes especifica la longitud  */
     /* String str = string a escriure.*/
     public void write_string_variable(int size, String str) throws IOException {
-
         // Creem una seqüència amb la mida
         byte bHeader[] = new byte[size];
         String strHeader;
@@ -171,8 +170,6 @@ public class ComUtils {
 
     /* Llegir un string  mida variable size = nombre de bytes especifica la longitud*/
     public String read_string_util(int numBytes) throws IOException {
-
-
         // Llegim l'string
         byte bStr[] = new byte[numBytes];
         char cStr[] = new char[numBytes];
@@ -185,10 +182,7 @@ public class ComUtils {
     /* Escriure un string mida variable, size = nombre de bytes especifica la longitud  */
     /* String str = string a escriure.*/
     public void write_string_util(String str) throws IOException {
-
         // Creem la capçalera amb el nombre de bytes que codifiquen la mida
-
-
         // Enviem l'string writeBytes de DataOutputStrem no envia el byte més alt dels chars.
         dos.writeBytes(str);
     }

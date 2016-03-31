@@ -1,47 +1,44 @@
 package communication;
 
-import controller.Controller;
 import controller.SelectorCtrl;
 import exceptions.EndGameException;
 import exceptions.ReadGridException;
 import utils.Message;
-
 import utils.enums.Actor;
 import utils.enums.Command;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
     private SelectorCtrl ctrl;
-    int id;
-    String bufferMessages;
+    private int id;
+    private String bufferMessages;
 
     public Game(String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new SelectorCtrl();
-        this.id=id;
-        bufferMessages="";
+        this.id = id;
+        bufferMessages = "";
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
         } else {
             this.ctrl.generateGridFromFile(layout);
         }
         this.ctrl.createGameMode(mode);
-        this.ctrl.createLog("ServerGame-"+id+".log");
+        this.ctrl.createLog("ServerGame-" + id + ".log");
     }
-    public void close(){
+
+    public void close() {
         this.ctrl.close();
     }
 
     public ArrayList<Message> getNextMessages(String request) throws EndGameException {
-        ArrayList<Message> msgToSend=new ArrayList<Message>();
-        ArrayList<Message> msgRecived=new ArrayList<Message>();
-        bufferMessages= bufferMessages + request;
-        msgRecived=readMessages(msgRecived);
-        for (Message message : msgRecived) {
+        ArrayList<Message> msgToSend = new ArrayList<>();
+        ArrayList<Message> msgReceived = new ArrayList<>();
+        bufferMessages = bufferMessages + request;
+        msgReceived = readMessages(msgReceived);
+        for (Message message : msgReceived) {
             try {
                 this.ctrl.writeToLog(Actor.CLIENT, message.getCommand(), message.getParams());
 
@@ -55,40 +52,42 @@ public class Game {
         }
         return msgToSend;
     }
-    public ArrayList<Message> readMessages(ArrayList<Message> msgRecived)  {
+
+    public ArrayList<Message> readMessages(ArrayList<Message> msgRecived) {
         Message msg;
         char[] tmp;
         int num;
-        while(true) {
+        while (true) {
             msg = new Message();
             if (bufferMessages.length() < 4) return msgRecived;
-            Command cmd = Command.getCommandFromCode(bufferMessages.substring(0,4));
+            Command cmd = Command.getCommandFromCode(bufferMessages.substring(0, 4));
             msg.setCommand(cmd);
             switch (cmd) {
                 case FIRE:
                     if (bufferMessages.length() < 7) return msgRecived;
-                    tmp = bufferMessages.substring(4,7).toCharArray();
+                    tmp = bufferMessages.substring(4, 7).toCharArray();
                     msg.setParams("" + Character.toUpperCase(tmp[1]) + tmp[2]);
                     msgRecived.add(msg);
-                    bufferMessages=bufferMessages.substring(7);
+                    bufferMessages = bufferMessages.substring(7);
                     break;
                 case ERROR:
                     if (bufferMessages.length() < 7) return msgRecived;
-                    tmp = bufferMessages.substring(4,7).toCharArray();
-                    num=Integer.parseInt("" + tmp[1] + tmp[2]);
-                    if (bufferMessages.length() < (7+num)) return msgRecived;
-                    msg.setParams(bufferMessages.substring(7,7+num));
+                    tmp = bufferMessages.substring(4, 7).toCharArray();
+                    num = Integer.parseInt("" + tmp[1] + tmp[2]);
+                    if (bufferMessages.length() < (7 + num)) return msgRecived;
+                    msg.setParams(bufferMessages.substring(7, 7 + num));
                     msgRecived.add(msg);
-                    bufferMessages=bufferMessages.substring(7+num);
+                    bufferMessages = bufferMessages.substring(7 + num);
                     break;
                 default:
                     msgRecived.add(msg);
-                    bufferMessages=bufferMessages.substring(4);
+                    bufferMessages = bufferMessages.substring(4);
                     break;
             }
         }
 
     }
+
     public ArrayList<Message> getMessages(Message message, ArrayList<Message> msgToSend) throws EndGameException {
         try {
             switch (message.getCommand()) {
@@ -104,14 +103,14 @@ public class Game {
 
                 case FIRE:
                     msgToSend.add(this.ctrl.hitMyCell(message.getParams()));
-                    if(msgToSend.get(0).getCommand() == Command.YOU_WIN ) {
+                    if (msgToSend.get(0).getCommand() == Command.YOU_WIN) {
                         this.ctrl.close();
                         return msgToSend;
                     }
                     msgToSend.add(this.ctrl.play());
                     return msgToSend;
                 case THROW:
-                    switch (this.throwServerDice()){
+                    switch (this.throwServerDice()) {
                         case DRAW:
                             msgToSend.add(new Message().setCommand(Command.DRAW));
                             return msgToSend;
@@ -150,6 +149,4 @@ public class Game {
             return Command.FIRE;
         }
     }
-
-
 }

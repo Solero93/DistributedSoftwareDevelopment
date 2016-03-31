@@ -19,10 +19,21 @@ public enum Command {
 
     public String commandCode;
 
+    /**
+     * Constructs a Command from its code
+     *
+     * @param commandCode
+     */
     Command(String commandCode) {
         this.commandCode = commandCode;
     }
 
+    /**
+     * Returns a command from its commandCode. If it doesn't find it, returns UNKNOWN
+     *
+     * @param commandCode
+     * @return
+     */
     public static Command getCommandFromCode(String commandCode) {
         String upperCommandCode = commandCode.toUpperCase();
         for (Command m : Command.values()) {

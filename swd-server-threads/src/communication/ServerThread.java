@@ -10,22 +10,33 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Class that represents the ServerCore of the Game
+ * Class that represents Thread Server
  */
-public class ServerCore {
+public class ServerThread {
     private String layout;
     private int mode;
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
     private static final int MAX_THREADS = 10;
 
-    public ServerCore(int port, String layout, int mode) throws IOException {
+    /**
+     * Constructs the Thread Server
+     *
+     * @param port   : Port to assign server to
+     * @param layout : Layout it'll use
+     * @param mode   : Mode it'll play in
+     * @throws IOException
+     */
+    public ServerThread(int port, String layout, int mode) throws IOException {
         this.layout = layout;
         this.mode = mode;
         this.threadPool = Executors.newFixedThreadPool(MAX_THREADS);
         this.serverSocket = new ServerSocket(port);
     }
 
+    /**
+     * Main logic of the Threading Server
+     */
     public void serveClients() {
         System.out.println("Server serving at");
         System.out.println("\tAddress " + this.serverSocket.getInetAddress());
@@ -40,7 +51,7 @@ public class ServerCore {
                 System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
                 System.out.println("");
             } catch (IOException e) {
-                System.err.println("There has been an error with the client of address: " +
+                System.err.println("There has been an error with the client with address: " +
                         (sock != null ? sock.getInetAddress() : null));
                 break;
             } catch (ReadGridException e) {
@@ -51,6 +62,9 @@ public class ServerCore {
         }
     }
 
+    /**
+     * Shuts down all components of Server
+     */
     public void shutDownAll() {
         this.threadPool.shutdown();
         try {

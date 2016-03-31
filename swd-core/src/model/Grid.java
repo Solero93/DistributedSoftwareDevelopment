@@ -80,8 +80,6 @@ public class Grid {
                 newPosition = (character + "" + ((char) (i)));
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
-
-
             }
 
         } else {
@@ -166,8 +164,5 @@ public class Grid {
                 || cells.containsKey(((char) (character + 1)) + "" + number)
                 || cells.containsKey(character + "" + ((char) (number - 1)))
                 || cells.containsKey(character + "" + ((char) (number + 1))));
-
     }
-
-    // TODO "Generate grid" method missing
 }

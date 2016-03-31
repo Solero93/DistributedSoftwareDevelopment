@@ -47,6 +47,9 @@
 # Generated logs of Battleships
 **/res/*.log
 
+# Javadoc
+**/javadoc/
+
 # mpeltonen/sbt-idea plugin
 **/.idea_modules/
 

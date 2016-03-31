@@ -1,6 +1,5 @@
 package controller;
 
-import communication.Communication;
 import controller.gameModes.GameMode;
 import controller.gameModes.GameModeFactory;
 import exceptions.ReadGridException;
@@ -13,25 +12,36 @@ import utils.enums.ShipType;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 /**
- * Class that represents the Controller Object
+ * Class that represents the Controller of the Game
  */
 public class Controller {
     protected Grid myGrid;
     protected GameMode gm;
 
+    /**
+     * Creates a Controller object.
+     * Also initializes the Grid.
+     */
     public Controller() {
         this.myGrid = new Grid();
     }
 
+    /**
+     * Creates the GameMode the User wants to play in.
+     *
+     * @param mode : 0-Manual, 1-Random , 2-BetterAI
+     */
     public void createGameMode(int mode) {
         this.gm = new GameModeFactory().createGameMode(mode);
     }
 
-    public void generateGridAutomatic() throws ReadGridException {
+    /**
+     * Generates the Grid automatically using backtracking
+     */
+    public void generateGridAutomatic() {
         List<ShipType> ships = Arrays.asList(ShipType.A, ShipType.B, ShipType.B, ShipType.S, ShipType.S,
                 ShipType.D, ShipType.D, ShipType.P, ShipType.P);
         Collections.shuffle(ships); // Randomizing ships
@@ -66,6 +76,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Generates Grid from layout file
+     *
+     * @param filename : File coding the layout
+     * @throws IOException
+     * @throws ReadGridException
+     * @throws IllegalArgumentException
+     */
     public void generateGridFromFile(String filename) throws IOException, ReadGridException, IllegalArgumentException {
         // Create hashmap to count number of created ships
         HashMap<ShipType, Integer> numShips = new HashMap<>();
@@ -97,12 +115,28 @@ public class Controller {
         }
     }
 
+    /**
+     * Generate Grid from manual entry of user
+     *
+     * @param shipType
+     * @param position
+     * @param orientation
+     * @throws ReadGridException
+     * @throws IllegalArgumentException
+     */
     public void generateGridByUser(String shipType, String position, String orientation) throws ReadGridException, IllegalArgumentException {
         if (!this.myGrid.putShip(ShipType.valueOf(shipType).size, position, Orientation.valueOf(orientation))) {
             throw new ReadGridException();
         }
     }
 
+    /**
+     * Generates a position to Hit
+     *
+     * @return Position to Hit.
+     * @throws IOException
+     * @see GameMode#generateHitPosition()
+     */
     public Message play() throws IOException {
         String hitPosition = this.gm.generateHitPosition();
         return new Message()
@@ -110,18 +144,38 @@ public class Controller {
                 .setParams(hitPosition);
     }
 
+    /**
+     * @see GameMode#commitMove(Command)
+     */
     public void commitMove(Message msg) {
         this.gm.commitMove(msg.getCommand());
     }
 
+    /**
+     * Hits a cell and returns the message to send to Enemy
+     *
+     * @param position : position to hit on grid
+     * @return The message to send to Enemy
+     * @throws IOException
+     */
     public Message hitMyCell(String position) throws IOException {
         Command cmd = this.myGrid.hitCell(position);
-        return new Message()
-                .setCommand(cmd)
-                .setParams(position);
+        if (cmd == Command.ERROR) {
+            return new Message()
+                    .setCommand(cmd)
+                    .setParams("Error while hitting cell");
+        } else {
+            return new Message()
+                    .setCommand(cmd);
+        }
     }
 
-    // For debug purposes
+    /**
+     * Lets print the current Grid
+     * For Debug Purposes.
+     *
+     * @return String of Grid
+     */
     public String getCurrentGrid() {
         return this.myGrid.toString();
     }
