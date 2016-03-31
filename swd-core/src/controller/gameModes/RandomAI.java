@@ -11,6 +11,7 @@ public class RandomAI extends GameMode {
         while (true) {
             position = letters.charAt(this.rand.nextInt(10)) + Integer.toString(this.rand.nextInt(10));
             if (!this.cellsFired.contains(position)) {
+                this.waitMove = position;
                 return position;
             }
         }
