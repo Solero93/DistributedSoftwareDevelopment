@@ -1,0 +1,35 @@
+package utils {
+	class ComUtils {
+		-STRSIZE = 40 : int
+		-dis : DataInputStream
+		-dos : DataOutputStream
+		-- Apart dels que ja estàven --
+		+read_string_util(numBytes) : String
+		+write_string_util(str)
+		+close()
+	}
+}
+
+package controller {
+	class ClientCtrl extends Controller {
+		+createCommunication(serverName, port)
+		+createCommunication(socket)
+		+close()
+		+sendMessage(command, params)
+		+waitForEnemy() : Message
+	}	
+}
+
+package communication {
+	class Communication {
+		-mySocket : Socket
+		+Communication(serverName, port)
+		+Communication(socket)
+		+sendMessage(command, params)
+		+waitForMessage() : Message
+		+close()
+	}
+
+	Communication -- Message
+	Communication -- ComUtils
+}

@@ -18,6 +18,7 @@ public class ServerThread {
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
     private static final int MAX_THREADS = 10;
+    private int numGames;
 
     /**
      * Constructs the Thread Server
@@ -32,6 +33,7 @@ public class ServerThread {
         this.mode = mode;
         this.threadPool = Executors.newFixedThreadPool(MAX_THREADS);
         this.serverSocket = new ServerSocket(port);
+        this.numGames = 0;
     }
 
     /**
@@ -47,7 +49,7 @@ public class ServerThread {
             try {
                 sock = serverSocket.accept();
                 System.out.println("Client with address " + sock.getInetAddress() + " connected to server");
-                this.threadPool.execute(new Game(sock, layout, mode));
+                this.threadPool.execute(new Game(sock, layout, mode, this.numGames++));
                 System.out.println("Client with address " + sock.getInetAddress() + " served by a thread");
                 System.out.println("");
             } catch (IOException e) {

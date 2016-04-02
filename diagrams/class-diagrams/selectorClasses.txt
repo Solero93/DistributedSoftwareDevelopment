@@ -1,0 +1,50 @@
+@startuml
+
+!include coreClasses.txt
+!include serverClasses.txt
+
+package controller {
+	class SelectorCtrl extends Controller {
+		+createLog(filename)
+		+writeToLog(actor, command, params)
+		+close()
+	}
+
+	SelectorCtrl -- LogCreator
+}
+
+package communication {
+	class ServerSelector {
+		-layout : String
+		-mode : int
+		-selector : Selector
+		-server : ServerSocketChannel
+		-serverKey : SelectionKey
+		-encoder : CharsetEncoder
+		-decoder : CharsetDecoder
+		-buffer : ByteBuffer
+		-numGame : int
+		+serveClients()
+		+close()
+		-closeConnection(key)
+	}
+
+	class Game {
+		-id : int
+		-bufferMessages : String
+		+getNextMessages(request) : ArrayList<Message>
+		-readMessages(msgReceived) : ArrayList<Message>
+		-getMessages(message, msgsToSend) : ArrayList<Message>
+		-throwServerDice() : Command
+		+close()
+	}
+
+	SelectorCtrl -- Game
+}
+
+class Server {
+}
+
+Server -- ServerSelector
+
+@enduml

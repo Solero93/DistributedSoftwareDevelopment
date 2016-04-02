@@ -1,0 +1,27 @@
+@startuml
+
+!include coreClasses.txt
+!include socketersClasses.txt
+
+class Client {
+}
+
+class Game {
+	-server : String
+	-layout : String
+	-port : int
+	-mode : int
+	+prepareGame()
+	-getLayoutFromKeyboard() : boolean
+	+playGame()
+	-throwDice()
+	-myMove(message) : boolean
+	-enemyMove(message) : boolean
+	-myResponse(message) : boolean
+	+close()
+}
+
+Game - Client
+Game -- ClientCtrl
+
+@enduml

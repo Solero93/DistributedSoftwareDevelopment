@@ -1,0 +1,48 @@
+@startuml
+
+!include coreClasses.txt
+!include serverClasses.txt
+!include socketersClasses.txt
+
+package controller {
+	class ThreadCtrl extends ClientCtrl {
+		+throwServerDice() : Command
+		+createLog(filename)
+	}
+
+	ThreadCtrl -- LogCreator
+}
+
+package communication {
+	class ServerThread {
+		-layout : String
+		-mode : int
+		-serverSocket : ServerSocket
+		-threadPool : ExecutorService
+		-{static}MAX_THREADS=10 : int
+		+serveClients()
+		+close()
+	}
+
+	class Game << (T,orchid) >> {
+		+run()
+		-playGame()
+		-throwServerDice() : boolean
+		-myTurn() : boolean
+		-enemyTurn() : boolean
+		-sendCommand(command, params)
+		-receiveCommand() : Message
+	}
+
+	Game -- ThreadCtrl
+	Game -- Communication
+	ServerThread -- Game
+}
+
+class Server {
+	
+}
+
+Server -- ServerThread
+
+@enduml

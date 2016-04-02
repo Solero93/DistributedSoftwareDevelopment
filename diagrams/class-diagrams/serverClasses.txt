@@ -1,0 +1,11 @@
+package utils {
+	class LogCreator {
+		-logWriter : BufferedWriter
+		-isFirstLine : boolean
+		+writeToLog(actor, command, params)
+		+close()
+	}
+
+	LogCreator -- Actor
+	LogCreator -- Command
+}

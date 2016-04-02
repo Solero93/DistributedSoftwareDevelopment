@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException;
 public class Game extends Thread {
     private ThreadCtrl ctrl;
 
-    public Game(Socket sock, String layout, int mode) throws IOException, ReadGridException {
+    public Game(Socket sock, String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new ThreadCtrl();
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
@@ -21,16 +21,12 @@ public class Game extends Thread {
         }
         this.ctrl.createGameMode(mode);
         this.ctrl.createCommunication(sock);
+        this.ctrl.createLog("ServerGame-" + id + ".log");
     }
 
     public void run() {
-        try {
-            this.ctrl.createLog("Server" + Thread.currentThread().getName() + ".log");
-            this.playGame();
-        } catch (IOException e) {
-            //If couldn't create log, it should fail and exit
-        }
-        this.ctrl.close();
+        this.playGame();
+        this.close();
     }
 
     private void playGame() {
@@ -65,9 +61,6 @@ public class Game extends Thread {
                         case FIRE:
                             if (this.myTurn()) return false;
                             return true;
-                        default:
-                            //ERROR
-                            return false;
                     }
                 }
             } catch (IOException e) {
@@ -143,8 +136,12 @@ public class Game extends Thread {
             try {
                 return this.ctrl.waitForEnemy();
             } catch (SocketTimeoutException e) {
-                //Loop
+                //Loop while client doesn't answer
             }
         }
+    }
+
+    private void close() {
+        this.ctrl.close();
     }
 }

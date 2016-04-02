@@ -1,0 +1,141 @@
+package utils {
+	package enums {
+		enum Actor {
+			+logTxt : String
+			+timeOut : int
+			-- Members --
+			SERVER("S: ", 3)
+			CLIENT("C: ", 30)
+		}
+		
+		enum Command {
+			+commandCode : String
+			+getCommandFromCode(commandCode) : Command
+			-- Member --
+			START("STRT")
+			THROW("THRW")
+			FIRE("FIRE")
+			HIT("HIT_")
+			MISS("MISS")
+			SUNK("SUNK")
+			YOU_WIN("WIN_")
+			ERROR("ERRO")
+			GRID_RDY("GRID")
+			HUMAN_FIRST("FRST")
+			DRAW("DRAW")
+			UNKNOWN(null)
+		}
+
+		enum Orientation {
+			H
+			V
+		}
+
+		enum ShipType {
+			+fullName : String
+			+size : int
+			+numShips : int
+			-- Members --
+			A("Aircraft Carrier", 5, 1)
+			B("Battleship", 4, 2)
+			S("Submarine", 3, 2)
+			D("Destroyer", 3, 2)
+			P("Patrol Boat", 2, 2)
+		}
+	}
+
+	class Message {
+		-params : String
+		+buildPackage : String
+	}
+
+	Message -- Command
+}
+
+package model {
+	class Grid {
+		-cells : HashMap<String, Cell>
+		-numShipsLeft : int
+		+toString() : String
+		+hitCell(position) : Command
+		+putShip(shipSize, position, orientation) : boolean
+		+removeShip(shipSize, position, orientation)
+		+nextPosition(position) : String
+		-invalidCell(character, number) : boolean
+	}
+
+	class Cell {
+		position : String
+		visited : boolean
+		+hitCell : Command
+		+putShip(ship)
+	}
+
+	class Ship {
+		size : int
+		life : int
+		+loseLife() : boolean
+	}
+
+	Grid - Cell
+	Cell - Ship
+}
+
+package controller {
+	package gameModes {
+		class GameModeFactory {
+			+createGameMode(mode) : GameMode
+		}
+
+		abstract class GameMode {
+			-cellsFired : ArrayList<String>
+			-waitMove : String
+			-rand : Random
+			-{static} RANDOM_SEED = 42 : int
+			+{abstract} generateHitPosition() : String
+			+commitMove(command)
+		}
+
+		GameModeFactory - GameMode
+
+		class ManualGame extends GameMode {
+		}
+
+		class RandomAI extends GameMode {
+		}
+
+		class BetterAI extends GameMode {
+			-firstHit : String
+			-lastCommand : Command
+			-currHitDir : Direction
+			-isValidPosition(position) : boolean
+		}
+
+		enum Direction {
+			+x : int
+			+y : int
+			--
+			UP(0,1)
+			DOWN(0,-1)
+			LEFT(-1,0)
+			RIGHT(1,0)
+		}
+
+		BetterAI - Direction
+	}
+
+	class Controller {
+		+createGameMode(mode)
+		+generateGridAutomatic()
+		+generateGridFromFile(filename)
+		+generateGridByUser(shipType, position, orientation)
+		+play() : Message
+		+commitMove(message)
+		+hitMyCell(position) : Message
+		+getCurrentGrid() : String
+	}
+
+	Controller - GameMode
+	Controller -- Message
+	Controller - Grid
+}

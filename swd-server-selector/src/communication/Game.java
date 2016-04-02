@@ -13,12 +13,10 @@ import java.util.Random;
 
 public class Game {
     private SelectorCtrl ctrl;
-    private int id;
     private String bufferMessages;
 
     public Game(String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new SelectorCtrl();
-        this.id = id;
         bufferMessages = "";
         if (layout == null) {
             this.ctrl.generateGridAutomatic();
@@ -53,34 +51,34 @@ public class Game {
         return msgToSend;
     }
 
-    public ArrayList<Message> readMessages(ArrayList<Message> msgRecived) {
+    private ArrayList<Message> readMessages(ArrayList<Message> msgReceived) {
         Message msg;
         char[] tmp;
         int num;
         while (true) {
             msg = new Message();
-            if (bufferMessages.length() < 4) return msgRecived;
+            if (bufferMessages.length() < 4) return msgReceived;
             Command cmd = Command.getCommandFromCode(bufferMessages.substring(0, 4));
             msg.setCommand(cmd);
             switch (cmd) {
                 case FIRE:
-                    if (bufferMessages.length() < 7) return msgRecived;
+                    if (bufferMessages.length() < 7) return msgReceived;
                     tmp = bufferMessages.substring(4, 7).toCharArray();
                     msg.setParams("" + Character.toUpperCase(tmp[1]) + tmp[2]);
-                    msgRecived.add(msg);
+                    msgReceived.add(msg);
                     bufferMessages = bufferMessages.substring(7);
                     break;
                 case ERROR:
-                    if (bufferMessages.length() < 7) return msgRecived;
+                    if (bufferMessages.length() < 7) return msgReceived;
                     tmp = bufferMessages.substring(4, 7).toCharArray();
                     num = Integer.parseInt("" + tmp[1] + tmp[2]);
-                    if (bufferMessages.length() < (7 + num)) return msgRecived;
+                    if (bufferMessages.length() < (7 + num)) return msgReceived;
                     msg.setParams(bufferMessages.substring(7, 7 + num));
-                    msgRecived.add(msg);
+                    msgReceived.add(msg);
                     bufferMessages = bufferMessages.substring(7 + num);
                     break;
                 default:
-                    msgRecived.add(msg);
+                    msgReceived.add(msg);
                     bufferMessages = bufferMessages.substring(4);
                     break;
             }
@@ -88,7 +86,7 @@ public class Game {
 
     }
 
-    public ArrayList<Message> getMessages(Message message, ArrayList<Message> msgToSend) throws EndGameException {
+    private ArrayList<Message> getMessages(Message message, ArrayList<Message> msgToSend) throws EndGameException {
         try {
             switch (message.getCommand()) {
                 case YOU_WIN:
@@ -132,7 +130,7 @@ public class Game {
         return msgToSend;
     }
 
-    public Command throwServerDice() throws IOException {
+    private Command throwServerDice() throws IOException {
         int dice1, dice2;
         Random rand = new Random();
 

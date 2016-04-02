@@ -95,7 +95,7 @@ public class ServerSelector {
                             continue;
                         }
                         System.out.println("Client with address: " +
-                            client.socket().getInetAddress() + " connected to server.");
+                                client.socket().getInetAddress() + " connected to server.");
                     }
                 } else {
                     SocketChannel client = (SocketChannel) key.channel();
@@ -125,7 +125,7 @@ public class ServerSelector {
                             client.write(encoder.encode(CharBuffer.wrap(
                                     new Message()
                                             .setCommand(Command.ERROR)
-                                            .setParams("Encoding error")
+                                            .setParams("Decoding error")
                                             .buildPackage()
                             )));
                         } catch (IOException ex) {
@@ -172,6 +172,11 @@ public class ServerSelector {
         }
     }
 
+    /**
+     * Closes connection of a client associated to a key
+     *
+     * @param key : Client's SelectionKey
+     */
     public void closeConnection(SelectionKey key) {
         Game clientGame = (Game) key.attachment();
         clientGame.close();
