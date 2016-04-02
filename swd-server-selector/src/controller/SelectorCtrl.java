@@ -33,7 +33,7 @@ public class SelectorCtrl extends Controller {
         try {
             this.logWriter.close();
         } catch (IOException e) {
-            //TODO do something
+            //Shouldn't do anything
         }
     }
 }

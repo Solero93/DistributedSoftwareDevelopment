@@ -57,7 +57,7 @@ public class Server {
             return;
         }
         serverThread.serveClients();
-        serverThread.shutDownAll();
+        serverThread.close();
         System.out.println("Server ended. Thank you for playing battleships!");
     }
 }

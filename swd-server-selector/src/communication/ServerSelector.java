@@ -159,7 +159,7 @@ public class ServerSelector {
     /**
      * Shuts down all components of Server
      */
-    public void shutDownAll() {
+    public void close() {
         this.buffer.clear();
         for (SelectionKey key : this.selector.keys()) {
             closeConnection(key);
@@ -180,7 +180,7 @@ public class ServerSelector {
         try {
             client.close();
         } catch (IOException e) {
-            //TODO do something
+            //Shouldn't do anything
         }
         System.out.println("Client disconnected.");
     }

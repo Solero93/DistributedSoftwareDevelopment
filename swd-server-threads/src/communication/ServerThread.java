@@ -65,7 +65,7 @@ public class ServerThread {
     /**
      * Shuts down all components of Server
      */
-    public void shutDownAll() {
+    public void close() {
         this.threadPool.shutdown();
         try {
             // Wait a while for existing tasks to terminate

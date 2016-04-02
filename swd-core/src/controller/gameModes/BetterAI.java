@@ -39,7 +39,6 @@ public class BetterAI extends GameMode {
     @Override
     public String generateHitPosition() {
         String position;
-        // TODO make a more intelligent random algorithm
         if (this.firstHit == null) { // If there's no recent HIT => random
             while (true) {
                 position = "ABCDEFGHIJ".charAt(this.rand.nextInt(10)) + Integer.toString(this.rand.nextInt(10));
@@ -50,7 +49,7 @@ public class BetterAI extends GameMode {
             }
         }
         // If there's recent HIT => Apply AI
-        if (lastCommand == Command.HIT) {
+        if (this.lastCommand == Command.HIT) {
             // If the last move was a HIT
             // Keep on hitting on the same direction
             String lastHitPosition = this.cellsFired.get(this.cellsFired.size() - 1);

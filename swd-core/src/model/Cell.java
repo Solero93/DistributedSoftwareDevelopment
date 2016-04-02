@@ -26,9 +26,7 @@ public class Cell {
         return (shipOnCell.loseLife()) ? Command.SUNK : Command.HIT;
     }
 
-    // No need to return boolean since it's checked in Grid class
     public void putShip(Ship ship) {
         this.shipOnCell = ship;
     }
-
 }

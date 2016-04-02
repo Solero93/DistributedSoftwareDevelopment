@@ -93,10 +93,7 @@ public class Grid {
                 newPosition = (((char) (i)) + "" + number);
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
-
-
             }
-
         }
         this.numShipsLeft++;
         return true;
@@ -139,8 +136,6 @@ public class Grid {
             number = ((char) (number + 1));
         }
         while (character <= 'J') {
-
-
             if (!invalidCell(character, number)) return (character + "" + number);
             if (number == '9') {
                 character = ((char) (character + 1));

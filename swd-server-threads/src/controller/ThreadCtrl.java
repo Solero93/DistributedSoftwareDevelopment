@@ -1,11 +1,13 @@
 package controller;
 
+import communication.Communication;
 import utils.LogCreator;
 import utils.Message;
 import utils.enums.Actor;
 import utils.enums.Command;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.Random;
 
 /**
@@ -13,6 +15,13 @@ import java.util.Random;
  */
 public class ThreadCtrl extends ClientCtrl {
     private LogCreator logWriter;
+
+    /**
+     * @see Communication#Communication(Socket)
+     */
+    public void createCommunication(Socket sock) throws IOException {
+        this.com = new Communication(sock);
+    }
 
     /**
      * Throws the dice and decides who begins
@@ -74,7 +83,7 @@ public class ThreadCtrl extends ClientCtrl {
         try {
             this.logWriter.close();
         } catch (IOException e) {
-            // TODO do something
+            //Shouldn't treat
         }
     }
 }

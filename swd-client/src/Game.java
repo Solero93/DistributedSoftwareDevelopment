@@ -34,7 +34,7 @@ public class Game {
     /**
      * Prepares the game
      * 1. Constructs the Grid
-     * 2. Constructs the Mode
+     * 2. Constructs the GameMode
      * 3. Constructs the Communication
      */
     public void prepareGame() {

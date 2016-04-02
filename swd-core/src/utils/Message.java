@@ -47,6 +47,7 @@ public class Message {
             case FIRE:
                 return (command.commandCode + ' ' + this.params);
             case ERROR:
+                // Let's suppose no one writes a message longer than 99 characters
                 String length = String.format("%02d", this.params.length());
                 return (command.commandCode + ' ' + length + this.params);
             default:

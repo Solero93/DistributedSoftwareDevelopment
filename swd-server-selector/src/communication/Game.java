@@ -125,7 +125,6 @@ public class Game {
                 case START:
                     msgToSend.add(new Message().setCommand(Command.GRID_RDY));
                     return msgToSend;
-                //TODO Flujos
             }
         } catch (IOException e) {
 

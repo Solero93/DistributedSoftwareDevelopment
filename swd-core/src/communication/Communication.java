@@ -93,7 +93,7 @@ public class Communication {
             this.com.close();
             this.mySocket.close();
         } catch (IOException e) {
-            //TODO
+            //No need to treat
         }
     }
 }

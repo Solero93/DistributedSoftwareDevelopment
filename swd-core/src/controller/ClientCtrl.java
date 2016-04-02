@@ -5,7 +5,6 @@ import utils.Message;
 import utils.enums.Command;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * Class that represents the Controller of Client
@@ -19,13 +18,6 @@ public class ClientCtrl extends Controller {
      */
     public void createCommunication(String serverName, int port) throws IOException {
         this.com = new Communication(serverName, port);
-    }
-
-    /**
-     * @see Communication#Communication(Socket)
-     */
-    public void createCommunication(Socket sock) throws IOException {
-        this.com = new Communication(sock);
     }
 
     /**

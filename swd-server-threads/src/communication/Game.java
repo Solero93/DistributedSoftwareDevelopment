@@ -28,7 +28,7 @@ public class Game extends Thread {
             this.ctrl.createLog("Server" + Thread.currentThread().getName() + ".log");
             this.playGame();
         } catch (IOException e) {
-            //TODO treat errors
+            //If couldn't create log, it should fail and exit
         }
         this.ctrl.close();
     }
@@ -129,7 +129,7 @@ public class Game extends Thread {
     /**
      * @return true if we an send the messageCode, false otherwise
      */
-    public boolean sendCommand(Command cmd, String params) {
+    private boolean sendCommand(Command cmd, String params) {
         try {
             this.ctrl.sendMessage(cmd, params);
             return true;
@@ -138,12 +138,12 @@ public class Game extends Thread {
         }
     }
 
-    public Message receiveCommand() throws IOException {
+    private Message receiveCommand() throws IOException {
         while (true) {
             try {
                 return this.ctrl.waitForEnemy();
             } catch (SocketTimeoutException e) {
-
+                //Loop
             }
         }
     }
