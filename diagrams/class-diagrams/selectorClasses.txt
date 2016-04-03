@@ -10,7 +10,7 @@ package controller {
 		+close()
 	}
 
-	SelectorCtrl -- LogCreator
+	SelectorCtrl "1" -- "1" LogCreator : creates logs
 }
 
 package communication {
@@ -39,12 +39,12 @@ package communication {
 		+close()
 	}
 
-	SelectorCtrl -- Game
+	SelectorCtrl "1" -- "1" Game : represents game\nof clients
 }
 
 class Server {
 }
 
-Server -- ServerSelector
+Server "1" -- "1" ServerSelector : calls
 
 @enduml

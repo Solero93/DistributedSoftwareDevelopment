@@ -1,4 +1,14 @@
 package utils {
+	package enums {
+		enum Actor {
+			+logTxt : String
+			+timeOut : int
+			-- Members --
+			SERVER("S: ", 3)
+			CLIENT("C: ", 30)
+		}
+	}
+
 	class LogCreator {
 		-logWriter : BufferedWriter
 		-isFirstLine : boolean
@@ -6,6 +16,6 @@ package utils {
 		+close()
 	}
 
-	LogCreator -- Actor
-	LogCreator -- Command
+	LogCreator "1" -- "1" Actor : writes events of
+	LogCreator "1" -- "1" Command : writes event
 }

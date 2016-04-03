@@ -1,17 +1,9 @@
 package utils {
-	package enums {
-		enum Actor {
-			+logTxt : String
-			+timeOut : int
-			-- Members --
-			SERVER("S: ", 3)
-			CLIENT("C: ", 30)
-		}
-		
+	package enums {		
 		enum Command {
 			+commandCode : String
 			+getCommandFromCode(commandCode) : Command
-			-- Member --
+			-- Members --
 			START("STRT")
 			THROW("THRW")
 			FIRE("FIRE")
@@ -27,6 +19,7 @@ package utils {
 		}
 
 		enum Orientation {
+			-- Members --
 			H
 			V
 		}
@@ -45,11 +38,12 @@ package utils {
 	}
 
 	class Message {
+		-command : Command
 		-params : String
-		+buildPackage : String
+		+buildPackage() : String
 	}
 
-	Message -- Command
+	Message "1" -- "1" Command : owns
 }
 
 package model {
@@ -65,27 +59,25 @@ package model {
 	}
 
 	class Cell {
-		position : String
-		visited : boolean
+		-position : String
 		+hitCell : Command
 		+putShip(ship)
 	}
 
 	class Ship {
-		size : int
-		life : int
+		-life : int
 		+loseLife() : boolean
 	}
 
-	Grid - Cell
-	Cell - Ship
+	Grid "1" --o "0..100" Cell : is made up of
+	Cell "1" -- "0..1" Ship : can own a
 }
 
 package controller {
 	package gameModes {
 		class GameModeFactory {
 			+createGameMode(mode) : GameMode
-		}
+		}	
 
 		abstract class GameMode {
 			-cellsFired : ArrayList<String>
@@ -96,7 +88,7 @@ package controller {
 			+commitMove(command)
 		}
 
-		GameModeFactory - GameMode
+		GameModeFactory "1" - "1" GameMode : creates
 
 		class ManualGame extends GameMode {
 		}
@@ -120,8 +112,8 @@ package controller {
 			LEFT(-1,0)
 			RIGHT(1,0)
 		}
-
-		BetterAI - Direction
+ 
+		BetterAI "1" - "1" Direction : represents\ncurrent direction
 	}
 
 	class Controller {
@@ -135,7 +127,7 @@ package controller {
 		+getCurrentGrid() : String
 	}
 
-	Controller - GameMode
-	Controller -- Message
-	Controller - Grid
+	Controller "1" - "1" GameMode : plays with
+	Controller "1" -- "*" Message : manages
+	Controller "1" - "1" Grid : has
 }

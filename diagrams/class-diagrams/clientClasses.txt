@@ -21,7 +21,7 @@ class Game {
 	+close()
 }
 
-Game - Client
-Game -- ClientCtrl
+Game "1" - "1" Client : calls
+Game "1" -- "1" ClientCtrl : works through
 
 @enduml

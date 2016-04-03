@@ -31,5 +31,5 @@ package communication {
 	}
 
 	Communication -- Message
-	Communication -- ComUtils
+	Communication "1" -- "1" ComUtils : manages
 }

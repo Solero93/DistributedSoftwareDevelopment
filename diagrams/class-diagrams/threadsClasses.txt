@@ -10,7 +10,7 @@ package controller {
 		+createLog(filename)
 	}
 
-	ThreadCtrl -- LogCreator
+	ThreadCtrl "1" -- "1" LogCreator : writes logs
 }
 
 package communication {
@@ -34,15 +34,15 @@ package communication {
 		-receiveCommand() : Message
 	}
 
-	Game -- ThreadCtrl
-	Game -- Communication
-	ServerThread -- Game
+	Game "1" -- "1" ThreadCtrl : works through
+	Game "1" -- "1" Communication : send messages with
+	ServerThread "1" -- "1" Game : creates threads\nfor clients
 }
 
 class Server {
 	
 }
 
-Server -- ServerThread
+Server "1" -- "1" ServerThread : calls
 
 @enduml
