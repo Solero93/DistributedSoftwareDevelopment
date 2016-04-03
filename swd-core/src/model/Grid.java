@@ -3,6 +3,7 @@ package model;
 import utils.enums.Command;
 import utils.enums.Orientation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -10,6 +11,7 @@ import java.util.HashMap;
  */
 public class Grid {
     private HashMap<String, Cell> cells;
+    private ArrayList<String> cellsFired;
     private int numShipsLeft;
 
     public Grid() {
@@ -17,6 +19,10 @@ public class Grid {
         this.numShipsLeft = 0;
     }
 
+    /**
+     * Draws the grid in a String
+     * @return
+     */
     public String toString() {
         String mensaje;
         mensaje = " |0123456789|\n";
@@ -34,6 +40,11 @@ public class Grid {
         return mensaje;
     }
 
+    /**
+     * Says to the other user if he hited your ships or not
+     * @param position
+     * @return MISS ERROR HIT SUNK YOU_WIN
+     */
     public Command hitCell(String position) {
         Command tmp;
         char character, number;
@@ -43,10 +54,13 @@ public class Grid {
         position = position.toUpperCase();
         character = position.charAt(0);
         number = position.charAt(1);
-        if ((character < 'A') || (character > 'J') || (number < '0') || ((number) > '9')) {
+        //If is a valide cells or was fired after
+        if ((character < 'A') || (character > 'J') || (number < '0') || ((number) > '9') || (cellsFired.contains(position))) {
             return Command.ERROR;
         }
+        cellsFired.add(position);//Fired cells
 
+        //
         if (cells.containsKey(position)) {
             tmp = cells.get(position).hitCell();
             if (tmp == Command.SUNK) {
@@ -57,6 +71,13 @@ public class Grid {
         return Command.MISS;
     }
 
+    /**
+     * Put a ship in the grid
+     * @param shipSize
+     * @param position
+     * @param orientation
+     * @return True if you can put it, False if you can't
+     */
     public boolean putShip(int shipSize, String position, Orientation orientation) {
         char character, number;
         Ship ship = new Ship(shipSize);
@@ -69,26 +90,33 @@ public class Grid {
         position = position.toUpperCase();
         character = position.charAt(0);
         number = position.charAt(1);
+        // HORIZONTAL
         if (orientation == Orientation.H) {
+            // IF the ship is out the grid returns false
             if ((character < 'A') || (character > 'J') || (number < '0') || ((number + shipSize - 1) > '9')) {
                 return false;
             }
+            // If the ship is on a invalide cell
             for (int i = number; i <= (number + shipSize - 1); i++) {
                 if (invalidCell(character, (char) i)) return false;
             }
+            //Adding the ship
             for (int i = number; i <= (number + shipSize - 1); i++) {
                 newPosition = (character + "" + ((char) (i)));
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
             }
-
+        // Vertical
         } else {
+            // IF the ship is out the grid returns false
             if ((character < 'A') || ((character + shipSize - 1) > 'J') || (number < '0') || (number > '9')) {
                 return false;
             }
+            // If the ship is on a invalide cell
             for (int i = character; i <= (character + shipSize - 1); i++) {
                 if (invalidCell((char) i, number)) return false;
             }
+            //Adding the ship
             for (int i = character; i <= (character + shipSize - 1); i++) {
                 newPosition = (((char) (i)) + "" + number);
                 cell = new Cell(newPosition, ship);
@@ -99,18 +127,25 @@ public class Grid {
         return true;
     }
 
-
+    /**
+     * Removes the ship at the position, orientation  and size put
+     * @param shipSize
+     * @param position
+     * @param orientation
+     */
     public void removeShip(int shipSize, String position, Orientation orientation) {
         char character, number;
         String newPosition;
         position = position.toUpperCase();
         character = position.charAt(0);
         number = position.charAt(1);
+        //Horizontal
         if (orientation == Orientation.H) {
             for (int i = number; i <= (number + shipSize - 1); i++) {
                 newPosition = (character + "" + ((char) (i)));
                 cells.remove(newPosition);
             }
+        //Vertical
         } else {
             for (int i = character; i <= (character + shipSize - 1); i++) {
                 newPosition = (((char) (i)) + "" + number);
@@ -120,6 +155,11 @@ public class Grid {
         numShipsLeft--;
     }
 
+    /**
+     * Return the next free position of the gird
+     * @param position
+     * @return
+     */
     public String nextPosition(String position) {
         char character, number;
         if (position.length() != 2) {
@@ -149,6 +189,7 @@ public class Grid {
     }
 
     /**
+     * Validate if is free that cell and the cells next it
      * @param character
      * @param number
      * @return true if is invalid, false if it is valid

@@ -8,22 +8,9 @@ import utils.enums.Command;
  * @see GameMode
  */
 public class BetterAI extends GameMode {
-    private enum Direction {
-        UP(0, 1), DOWN(0, -1), LEFT(-1, 0), RIGHT(1, 0);
-
-        public int x;
-        public int y;
-
-        Direction(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
     private String firstHit;
     private Command lastCommand;
     private Direction currHitDir;
-
     public BetterAI() {
         super();
         this.firstHit = null;
@@ -111,5 +98,17 @@ public class BetterAI extends GameMode {
                 break;
         }
         super.commitMove(command);
+    }
+
+    private enum Direction {
+        UP(0, 1), DOWN(0, -1), LEFT(-1, 0), RIGHT(1, 0);
+
+        public int x;
+        public int y;
+
+        Direction(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

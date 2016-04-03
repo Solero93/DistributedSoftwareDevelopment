@@ -11,10 +11,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Game flux frome the selector server
+ */
 public class Game {
     private SelectorCtrl ctrl;
     private String bufferMessages;
 
+    /**
+     * Constructor
+     * @param layout
+     * @param mode
+     * @param id
+     * @throws IOException
+     * @throws ReadGridException
+     */
     public Game(String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new SelectorCtrl();
         bufferMessages = "";
@@ -27,15 +38,27 @@ public class Game {
         this.ctrl.createLog("ServerGame-" + id + ".log");
     }
 
+    /**
+     * Close the log
+     */
     public void close() {
         this.ctrl.close();
     }
 
+    /**
+     * Basic flux called from the selecctor
+     * Looks if there are a message at the buffer and answer it.
+     * @param request
+     * @return Returns an array of messages to send
+     * @throws EndGameException
+     */
     public ArrayList<Message> getNextMessages(String request) throws EndGameException {
         ArrayList<Message> msgToSend = new ArrayList<>();
         ArrayList<Message> msgReceived = new ArrayList<>();
         bufferMessages = bufferMessages + request;
+        //Looks
         msgReceived = readMessages(msgReceived);
+
         for (Message message : msgReceived) {
             try {
                 this.ctrl.writeToLog(Actor.CLIENT, message.getCommand(), message.getParams());
@@ -51,6 +74,12 @@ public class Game {
         return msgToSend;
     }
 
+    /**
+     * Looks if there are a complete  command at the buffer
+     * Create the Message from the command
+     * @param msgReceived
+     * @return
+     */
     private ArrayList<Message> readMessages(ArrayList<Message> msgReceived) {
         Message msg;
         char[] tmp;
@@ -86,16 +115,25 @@ public class Game {
 
     }
 
+    /**
+     * Answers of the messages puted
+     * @param message
+     * @param msgToSend
+     * @return
+     * @throws EndGameException
+     */
     private ArrayList<Message> getMessages(Message message, ArrayList<Message> msgToSend) throws EndGameException {
         try {
             switch (message.getCommand()) {
                 case YOU_WIN:
                 case ERROR:
+                    //We close wen one wins or an error has sended
                     this.ctrl.close();
                     throw new EndGameException();
                 case MISS:
                 case HIT:
                 case SUNK:
+                    // 
                     this.ctrl.commitMove(message);
                     return msgToSend;
 
@@ -130,6 +168,10 @@ public class Game {
         return msgToSend;
     }
 
+    /**
+     * Throw dice method
+     *
+     */
     private Command throwServerDice() throws IOException {
         int dice1, dice2;
         Random rand = new Random();

@@ -9,9 +9,22 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
+/**
+ * Flux of the server game
+ * The messages are sending by the ctrl
+ */
 public class Game extends Thread {
     private ThreadCtrl ctrl;
 
+    /**
+     * Constructor
+     * @param sock
+     * @param layout
+     * @param mode
+     * @param id
+     * @throws IOException
+     * @throws ReadGridException
+     */
     public Game(Socket sock, String layout, int mode, int id) throws IOException, ReadGridException {
         this.ctrl = new ThreadCtrl();
         if (layout == null) {
@@ -24,13 +37,22 @@ public class Game extends Thread {
         this.ctrl.createLog("ServerGame-" + id + ".log");
     }
 
+    /**
+     * Main of the thread
+     */
     public void run() {
         this.playGame();
         this.close();
     }
 
+    /**
+     * Flux
+     */
     private void playGame() {
         Message firstResponse = new Message();
+        /**
+         * Waiting to the start command
+         */
         while (firstResponse.getCommand() != Command.START) {
             try {
                 firstResponse = this.receiveCommand();
@@ -38,9 +60,15 @@ public class Game extends Thread {
                 return;
             }
         }
+        /**
+         * Grid generationa and throw the Dice
+         */
         if (!this.sendCommand(Command.GRID_RDY, null) || !this.throwServerDice()) {
             return;
         }
+        /**
+         * Central game flux
+         */
         while (true) {
             if (this.enemyTurn() || this.myTurn()) {
                 return;
@@ -48,10 +76,15 @@ public class Game extends Thread {
         }
     }
 
+    /**
+     * Throw dice flux
+     * @return
+     */
     private boolean throwServerDice() {
         while (true) {
             try {
                 Message msg = this.receiveCommand();
+                /
                 if (msg.getCommand() == Command.THROW) {
                     switch (this.ctrl.throwServerDice()) {
                         case HUMAN_FIRST:
@@ -69,6 +102,10 @@ public class Game extends Thread {
         }
     }
 
+    /**
+     * Server turn flux
+     * @return
+     */
     private boolean myTurn() {
         //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
         try {
@@ -87,7 +124,7 @@ public class Game extends Thread {
                     break;
                 case ERROR:
                     return true;
-                default:
+                default://TODO SEND ERRROR  whit While o petar?
                     return true;
             }
 
@@ -98,6 +135,10 @@ public class Game extends Thread {
         //}
     }
 
+    /**
+     * Enemi turn flux
+     * @return
+     */
     private boolean enemyTurn() {
         //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
         try {
@@ -109,7 +150,7 @@ public class Game extends Thread {
                     break;
                 case ERROR:
                     return true;
-                default:
+                default://TODO SEND ERRROR  whit While o petar?
                     return true;
             }
             return false;

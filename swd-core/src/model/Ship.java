@@ -4,21 +4,24 @@ package model;
  * Class that represents the Ship Object
  */
 public class Ship {
-    //String position --> no hace falta, porque ya lo vamos colocando, la celda ya tiene esa información
-    //Orientation isHorizontal; --> lo mismo , aunque no recuerdo si esto lo dijimos para put o para jugar
-    private int size;
-    private int life; // TODO Shouldn't really need, since size is never consulted ever after
 
+    private int life;
 
+    /**
+     * Constructor
+     * @param size
+     */
     public Ship(int size) {
-        this.size = size;
-        this.life = this.size;
+        this.life = size;
     }
 
-    public int getSize() {
-        return this.size;
-    }
 
+
+    /**
+     * Takes a life from the ship.
+     * When life is equals to 0 the ship is sunk
+     * @return
+     */
     public boolean loseLife() {
         return (--this.life == 0);
     }

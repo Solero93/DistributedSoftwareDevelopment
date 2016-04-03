@@ -9,10 +9,10 @@ import java.util.Random;
  * Class that abstracts all the Game modes
  */
 public abstract class GameMode {
+    protected static final int RANDOM_SEED = 42;
     protected ArrayList<String> cellsFired;
     protected String waitMove;
     protected Random rand;
-    protected static final int RANDOM_SEED = 42;
 
     /**
      * Abstract constructor of gameModes.
