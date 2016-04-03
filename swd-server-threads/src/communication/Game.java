@@ -84,7 +84,6 @@ public class Game extends Thread {
         while (true) {
             try {
                 Message msg = this.receiveCommand();
-                /
                 if (msg.getCommand() == Command.THROW) {
                     switch (this.ctrl.throwServerDice()) {
                         case HUMAN_FIRST:

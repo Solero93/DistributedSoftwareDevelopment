@@ -11,6 +11,7 @@ public class Cell {
 
     /**
      * Constructior without ships
+     *
      * @param position
      */
     public Cell(String position) {
@@ -20,6 +21,7 @@ public class Cell {
 
     /**
      * Constructor whit the ship
+     *
      * @param position
      * @param ship
      */
@@ -30,6 +32,7 @@ public class Cell {
 
     /**
      * Looks if is the last hit on the ship to sunk
+     *
      * @return
      */
     public Command hitCell() {

@@ -9,6 +9,7 @@ public class Ship {
 
     /**
      * Constructor
+     *
      * @param size
      */
     public Ship(int size) {
@@ -16,10 +17,10 @@ public class Ship {
     }
 
 
-
     /**
      * Takes a life from the ship.
      * When life is equals to 0 the ship is sunk
+     *
      * @return
      */
     public boolean loseLife() {

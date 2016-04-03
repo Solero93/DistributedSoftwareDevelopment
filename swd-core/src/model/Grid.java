@@ -16,11 +16,13 @@ public class Grid {
 
     public Grid() {
         this.cells = new HashMap<>();
+        this.cellsFired = new ArrayList<>();
         this.numShipsLeft = 0;
     }
 
     /**
      * Draws the grid in a String
+     *
      * @return
      */
     public String toString() {
@@ -42,6 +44,7 @@ public class Grid {
 
     /**
      * Says to the other user if he hited your ships or not
+     *
      * @param position
      * @return MISS ERROR HIT SUNK YOU_WIN
      */
@@ -73,6 +76,7 @@ public class Grid {
 
     /**
      * Put a ship in the grid
+     *
      * @param shipSize
      * @param position
      * @param orientation
@@ -106,7 +110,7 @@ public class Grid {
                 cell = new Cell(newPosition, ship);
                 cells.put(newPosition, cell);
             }
-        // Vertical
+            // Vertical
         } else {
             // IF the ship is out the grid returns false
             if ((character < 'A') || ((character + shipSize - 1) > 'J') || (number < '0') || (number > '9')) {
@@ -129,6 +133,7 @@ public class Grid {
 
     /**
      * Removes the ship at the position, orientation  and size put
+     *
      * @param shipSize
      * @param position
      * @param orientation
@@ -145,7 +150,7 @@ public class Grid {
                 newPosition = (character + "" + ((char) (i)));
                 cells.remove(newPosition);
             }
-        //Vertical
+            //Vertical
         } else {
             for (int i = character; i <= (character + shipSize - 1); i++) {
                 newPosition = (((char) (i)) + "" + number);
@@ -157,6 +162,7 @@ public class Grid {
 
     /**
      * Return the next free position of the gird
+     *
      * @param position
      * @return
      */
@@ -190,6 +196,7 @@ public class Grid {
 
     /**
      * Validate if is free that cell and the cells next it
+     *
      * @param character
      * @param number
      * @return true if is invalid, false if it is valid

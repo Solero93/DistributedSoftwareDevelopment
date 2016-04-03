@@ -46,7 +46,7 @@ public class Game {
     }
 
     /**
-     * Basic flux called from the selecctor
+     * Basic flux called from the selector
      * Looks if there are a message at the buffer and answer it.
      * @param request
      * @return Returns an array of messages to send
@@ -55,7 +55,7 @@ public class Game {
     public ArrayList<Message> getNextMessages(String request) throws EndGameException {
         ArrayList<Message> msgToSend = new ArrayList<>();
         ArrayList<Message> msgReceived = new ArrayList<>();
-        bufferMessages = bufferMessages + request;
+        this.bufferMessages = this.bufferMessages + request;
         //Looks
         msgReceived = readMessages(msgReceived);
 
@@ -86,29 +86,29 @@ public class Game {
         int num;
         while (true) {
             msg = new Message();
-            if (bufferMessages.length() < 4) return msgReceived;
-            Command cmd = Command.getCommandFromCode(bufferMessages.substring(0, 4));
+            if (this.bufferMessages.length() < 4) return msgReceived;
+            Command cmd = Command.getCommandFromCode(this.bufferMessages.substring(0, 4));
             msg.setCommand(cmd);
             switch (cmd) {
                 case FIRE:
-                    if (bufferMessages.length() < 7) return msgReceived;
-                    tmp = bufferMessages.substring(4, 7).toCharArray();
+                    if (this.bufferMessages.length() < 7) return msgReceived;
+                    tmp = this.bufferMessages.substring(4, 7).toCharArray();
                     msg.setParams("" + Character.toUpperCase(tmp[1]) + tmp[2]);
                     msgReceived.add(msg);
-                    bufferMessages = bufferMessages.substring(7);
+                    this.bufferMessages = this.bufferMessages.substring(7);
                     break;
                 case ERROR:
-                    if (bufferMessages.length() < 7) return msgReceived;
-                    tmp = bufferMessages.substring(4, 7).toCharArray();
+                    if (this.bufferMessages.length() < 7) return msgReceived;
+                    tmp = this.bufferMessages.substring(4, 7).toCharArray();
                     num = Integer.parseInt("" + tmp[1] + tmp[2]);
-                    if (bufferMessages.length() < (7 + num)) return msgReceived;
-                    msg.setParams(bufferMessages.substring(7, 7 + num));
+                    if (this.bufferMessages.length() < (7 + num)) return msgReceived;
+                    msg.setParams(this.bufferMessages.substring(7, 7 + num));
                     msgReceived.add(msg);
-                    bufferMessages = bufferMessages.substring(7 + num);
+                    this.bufferMessages = this.bufferMessages.substring(7 + num);
                     break;
                 default:
                     msgReceived.add(msg);
-                    bufferMessages = bufferMessages.substring(4);
+                    this.bufferMessages = this.bufferMessages.substring(4);
                     break;
             }
         }
@@ -116,7 +116,7 @@ public class Game {
     }
 
     /**
-     * Answers of the messages puted
+     * Answers of the messages put
      * @param message
      * @param msgToSend
      * @return
@@ -127,7 +127,7 @@ public class Game {
             switch (message.getCommand()) {
                 case YOU_WIN:
                 case ERROR:
-                    //We close wen one wins or an error has sended
+                    //We close wen one wins or an error has sent
                     this.ctrl.close();
                     throw new EndGameException();
                 case MISS:
@@ -136,7 +136,6 @@ public class Game {
                     // 
                     this.ctrl.commitMove(message);
                     return msgToSend;
-
                 case FIRE:
                     msgToSend.add(this.ctrl.hitMyCell(message.getParams()));
                     if (msgToSend.get(0).getCommand() == Command.YOU_WIN) {
