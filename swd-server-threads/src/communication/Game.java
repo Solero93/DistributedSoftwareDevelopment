@@ -34,7 +34,7 @@ public class Game extends Thread {
         }
         this.ctrl.createGameMode(mode);
         this.ctrl.createCommunication(sock);
-        this.ctrl.createLog("ServerGame-" + id + ".log");
+        this.ctrl.createLog("ServerThread-" + id + ".log");
     }
 
     /**
