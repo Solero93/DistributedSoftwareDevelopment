@@ -109,11 +109,16 @@ Tot això s'haurà de fer fent un bon ús de la programació Orientada a Objecte
 
 \newpage
 \section*{Plantejament}
-El primer de tot que s'ha de fer es plantejar el projecte i fer un bon diagrama de classes, ja que això ens permetra que el nostre projecte sigui solid i en pot estalviar molt de temps, tant per ja tenir calr que s'ha de programar i no tenir errors imprevistos com per que ens pot fer veure formes d'estalviar lineas de codi. 
+Inicialmente, tuvimos que plantear bien el proyecto y hacer un buen diagrama de clases, ya que eso nos permitió que nuestro código sea robusto  y a la larga, nos ahorró mucho tiempo y previno posibles errores.
+Nuestro primer objetivo fue pues crear una versión local del juego, donde el cliente juega contra su propio tablero, pudiendo así probar la mecánica del juego básico, sin comunicación.
 
+Una vez arreglados los errores, comenzamos a preparar la comunicación y simultáneamente empezamos a poner la base del servidor con Threads. En este punto nos dimos cuenta que estos proyectos compartían tanto código que merecía la pena crear una librería común, llamada swd-core,  donde vinieran todas aquellas clases que ambos usan. Eso se debe a que nos parecía poco óptimo tener que modificar el mismo código varias veces.
 
-Com a projecte inicial voliam fer una versio local on jugabam contra la nostra prpia cel·la, sabiam que podriam segurament aprofitar als servidors casi tot el model i gran part del controlador, així que vam voler fer-ho be i posar una bona base.
-Ens vam dividir el treball en el model/logica de joc i controllador/vista. 
+Como hemos ido aplicando bastantes patrones de diseño y creamos swd-core, hemos podido reducir  considerablemente el tiempo que necesitamos para hacer funcionar la comunicación entre cliente-servidor.
+
+Hecho esto, pasamos a la última tarea de esta entrega: crear el servidor con selectores. Nos inspiramos en el ejemplo que se nos dio en clase.
+
+Hicimos nuestras últimas pruebas y en la sesión de test algunas otras, con esto ya acabamos en trabajo.
 \newpage
 \section*{Annex}
 \begin{sidewaysfigure}[ht]
