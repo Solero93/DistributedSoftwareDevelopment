@@ -13,38 +13,35 @@ package controller {
 	SelectorCtrl "1" -- "1" LogCreator : creates logs
 }
 
-package communication {
-	class ServerSelector {
-		-layout : String
-		-mode : int
-		-selector : Selector
-		-server : ServerSocketChannel
-		-serverKey : SelectionKey
-		-encoder : CharsetEncoder
-		-decoder : CharsetDecoder
-		-buffer : ByteBuffer
-		-numGame : int
-		+serveClients()
-		+close()
-		-closeConnection(key)
-	}
+class ServerSelector {
+	-layout : String
+	-mode : int
+	-selector : Selector
+	-server : ServerSocketChannel
+	-serverKey : SelectionKey
+	-encoder : CharsetEncoder
+	-decoder : CharsetDecoder
+	-buffer : ByteBuffer
+	-numGame : int
+	+serveClients()
+	+close()
+	-closeConnection(key)
+}
 
-	class Game {
-		-id : int
-		-bufferMessages : String
-		+getNextMessages(request) : ArrayList<Message>
-		-readMessages(msgReceived) : ArrayList<Message>
-		-getMessages(message, msgsToSend) : ArrayList<Message>
-		-throwServerDice() : Command
-		+close()
-	}
-
-	SelectorCtrl "1" -- "1" Game : represents game\nof clients
+class Game {
+	-bufferMessages : String
+	+getNextMessages(request) : ArrayList<Message>
+	-readMessages(msgReceived) : ArrayList<Message>
+	-getMessages(message, msgsToSend) : ArrayList<Message>
+	-throwServerDice() : Command
+	+close()
 }
 
 class Server {
 }
 
+ServerSelector "1" -- "*" Game : manages
+SelectorCtrl "1" -- "1" Game : represents game\nof clients
 Server "1" -- "1" ServerSelector : calls
 
 @enduml

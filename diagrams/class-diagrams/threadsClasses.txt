@@ -13,36 +13,34 @@ package controller {
 	ThreadCtrl "1" -- "1" LogCreator : writes logs
 }
 
-package communication {
-	class ServerThread {
-		-layout : String
-		-mode : int
-		-serverSocket : ServerSocket
-		-threadPool : ExecutorService
-		-{static}MAX_THREADS=10 : int
-		+serveClients()
-		+close()
-	}
 
-	class Game << (T,orchid) >> {
-		+run()
-		-playGame()
-		-throwServerDice() : boolean
-		-myTurn() : boolean
-		-enemyTurn() : boolean
-		-sendCommand(command, params)
-		-receiveCommand() : Message
-	}
+class ServerThread {
+	-layout : String
+	-mode : int
+	-serverSocket : ServerSocket
+	-threadPool : ExecutorService
+	-{static}MAX_THREADS=10 : int
+	+serveClients()
+	+close()
+}
 
-	Game "1" -- "1" ThreadCtrl : works through
-	Game "1" -- "1" Communication : send messages with
-	ServerThread "1" -- "1" Game : creates threads\nfor clients
+class Game << (T,orchid) >> {
+	+run()
+	-playGame()
+	-throwServerDice() : boolean
+	-myTurn() : boolean
+	-enemyTurn() : boolean
+	-sendCommand(command, params)
+	-receiveCommand() : Message
 }
 
 class Server {
 	
 }
 
+Game "1" -- "1" ThreadCtrl : works through
+Game "1" -- "1" Communication : send messages with
+ServerThread "1" -- "1" Game : creates threads\nfor clients
 Server "1" -- "1" ServerThread : calls
 
 @enduml
