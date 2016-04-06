@@ -211,12 +211,13 @@ swd-core no está en la entrega final, porque como las pruebas son con un script
 \section*{Conclusión}
 En conclusión, teniendo en cuenta todo el desarrollo y los tests que se han efectuado en esta práctica, consideramos que tenemos un código que es robusto, eficiente y bien escalable gracias a todas los prácticas de diseño que se han aplicado y a que hemos pensado bien el proyecto antes de empezar a codificar nada.
 
-Como posibles mejoras añadiría modificar el servidor por tal de crear una nueva forma de juego donde conectara dos clientes aleatorios de su lista en lugar de que él mismo jugara contra los clientes.
+Algo que hemos notado al finalizar el proyecto es que el servidor que está implementado con selectores es considerablemente más rápido que el de threads, ya que la lectura en el servidor con selector no es bloqueante mientras que el caso de los threads sí lo es.
 
-A lo largo del proyecto, los diagramas de clases fueron una manera crucial de tener un buen diseño. Para eso, PlantUML fue una herramienta que nos facilitó muchísimo el diseño de la aplicación, a continuación presentaremos los diagramas finales. Los pngs de los diagramas se encuentran ampliados en la carpeta diagrams/class-diagrams.
+Como posibles mejoras añadiría modificar el servidor por tal de crear una nueva forma de juego donde conectara dos clientes aleatorios de su lista en lugar de que él mismo jugara contra los clientes.
 
 \newpage
 \section*{Anexos}
+A lo largo del proyecto, los diagramas de clases fueron una manera crucial de tener un buen diseño. Para eso, PlantUML fue una herramienta que nos facilitó muchísimo el diseño de la aplicación, a continuación presentaremos los diagramas finales. Los pngs de los diagramas se encuentran ampliados en la carpeta diagrams/class-diagrams.
 \begin{sidewaysfigure}[ht]
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../diagrams/class-diagrams/clientClasses.png}
     \caption{Client Diagram}
