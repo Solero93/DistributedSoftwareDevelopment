@@ -157,14 +157,14 @@ Empezaramos hablando de la librería swd-core que contiene la mayoría de las cl
 	\end{itemize}
 \end{enumerate}
 
-Procedemos a hablar del proyecto cliente, es decir de swd-client. Tiene todas las clases de swd-core y además:
+Procedemos a hablar del proyecto client. Tiene todas las clases de swd-core y además:
 \begin{itemize}
 \item \textbf{Client:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el juego. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{Game:} Se encarga de preparar, ejecutar y luego terminar el juego.
 \item \textbf{ClientCtrl:} Hereda de Controller y se le añaden las funciones específicas de la comunicación mediante ComUtils.
 \end{itemize}
 
-Procedemos a hablar del proyecto server con threads, es decir de swd-server-threads. Tiene todas las clases de swd-core y además:
+Procedemos a hablar del proyecto server-threads. Tiene todas las clases de swd-core y además:
 \begin{itemize}
 \item \textbf{Server:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el servidor. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{ServerThread:} Clase principal del servidor y se encarga de aceptar clientes, asignarles un thread y cuando termine de servirles cerrar la comunicación con ellos.
@@ -172,7 +172,7 @@ Procedemos a hablar del proyecto server con threads, es decir de swd-server-thre
 \item \textbf{ThreadCtrl:} Hereda de ClientCtrl y se le añaden funciones como tirar el dado y escribir los eventos ocurridos en el log.
 \end{itemize}
 
-Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tiene todas las clases de swd-core y además:
+Finalmente, queda server-selector. Tiene todas las clases de swd-core y además:
 \begin{itemize}
 \item \textbf{Server:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el servidor. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{ServerSelector:} Clase principal del servidor y se encarga de aceptar clientes, asignarles un juego e ir recibiendo sus mensajes, pasándoles a los threads.
@@ -180,14 +180,23 @@ Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tie
 \item \textbf{SelectorCtrl:} Hereda de Controller y se le añaden las funciones de tirar el dado y escribir los eventos ocurridos en el log.
 \end{itemize}
 
+swd-core no está en la entrega final, porque como las pruebas son con un script ya prehecho, preferimos coger las clases de swd-core y engancharlas en cada uno de los proyectos.
+
 \newpage
 \section*{Testing}
 \subsection*{Testing local}
 
-
 \newpage
 \subsection*{Sesión de testing en clase}
 
+
+\newpage
+\section*{Conclusión}
+En conclusión, teniendo en cuenta todo el desarrollo y los tests que se han efectuado en esta práctica, consideramos que tenemos un código que es robusto, eficiente y bien escalable gracias a todas los prácticas de diseño que se han aplicado y a que hemos pensado bien el proyecto antes de empezar a codificar nada.
+
+Como posibles mejoras añadiría modificar el servidor por tal de crear una nueva forma de juego donde conectara dos clientes aleatorios de su lista en lugar de que él mismo jugara contra los clientes.
+
+A lo largo del proyecto, los diagramas de clases fueron una manera crucial de tener un buen diseño. Para eso, PlantUML fue una herramienta que nos facilitó muchísimo el diseño de la aplicación, a continuación presentaremos los diagramas finales. Los pngs de los diagramas se encuentran ampliados en la carpeta diagrams/class-diagrams.
 
 \newpage
 \section*{Anexos}

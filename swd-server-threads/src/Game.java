@@ -128,7 +128,6 @@ public class Game extends Thread {
             return true;
         }
         return false;
-        //}
     }
 
     /**
@@ -152,7 +151,6 @@ public class Game extends Thread {
         } catch (IOException e) {
             return true;
         }
-        //}
     }
 
     /**
