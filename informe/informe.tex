@@ -169,6 +169,7 @@ Procedemos a hablar del proyecto server con threads, es decir de swd-server-thre
 \item \textbf{Server:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el servidor. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{ServerThread:} Clase principal del servidor y se encarga de aceptar clientes, asignarles un thread y cuando termine de servirles cerrar la comunicación con ellos.
 \item \textbf{Game:} Clase que representa el thread que se le asigna a cada cliente al conectarse con el servidor.
+\item \textbf{ThreadCtrl:} Hereda de ClientCtrl y se le añaden funciones como tirar el dado y escribir los eventos ocurridos en el log.
 \end{itemize}
 
 Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tiene todas las clases de swd-core y además:
@@ -176,6 +177,7 @@ Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tie
 \item \textbf{Server:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el servidor. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{ServerSelector:} Clase principal del servidor y se encarga de aceptar clientes, asignarles un juego e ir recibiendo sus mensajes, pasándoles a los threads.
 \item \textbf{Game:} Clase que representa el juego del cliente aceptado en servidor. Es una máquina de estados que va recibiendo los cachos de mensajes que le van llegando por el selector, los junta, actualiza el juego y devuelve los mensajes que se le debe mandar al adversario.
+\item \textbf{SelectorCtrl:} Hereda de Controller y se le añaden las funciones de tirar el dado y escribir los eventos ocurridos en el log.
 \end{itemize}
 
 \newpage
@@ -185,6 +187,7 @@ Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tie
 
 \newpage
 \subsection*{Sesión de testing en clase}
+
 
 \newpage
 \section*{Anexos}
