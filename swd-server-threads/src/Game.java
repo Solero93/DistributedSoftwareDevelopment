@@ -104,7 +104,6 @@ public class Game extends Thread {
      * @return
      */
     private boolean myTurn() {
-        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
         try {
             this.ctrl.play();
             Message enemyResponse = this.receiveCommand();
@@ -121,7 +120,7 @@ public class Game extends Thread {
                     break;
                 case ERROR:
                     return true;
-                default://TODO SEND ERRROR  whit While o petar?
+                default:
                     return true;
             }
 
@@ -137,7 +136,6 @@ public class Game extends Thread {
      * @return
      */
     private boolean enemyTurn() {
-        //while (true) {//TODO Mantener si quieres que pueda enviarte cosas cuando hay error, Si no fuera
         try {
             Message msg = this.receiveCommand();
             switch (msg.getCommand()) {
@@ -147,7 +145,7 @@ public class Game extends Thread {
                     break;
                 case ERROR:
                     return true;
-                default://TODO SEND ERRROR  whit While o petar?
+                default:
                     return true;
             }
             return false;
