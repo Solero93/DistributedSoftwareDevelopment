@@ -6,7 +6,7 @@ package utils.enums;
  */
 public enum Actor {
     SERVER("S: ", 3),
-    CLIENT("C: ", 3);
+    CLIENT("C: ", 30);
 
     public String logTxt;
     public int timeOut;
