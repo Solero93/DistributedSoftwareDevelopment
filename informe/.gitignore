@@ -1,3 +1,6 @@
+## PDF no pls
+*.pdf
+
 ## More latex/pdflatex auxiliary files:
 *.aux
 *.lof

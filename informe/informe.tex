@@ -42,7 +42,6 @@
 \usepackage{epstopdf}
 \usepackage{makeidx}
 
-
 \makeindex
 \begin{document}
 \begin{titlepage}
@@ -97,6 +96,7 @@ Nicolás Martín \textsc{Forteza Ocaña}\\[3cm] % Your name
 \end{titlepage}
 \addcontentsline{toc}{section}{Índice alfabético}
 \printindex
+\newpage
 \section*{Introducció}
 En esta práctica se nos pide implementar el juego célebre \textit{Hundir la flota} para que juegan diferents clientes contra un mismo servidor.
 
@@ -131,17 +131,14 @@ En este apartado iremos detallando las particularidades de la implementación de
 Empezaramos hablando de la librería swd-core que contiene la mayoría de las clases de la implementación (unas 20). Vamos por paquetes:
 \begin{enumerate}
 \item \textbf{Communication:} Se encarga de todo aquello referente a comunicar cliente con servidor y viceversa. La clase principal es Communication. Esta es la clase que se relaciona directamente con ComUtils y su tarea es preparar los mensajes a mandar y acabar de enviar-los con la ayuda de ComUtils, al igual que recibir mensaje con la ayuda de ComUtils.
-\item \textbf{Controller:} Contiene la clase Controller que sirve para controlar el flujo correcto del juego. Similar al del patrón MVC, pero en nuestro caso acabó volviéndose una Fachada prácticamente, ya que sirvió como capa de abstracción tanto para cliente como servidor.
-	\begin{enumerate}
-	\item \textbf{subpaquete gameModes:}
-		\begin{itemize}
-		\item \textbf{GameMode:} Clase abstracta que representa un modo de juego. Tiene dos métodos, uno abstracto que genera la siguiente posición a disparar y un otro que guarda el último movimiento en la cola de movimientos ejecutados por el algoritmo. El último movimiento si se guarda o no va en función de la respuesta del adversario, porque si es un ERROR consideramos que ha habido problemas al enviar la casilla a disparar. Esto es para evitar juegos que no terminan, porque podría pasar que justamente no se mandara bien alguna casilla que hubiera acabado en HIT.
-		\item \textbf{ManualGame:} Representa el modo de juego manual
-		\item \textbf{RandomAI:} Representa el modo de juego que dispara aleatoriamente sin repetir
-		\item \textbf{BetterAI:} Representa el modo de juego con una pequeña IA. Dispara aleatoriamente hasta que le dé a algún barco, en cuyo caso explora las 4 direcciones hasta hundirla.
- 		\item \textbf{GameModeFactory:} Aplicación del patrón Factory donde se crea el modo de juego en función del parámetro que nos viene por consola.
-		\end{itemize}
-	\end{enumerate}
+\item \textbf{Controller:} Contiene la clase Controller que sirve para controlar el flujo correcto del juego. Similar al del patrón MVC, pero en nuestro caso acabó volviéndose una Fachada prácticamente, ya que sirvió como capa de abstracción tanto para cliente como servidor. Además de esta clase tenemos:
+	\begin{itemize}
+	\item \textbf{GameMode:} Clase abstracta que representa un modo de juego. Tiene dos métodos, uno abstracto que genera la siguiente posición a disparar y un otro que guarda el último movimiento en la cola de movimientos ejecutados por el algoritmo. El último movimiento si se guarda o no va en función de la respuesta del adversario, porque si es un ERROR consideramos que ha habido problemas al enviar la casilla a disparar. Esto es para evitar juegos que no terminan, porque podría pasar que justamente no se mandara bien alguna casilla que hubiera acabado en HIT.
+	\item \textbf{ManualGame:} Representa el modo de juego manual.
+	\item \textbf{RandomAI:} Representa el modo de juego que dispara aleatoriamente sin repetir.
+	\item \textbf{BetterAI:} Representa el modo de juego con una pequeña IA. Dispara aleatoriamente hasta que le dé a algún barco, en cuyo caso explora las 4 direcciones hasta hundirla.
+	\item \textbf{GameModeFactory:} Aplicación del patrón Factory donde se crea el modo de juego en función del parámetro que nos viene por consola.
+	\end{itemize}
 \item \textbf{Model:} Representa lo que es el modelo del juego, es decir el tablero con sus celdas y barcos. Es el conjunto de clases que se encarga de recibir disparos y controlar que el adversario no repita casillas (en cuyo caso se manda un error al adversario y se termina la comunicación).
 \item \textbf{Utils:} Como su nombre indica, contiene una serie de utilidades. Entre estas se encuentran:
 	\begin{itemize}
@@ -153,7 +150,7 @@ Empezaramos hablando de la librería swd-core que contiene la mayoría de las cl
 	\item \textbf{Message:} Representa los mensajes que se mandan y se reciben del adversario. Tiene dos atributos: su Command y sus Params (params puede ser null). Es una pequeña aplicación del patrón Builder, aunque no del todo: Message es un objeto que tiene sentido de por sí sin llamar a build, pero el método \textit{buildPackage()} crea el String que se deberá mandar al adversario.
 	\item \textbf{ComUtils:} La clase que se nos dió, aunque algo modificado. Es Communication el único que accede a él. En caso del Selector ni se usa.
 	\end{itemize}
-\item \textbf{Exception:} En este paquete hemos creado dos excepciones nuevas:
+\item \textbf{Exception:} En este paquete creamos dos excepciones nuevas:
 	\begin{itemize}
 	\item \textbf{ReadGridException:} Salta en caso que haya problemas al crear el tablero.
 	\item \textbf{EndGameException:} Salta en caso que el juego acaba sea por error y porque alguien ganó. Se usa solo con el selector, porque el acabar las conexiones debe efectuarse en otro sitio.
@@ -178,8 +175,17 @@ Finalmente, queda el servidor con selector, es decir de swd-server-selector. Tie
 \begin{itemize}
 \item \textbf{Server:} Se encarga de parsear los argumentos de línea de comandos y llamar a la clase que prepara, ejecuta y finaliza el servidor. Si hay problemas al parsear los argumentos, acaba.
 \item \textbf{ServerSelector:} Clase principal del servidor y se encarga de aceptar clientes, asignarles un juego e ir recibiendo sus mensajes, pasándoles a los threads.
-\item \textbf{Game:} Clase que representa el juego del cliente al que se le asigna este juego. Es una máquina de estados que va recibiendo los cachos de mensajes que le van llegando por el selector, los junta, actualiza el juego y devuelve el mensaje que se le debe mandar de vuelta al adversario mediante la clase ServerSelector.
+\item \textbf{Game:} Clase que representa el juego del cliente aceptado en servidor. Es una máquina de estados que va recibiendo los cachos de mensajes que le van llegando por el selector, los junta, actualiza el juego y devuelve los mensajes que se le debe mandar al adversario.
 \end{itemize}
+
+\newpage
+\section*{Testing}
+\subsection*{Testing local}
+
+
+\newpage
+\subsection*{Sesión de testing en clase}
+
 \newpage
 \section*{Anexos}
 \begin{sidewaysfigure}[ht]
