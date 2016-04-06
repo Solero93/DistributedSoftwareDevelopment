@@ -98,27 +98,34 @@ Nicolás Martín \textsc{Forteza Ocaña}\\[3cm] % Your name
 \addcontentsline{toc}{section}{Índice alfabético}
 \printindex
 \section*{Introducció}
-En aquesta pràctica se'ns demana implementar el joc d'Enfonsar la flota perquè juguin diferents Clients contra un mateix servidor.
+En esta práctica se nos pide implementar el juego célebre \textit{Hundir la flota} para que juegan diferents clientes contra un mismo servidor.
 
-L'objectiu del joc és endevinar la situació dels vaixells de l'enemic i enfonsar-los indicant les coordenades. Tot això entre un client i servidor que implementi el protocol especificat a l'enunciat.
+El objetivo del juego es adivinar la situación de los barcos del enemigo y hundirlos indicando las coordenadas donde creemos que están. Para que cliente y servidor se entiendan entre ellos se debe implementar el protocolo espeficado en el enunciado.
 
-L'objectiu d'implementar aquest programa és aprendre a utilitzar els mecanismes de programació Client/Servidor en Java. En concret aprendre a utilitzar l'API Socket de Java.net i a fer servidors multi-petició.
+Nuestra finalidad pues será implementar este programa, aprendiendo así a utilizar los mecanismos de programación cliente-servidor de Java, como la API de Sockets y de Selectors.
 
-El Client haurà de tenir un mode manual i un mode automàtic per a jugar una única partida a l'hora, en canvi, el Server solament tindrà mode automàtic i podrà jugar diverses partides a l'hora gestionades en un cas per Threads i en un altre per un Selector.
-Tot això s'haurà de fer fent un bon ús de la programació Orientada a Objectes en Java.
+El cliente deberá tener un modo manul, un modo con IA sencilla y un modo con IA más compleja para jugar contra el servidor. El servidor debe tener los mismos modos, exceptuando el manual.
+
+Tendremos que implementar dos versiones de servidor que para cliente serán ambos transparentes: Un servidor donde cada cliente será gestionado por un thread aparte y otro, donde el servidor recibirá los mensajes de los clientes mediante un selector y gestionará todas las partidas a medida que van llegando los mensajes de los clientes.
 
 \newpage
-\section*{Plantejament}
+\section*{Proceso de desarrollo}
 Inicialmente, tuvimos que plantear bien el proyecto y hacer un buen diagrama de clases, ya que eso nos permitió que nuestro código sea robusto  y a la larga, nos ahorró mucho tiempo y previno posibles errores.
+
 Nuestro primer objetivo fue pues crear una versión local del juego, donde el cliente juega contra su propio tablero, pudiendo así probar la mecánica del juego básico, sin comunicación.
 
-Una vez arreglados los errores, comenzamos a preparar la comunicación y simultáneamente empezamos a poner la base del servidor con Threads. En este punto nos dimos cuenta que estos proyectos compartían tanto código que merecía la pena crear una librería común, llamada swd-core,  donde vinieran todas aquellas clases que ambos usan. Eso se debe a que nos parecía poco óptimo tener que modificar el mismo código varias veces.
+Una vez arreglados los errores de flujo básico, comenzamos a preparar la comunicación y simultáneamente empezamos a poner la base del servidor con Threads. En este punto nos dimos cuenta que estos proyectos compartían tanto código que merecía la pena crear una librería común, llamada swd-core,  donde vinieran todas aquellas clases que ambos usan. Eso se debe a que nos parecía poco óptimo tener que modificar el mismo código varias veces.
 
-Como hemos ido aplicando bastantes patrones de diseño y creamos swd-core, hemos podido reducir  considerablemente el tiempo que necesitamos para hacer funcionar la comunicación entre cliente-servidor.
+Como hemos ido aplicando bastantes patrones de diseño y creamos swd-core, hemos podido reducir considerablemente el tiempo que necesitamos para hacer funcionar la comunicación entre cliente-servidor.
 
-Hecho esto, pasamos a la última tarea de esta entrega: crear el servidor con selectores. Nos inspiramos en el ejemplo que se nos dio en clase.
+Cuando conseguimos tener estable la versión cliente-servidor con threads, pasamos a la última tarea de esta entrega: crear el servidor con selectores. Nos inspiramos en el ejemplo que se nos dio en clase.
 
-Hicimos nuestras últimas pruebas y en la sesión de test algunas otras, con esto ya acabamos en trabajo.
+Completadas todas las tareas, hicimos nuestras últimas pruebas en local, y posteriormente, en la sesión de test. Con eso acabamos el trabajo.
+
+\newpage
+\section*{Detalles del desarrollo}
+
+
 \newpage
 \section*{Annex}
 \begin{sidewaysfigure}[ht]
