@@ -1,5 +1,3 @@
-package communication;
-
 import controller.ThreadCtrl;
 import exceptions.ReadGridException;
 import utils.Message;

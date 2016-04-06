@@ -1,5 +1,3 @@
-import communication.ServerThread;
-
 import java.io.IOException;
 
 /**

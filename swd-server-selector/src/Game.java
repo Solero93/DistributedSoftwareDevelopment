@@ -1,5 +1,3 @@
-package communication;
-
 import controller.SelectorCtrl;
 import exceptions.EndGameException;
 import exceptions.ReadGridException;
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Game flux frome the selector server
+ * Game flux from the selector server
  */
 public class Game {
     private SelectorCtrl ctrl;
@@ -75,7 +73,7 @@ public class Game {
     }
 
     /**
-     * Looks if there are a complete  command at the buffer
+     * Looks if there are a complete command at the buffer
      * Create the Message from the command
      * @param msgReceived
      * @return

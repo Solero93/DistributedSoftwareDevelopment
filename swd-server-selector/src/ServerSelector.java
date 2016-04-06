@@ -1,5 +1,3 @@
-package communication;
-
 import exceptions.EndGameException;
 import exceptions.ReadGridException;
 import utils.Message;

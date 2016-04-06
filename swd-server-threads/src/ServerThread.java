@@ -1,5 +1,3 @@
-package communication;
-
 import exceptions.ReadGridException;
 
 import java.io.IOException;
