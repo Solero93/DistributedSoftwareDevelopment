@@ -40,9 +40,7 @@
 \usepackage{lscape}
 \usepackage{rotating}
 \usepackage{epstopdf}
-\usepackage{makeidx}
 
-\makeindex
 \begin{document}
 \begin{titlepage}
 
@@ -94,10 +92,9 @@ Nicolás Martín \textsc{Forteza Ocaña}\\[3cm] % Your name
 \vfill % Fill the rest of the page with whitespace
 
 \end{titlepage}
-\addcontentsline{toc}{section}{Índice alfabético}
-\printindex
+\tableofcontents
 \newpage
-\section*{Introducció}
+\section{Introducció}
 En esta práctica se nos pide implementar el juego célebre \textit{Hundir la flota} para que juegan diferents clientes contra un mismo servidor.
 
 El objetivo del juego es adivinar la situación de los barcos del enemigo y hundirlos indicando las coordenadas donde creemos que están. Para que cliente y servidor se entiendan entre ellos se debe implementar el protocolo espeficado en el enunciado.
@@ -109,7 +106,7 @@ El cliente deberá tener un modo manual, un modo con IA sencilla y un modo con I
 Tendremos que implementar dos versiones de servidor que para cliente serán ambos transparentes: Un servidor donde cada cliente será gestionado por un thread aparte y otro, donde el servidor recibirá los mensajes de los clientes mediante un selector y gestionará todas las partidas a medida que van llegando los mensajes de los clientes.
 
 \newpage
-\section*{Proceso de desarrollo}
+\section{Proceso de desarrollo}
 Inicialmente, tuvimos que plantear bien el proyecto y hacer un buen diagrama de clases, ya que sabíamos que eso permitirá que nuestro código sea robusto  y a la larga, nos ahorrará mucho tiempo y prevendrá posibles errores.
 
 Nuestro primer objetivo fue pues crear una versión local del juego, donde el cliente juega contra su propio tablero, pudiendo así probar la mecánica del juego básico, sin comunicación.
@@ -125,10 +122,10 @@ Hechas todas las tareas, hicimos nuestras últimas pruebas en local, y posterior
 Con eso acabamos el trabajo.
 
 \newpage
-\section*{Detalles del desarrollo}
+\section{Detalles del desarrollo}
 En este apartado iremos detallando las particularidades de la implementación de cada proyecto.
 
-Empezaramos hablando de la librería swd-core que contiene la mayoría de las clases de la implementación (unas 20). Vamos por paquetes:
+Empezaramos hablando de la librería swd-core que contiene la mayoría de las clases de la implementación. Vamos por paquetes:
 \begin{enumerate}
 \item \textbf{Communication:} Se encarga de todo aquello referente a comunicar cliente con servidor y viceversa. La clase principal es Communication. Esta es la clase que se relaciona directamente con ComUtils y su tarea es preparar los mensajes a mandar y acabar de enviar-los con la ayuda de ComUtils, al igual que recibir mensaje con la ayuda de ComUtils.
 \item \textbf{Controller:} Contiene la clase Controller que sirve para controlar el flujo correcto del juego. Similar al del patrón MVC, pero en nuestro caso acabó volviéndose una Fachada prácticamente, ya que sirvió como capa de abstracción tanto para cliente como servidor. Además de esta clase tenemos:
@@ -183,18 +180,43 @@ Finalmente, queda server-selector. Tiene todas las clases de swd-core y además:
 swd-core no está en la entrega final, porque como las pruebas son con un script ya prehecho, preferimos coger las clases de swd-core y engancharlas en cada uno de los proyectos.
 
 \newpage
-\section*{Testing}
-\subsection*{Testing local}
+\section{Testing}
+\subsection{Testing local}
+En el proyecto tuvimos 2 periodos de prueba destacados:testeo de la base y testeo de comunicación y protocolo.
 
+\subsubsection*{Testeo de la base}
+Inicialmente hicimos un proyecto sin conexión en el que pudimos testear el buen funcionamiento de  toda la lógica del programa, sin tener en cuenta cosas como la conexión ni los protocolos. Esto era gracias al controlador que hicimos especialmente para poder jugar sobre nuestro propio tablero, lo que en la siguiente iteración del proyecto seria el tablero sobre el que jugaría el contrincante.
+
+Hicimos las siguientes pruebas:
+\begin{itemize}
+\item Generar correctamente la colocación de los barcos.
+\item Devolver  error si intentamos poner el barco en una posición fuera del tablero.
+\item Devolver  error si intentamos poner el barco en una posición donde intersección con otro barco.
+\item Impedir que usuario haga Fire fuera del tablero.
+\item Impedir que usuario haga Fire 2 veces en la misma celda.
+\item Retornar correctamente los mensajes de contestación.
+\item Ver que el juego finalice en el momento que toque.
+\item Probar los 3 modos de juegos: menú, random IA y IA avanzada.
+\end{itemize}
+
+\subsubsection*{Testeo de comunicación y protocolo}
+
+Una vez finalizado el proyecto, probamos de forma intensiva los servidores creando gran numero de  clientes jugaran contra estos. Todos los clientes enviaban posiciones de forma aleatoria para asi poder ver una amplia variedad de casos de casos.
 \newpage
-\subsection*{Sesión de testing en clase}
+\subsection{Sesión de testing en clase}
+
+La tabla muestra contra que servidores y clientes pudimos( y no pudimos) jugar partidas satisfactoriamente al final de la sesión de test. Pero inicialmente, no fue tal y como se muestra, ya que durante la sesión encontramos 2 errores en nuestro proyecto.
+
+El primero, fue solo un error menor. Habíamos olvidado cambiar el valor que teníamos por defecto para los Timeouts, que habíamos cambiado previamente para hacer nuestro propios test.
+En cambio, el segundo error costo mas de detectar. Lo que nos pasaba era que en la IA aleatoria se podían repetir posiciones que se enviaban. Solo tuvimos que cambiar una linea de código para arreglar el código, el error se debió, seguramente, a un mal Merge que sufrimos con GitHub.
+
 \begin{center}
     \begin{tabular}{| l || l | l | l |}
     \hline
     \textbf{Nosotros} & \textbf{IP} & \textbf{Server} & \textbf{Client} \\ \hline
     \textbf{A1} & 161.116.52.27 & No han conectado  & Error en su servidor \\ \hline
        \textbf{A2} & 161.116.52.29 &  Funciona correctamente & Funciona correctamente\\ \hline
-       \textbf{A3}     & 161.116.52.46 & No han conectado   & Su server OFF\\
+       \textbf{A3}     & 161.116.52.46 & No han conectado   & Su server OFF\\ \hline
        \textbf{A4}     & 161.116.52.49 & Funciona correctamente  & Funciona correctamente\\ \hline
        \textbf{A5}     & 161.116.52.50 & No han conectado   & Error en su servidor\\ \hline
        \textbf{A6}     & 161.116.52.40 & Funciona correctamente  & Funciona correctamente\\ \hline
@@ -207,8 +229,10 @@ swd-core no está en la entrega final, porque como las pruebas son con un script
     \end{tabular}
 \end{center}
 
+
+
 \newpage
-\section*{Conclusión}
+\section{Conclusión}
 En conclusión, teniendo en cuenta todo el desarrollo y los tests que se han efectuado en esta práctica, consideramos que tenemos un código que es robusto, eficiente y bien escalable gracias a todas los prácticas de diseño que se han aplicado y a que hemos pensado bien el proyecto antes de empezar a codificar nada.
 
 Algo que hemos notado al finalizar el proyecto es que el servidor que está implementado con selectores es considerablemente más rápido que el de threads, ya que la lectura en el servidor con selector no es bloqueante mientras que el caso de los threads sí lo es.
@@ -216,7 +240,7 @@ Algo que hemos notado al finalizar el proyecto es que el servidor que está impl
 Como posibles mejoras añadiría modificar el servidor por tal de crear una nueva forma de juego donde conectara dos clientes aleatorios de su lista en lugar de que él mismo jugara contra los clientes.
 
 \newpage
-\section*{Anexos}
+\section{Anexos}
 A lo largo del proyecto, los diagramas de clases fueron una manera crucial de tener un buen diseño. Para eso, PlantUML fue una herramienta que nos facilitó muchísimo el diseño de la aplicación, a continuación presentaremos los diagramas finales. Los pngs de los diagramas se encuentran ampliados en la carpeta diagrams/class-diagrams.
 \begin{sidewaysfigure}[ht]
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../diagrams/class-diagrams/clientClasses.png}
