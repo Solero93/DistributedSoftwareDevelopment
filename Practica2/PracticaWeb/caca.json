@@ -1,0 +1,22 @@
+[
+  {
+    "model": "mediacloud.Item",
+    "pk": 1,
+    "fields": {
+      "description": "Lorem Ipsum",
+      "name": "Lennon Bio",
+      "type":"pdf",
+      "price":"1.00"
+    }
+  },
+   {
+    "model": "mediacloud.Item",
+    "pk": 2,
+    "fields": {
+      "description": "Lorem ipsum dolor sit amet ",
+      "name": "Sharp Bio",
+      "type":"pdf",
+      "price":"1.00"
+    }
+  }
+]
