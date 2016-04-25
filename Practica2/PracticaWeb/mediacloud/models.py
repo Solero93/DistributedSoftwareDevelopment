@@ -11,3 +11,10 @@ class Item(models.Model):
 
     def __str__(self):
         return "[" + self.type + "] " + self.name
+
+
+class Types(models.Model):
+    name = models.CharField(max_length=400)
+
+    def __str__(self):
+        return ""+self.name

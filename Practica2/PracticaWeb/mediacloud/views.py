@@ -1,11 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from mediacloud.models import Item
+from mediacloud.models import Item, Types
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the mediacloud index.")
+    #TODO Hacer tabla de types
+    catalog_by_type = Types.objects.all()
+    context = {
+        'types': catalog_by_type,
+    }
+    return render(request, 'index.html', context)
 
 
 def catalog(request, type):

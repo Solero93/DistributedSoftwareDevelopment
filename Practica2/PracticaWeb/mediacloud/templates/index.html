@@ -1,0 +1,10 @@
+<a href="{% url 'catalog' ""%}">Catalogo general</a>
+{% if types	 %}
+    <ul>
+    {% for item in types %}
+        <li><a href="{% url 'catalog' item%}">Catalogo {{ item }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No items are available.</p>
+{% endif %}

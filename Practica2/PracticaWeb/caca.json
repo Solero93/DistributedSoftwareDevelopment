@@ -18,5 +18,19 @@
       "type":"pdf",
       "price":"1.00"
     }
+  },
+  {
+    "model": "mediacloud.Types",
+    "pk": 1,
+    "fields": {
+      "name": "pdf"
+    }
+  },
+   {
+    "model": "mediacloud.Types",
+    "pk": 2,
+    "fields": {
+      "name": "video"
+    }
   }
 ]
