@@ -51,7 +51,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 7,
+    "pk": 6,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Lala 4",
@@ -61,7 +61,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 8,
+    "pk": 7,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 1",
@@ -71,7 +71,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 9,
+    "pk": 8,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 2",
@@ -81,7 +81,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 10,
+    "pk": 9,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 3",
@@ -91,7 +91,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 11,
+    "pk": 10,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 4",
@@ -101,7 +101,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 12,
+    "pk": 11,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 1",
@@ -111,7 +111,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 13,
+    "pk": 12,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 2",
@@ -121,7 +121,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 14,
+    "pk": 13,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 3",
@@ -131,7 +131,7 @@
   },
   {
     "model": "mediacloud.Item",
-    "pk": 15,
+    "pk": 14,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 4",
