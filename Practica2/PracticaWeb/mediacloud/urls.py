@@ -7,4 +7,3 @@ urlpatterns = [
     url(r'^catalog/()$', views.catalog, name='catalog'),
     url(r'^catalog/(?P<type>.*)/$', views.catalog, name='catalog')
 ]
-

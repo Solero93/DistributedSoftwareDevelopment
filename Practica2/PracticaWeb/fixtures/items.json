@@ -1,116 +1,112 @@
 [
-//Pdfs
   {
     "model": "mediacloud.Item",
     "pk": 1,
     "fields": {
       "description": "Lorem Ipsum",
       "name": "Lennon Bio",
-      "type":"pdf",
-      "price":"1.00"
+      "type": "pdf",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 2,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Sharp Bio",
-      "type":"pdf",
-      "price":"1.00"
+      "type": "pdf",
+      "price": "1.00"
     }
   },
-// Songs
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 3,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Lala 1",
-      "type":"song",
-      "price":"1.00"
+      "type": "song",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 4,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Lala 2",
-      "type":"song",
-      "price":"1.00"
+      "type": "song",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 5,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Lala 3",
-      "type":"song",
-      "price":"1.00"
+      "type": "song",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 7,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Lala 4",
-      "type":"song",
-      "price":"1.00"
+      "type": "song",
+      "price": "1.00"
     }
   },
-// Books
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 8,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 1",
-      "type":"book",
-      "price":"1.00"
+      "type": "book",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 9,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 2",
-      "type":"book",
-      "price":"1.00"
+      "type": "book",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 10,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 3",
-      "type":"book",
-      "price":"1.00"
+      "type": "book",
+      "price": "1.00"
     }
   },
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 11,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Book 4",
-      "type":"book",
-      "price":"1.00"
+      "type": "book",
+      "price": "1.00"
     }
   },
-  // Short videos
-   {
+  {
     "model": "mediacloud.Item",
     "pk": 12,
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 1",
-      "type":"video",
-      "price":"1.00"
+      "type": "video",
+      "price": "1.00"
     }
   },
   {
@@ -119,8 +115,8 @@
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 2",
-      "type":"video",
-      "price":"1.00"
+      "type": "video",
+      "price": "1.00"
     }
   },
   {
@@ -129,8 +125,8 @@
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 3",
-      "type":"video",
-      "price":"1.00"
+      "type": "video",
+      "price": "1.00"
     }
   },
   {
@@ -139,8 +135,8 @@
     "fields": {
       "description": "Lorem ipsum dolor sit amet ",
       "name": "Short 4",
-      "type":"video",
-      "price":"1.00"
+      "type": "video",
+      "price": "1.00"
     }
   }
 ]

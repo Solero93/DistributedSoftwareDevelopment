@@ -6,21 +6,21 @@
       "name": "pdf"
     }
   },
-   {
+  {
     "model": "mediacloud.Types",
     "pk": 2,
     "fields": {
       "name": "video"
     }
   },
-   {
+  {
     "model": "mediacloud.Types",
     "pk": 3,
     "fields": {
       "name": "book"
     }
   },
-   {
+  {
     "model": "mediacloud.Types",
     "pk": 4,
     "fields": {

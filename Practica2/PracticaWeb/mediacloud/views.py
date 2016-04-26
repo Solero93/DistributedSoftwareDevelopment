@@ -5,7 +5,7 @@ from mediacloud.models import Item, Types
 
 
 def index(request):
-    #TODO Hacer tabla de types
+    # TODO Hacer tabla de types
     catalog_by_type = Types.objects.all()
     context = {
         'types': catalog_by_type,
@@ -14,7 +14,7 @@ def index(request):
 
 
 def catalog(request, type):
-    catalog_by_type = Item.objects.filter(type=type)
+    catalog_by_type = Item.objects.filter(type=type) if type != "all" else Item.objects.all()
     context = {
         'catalog': catalog_by_type,
         'type': type,

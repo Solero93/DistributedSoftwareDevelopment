@@ -1,8 +1,8 @@
 {% if catalog %}
     <ul>
-    {% for item in catalog %}
-        <li><a href="{% url 'catalog' type %}{{item.id}}">{{ item.name }}</a></li>
-    {% endfor %}
+        {% for item in catalog %}
+            <li><a href="{% url 'catalog' item.type %}{{ item.id }}">{{ item.name }}</a> ({{ item.price }}$)</li>
+        {% endfor %}
     </ul>
 {% else %}
     <p>No items are available.</p>
