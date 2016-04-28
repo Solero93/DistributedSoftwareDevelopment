@@ -1,9 +1,17 @@
+
 {% if catalog %}
-    <ul>
-        {% for item in catalog %}
-            <li><a href="{% url 'catalog' item.type %}{{ item.id }}">{{ item.name }}</a> ({{ item.price }}$)</li>
-        {% endfor %}
-    </ul>
+   <H2>
+   You're looking at our {{ type }} catalog:
+   </H2>
+	<form action="{% url 'mediacloud:shoppingcart'%}" method="post">
+	{% csrf_token %}
+
+    {% for item in catalog %}
+         <label><input type= checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}" value="{{ item.id }}"/> <a href="{% url 'catalog' item.type %}{{ item.id }}">{{ item.name }}</a>  </label>
+         <BR>
+    {% endfor %}
+   <input type="submit" value="Go to Shopping cart" />
+	</form>
 {% else %}
-    <p>No items are available for {{ type }}.</p>
+    <p>No items are available.</p>
 {% endif %}
