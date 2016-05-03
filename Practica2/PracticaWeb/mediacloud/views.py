@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
-from mediacloud.models import Item, Types, comment
+from mediacloud.models import Item, Types, comment, cart
 
 
 def index(request):
@@ -38,16 +38,41 @@ def error(request):
     context = {
     }
     return render(request, 'error.html', context)
+
+
 def buy(request):
+    items=[]
+    for id in request.session["selectedItems"] :
+        items.append(Item.objects.get(pk=id))
     context = {
+        'items': items
     }
     return render(request, 'buy.html', context)
 
+def bougth(request):
+
+    request.session["bougthItems"] = request.session["selectedItems"]
+    return HttpResponseRedirect(reverse('download'))
+
+def download(request):
+    items=[]
+    for id in request.session["selectedItems"]:
+        items.append(Item.objects.get(pk=id))
+    context = {
+        'items': items
+    }
+    return render(request, 'download.html', context)
+def downloadFile(reques, id):
+    fsock = open(file)
+    response = HttpResponse(fsock, mimetype='audio/mpeg')
+    response['Content-Disposition'] = "attachment; filename=" + str(file)
 
 def shoppingcart(request):
     selectedItems = []
     for key in request.POST:
         if key.startswith("checkbox"):
             selectedItems.append(request.POST[key])
+    print selectedItems
+
     request.session["selectedItems"] = selectedItems
-    return HttpResponseRedirect(reverse('mediacloud/buy'))
+    return HttpResponseRedirect(reverse('buy'))

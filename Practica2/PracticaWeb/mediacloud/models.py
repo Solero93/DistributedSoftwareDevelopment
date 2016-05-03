@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import json
 
 
 class Item(models.Model):
@@ -29,3 +30,12 @@ class comment(models.Model):
 
     def __str__(self):
         return "[" + self.nick + "] " + self.idItem
+
+class cart(models.Model):
+    foo = models.CharField(max_length=200,default="[]")
+
+    def setfoo(self, x):
+        self.foo = json.dumps(x)
+
+    def getfoo(self):
+        return json.loads(self.foo)

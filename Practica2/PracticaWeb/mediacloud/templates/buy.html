@@ -1,0 +1,14 @@
+BUY
+{% if items %}
+    <ul>
+        {% for item in items %}
+            <li>{{ item.name }}</li>
+        {% endfor %}
+    </ul>
+    <form action="{% url 'bougth'%}" method="post">
+    {% csrf_token %}
+   <input type="submit" value="Go to Shopping cart" />
+	</form>
+{% else %}
+    <p>No items are available.</p>
+{% endif %}
