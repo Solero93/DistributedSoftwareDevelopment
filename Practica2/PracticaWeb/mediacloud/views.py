@@ -1,9 +1,26 @@
-from django.http import HttpResponse
+from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
 from mediacloud.models import Item, Types, comment, cart
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("/mediacloud")
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/register.html", {
+        'form': form,
+    })
+
 
 
 def index(request):
@@ -49,7 +66,7 @@ def buy(request):
     }
     return render(request, 'buy.html', context)
 
-def bougth(request):
+def bought(request):
 
     request.session["bougthItems"] = request.session["selectedItems"]
     return HttpResponseRedirect(reverse('download'))
@@ -62,17 +79,22 @@ def download(request):
         'items': items
     }
     return render(request, 'download.html', context)
-def downloadFile(reques, id):
+def downloadFile(request, id):
+    file="mediacloud/downloads/algo.mp3"
     fsock = open(file)
-    response = HttpResponse(fsock, mimetype='audio/mpeg')
+    response = HttpResponse(fsock, content_type ='audio/mpeg')
     response['Content-Disposition'] = "attachment; filename=" + str(file)
+    return response
 
 def shoppingcart(request):
     selectedItems = []
     for key in request.POST:
         if key.startswith("checkbox"):
             selectedItems.append(request.POST[key])
-    print selectedItems
 
     request.session["selectedItems"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
+
+def success(request):
+    return HttpResponseRedirect(reverse('index'))
+

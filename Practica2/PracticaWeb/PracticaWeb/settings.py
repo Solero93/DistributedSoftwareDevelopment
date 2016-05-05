@@ -50,6 +50,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 ROOT_URLCONF = 'PracticaWeb.urls'
+LOGIN_REDIRECT_URL='success/'
 
 TEMPLATES = [
     {

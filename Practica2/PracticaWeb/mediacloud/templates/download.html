@@ -2,7 +2,7 @@ Download
 {% if items %}
     <ul>
         {% for item in items %}
-            <form action="{% url 'download'%}{{item.id	}}" method="post">
+            <form action="{% url 'download'%}{{item.id	}}/" method="post">
 			{% csrf_token %}
 		    <input type="submit" value="{{item.name}}" />
 			</form>

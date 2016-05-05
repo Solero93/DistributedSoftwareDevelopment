@@ -5,7 +5,7 @@ BUY
             <li>{{ item.name }}</li>
         {% endfor %}
     </ul>
-    <form action="{% url 'bougth'%}" method="post">
+    <form action="{% url 'bought'%}" method="post">
     {% csrf_token %}
    <input type="submit" value="Go to Shopping cart" />
 	</form>

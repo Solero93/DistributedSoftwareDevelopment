@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import login, logout
+
+
 
 urlpatterns = [
+    url(r'^mediacloud/login/$', login),
+    url(r'^mediacloud/logout/$', logout),
     url(r'^mediacloud/', include('mediacloud.urls')),
     url(r'^admin/', admin.site.urls),
+
 ]
