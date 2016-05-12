@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
@@ -66,11 +67,13 @@ def buy(request):
     }
     return render(request, 'buy.html', context)
 
+@login_required
 def bought(request):
 
     request.session["bougthItems"] = request.session["selectedItems"]
     return HttpResponseRedirect(reverse('download'))
 
+@login_required
 def download(request):
     items=[]
     for id in request.session["selectedItems"]:
@@ -79,7 +82,9 @@ def download(request):
         'items': items
     }
     return render(request, 'download.html', context)
-def downloadFile(request, id):
+
+@login_required
+def downloadFile(request, id):  
     file="mediacloud/downloads/algo.mp3"
     fsock = open(file)
     response = HttpResponse(fsock, content_type ='audio/mpeg')
