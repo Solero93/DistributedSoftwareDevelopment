@@ -100,6 +100,5 @@ def shoppingcart(request):
     request.session["selectedItems"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
 
-def success(request):
+def redirectToIndex(request):
     return HttpResponseRedirect(reverse('index'))
-

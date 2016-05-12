@@ -1,14 +1,18 @@
-BUY
-{% if items %}
-    <ul>
-        {% for item in items %}
-            <li>{{ item.name }}</li>
-        {% endfor %}
-    </ul>
-    <form action="{% url 'bought'%}" method="post">
-    {% csrf_token %}
-   <input type="submit" value="Go to Shopping cart" />
-	</form>
-{% else %}
-    <p>No items are available.</p>
-{% endif %}
+{% extends 'base_template.html' %}
+
+{% block content %}
+    BUY
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <li>{{ item.name }}</li>
+            {% endfor %}
+        </ul>
+        <form action="{% url 'bought'%}" method="post">
+        {% csrf_token %}
+       <input type="submit" value="Buy!" />
+    	</form>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+{% endblock %}

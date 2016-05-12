@@ -1,17 +1,20 @@
+{% extends 'base_template.html' %}
 
-{% if catalog %}
-   <H2>
-   You're looking at our {{ type }} catalog:
-   </H2>
-	<form action="{% url 'shoppingcart'%}" method="post">
-	{% csrf_token %}
+{% block content %}
+  {% if catalog %}
+     <H2>
+     You're looking at our {{ type }} catalog:
+     </H2>
+  	<form action="{% url 'shoppingcart'%}" method="post">
+  	{% csrf_token %}
 
-    {% for item in catalog %}
-         <label><input type= checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}" value="{{ item.id }}"/> <a href="{% url 'catalog' type %}{{item.id}}/">{{ item.name }}</a></label>
-         <BR>
-    {% endfor %}
-   <input type="submit" value="Go to Shopping cart" />
-	</form>
-{% else %}
-    <p>No items are available.</p>
-{% endif %}
+      {% for item in catalog %}
+           <label><input type= checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}" value="{{ item.id }}"/> <a href="{% url 'catalog' type %}{{item.id}}/">{{ item.name }}</a></label>
+           <BR>
+      {% endfor %}
+     <input type="submit" value="Go to Shopping cart" />
+  	</form>
+  {% else %}
+      <p>No items are available.</p>
+  {% endif %}
+{% endblock %}
