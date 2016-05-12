@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
-from mediacloud.models import Item, Types, comment, cart, Client
+from mediacloud.models import Item, Types, Comment, cart, Client
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
@@ -15,7 +15,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-			Client.objects.create(user=new_user) 
+            Client.objects.create(user=new_user)
             return redirectToIndex(request)
     else:
         form = UserCreationForm()
@@ -45,7 +45,7 @@ def catalog(request, type="all"):
 
 def detall(request, id):
     item_by_id = Item.objects.get(pk=id)
-    comments_by_id = comment.objects.filter(idItem=id)
+    comments_by_id = item_by_id.comments
     context = {
         'item': item_by_id,
         'comments': comments_by_id
