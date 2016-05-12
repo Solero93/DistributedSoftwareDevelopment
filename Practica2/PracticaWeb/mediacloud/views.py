@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
-from mediacloud.models import Item, Types, comment, cart, Client
+from mediacloud.models import Item, Types, Comment, cart, Client
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
@@ -26,7 +26,9 @@ def register(request):
     })
 
 
+
 def index(request):
+    # TODO Hacer tabla de types
     catalog_by_type = Types.objects.all()
     context = {
         'types': catalog_by_type,
@@ -57,6 +59,7 @@ def error(request):
     context = {
     }
     return render(request, 'error.html', context)
+
 
 def buy(request):
     items=[]
