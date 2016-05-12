@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 
-from mediacloud.models import Item, Types, comment, cart
+from mediacloud.models import Item, Types, comment, cart, Client
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
@@ -70,21 +70,19 @@ def buy(request):
 @login_required
 def bought(request):
 
-    request.session["bougthItems"] = request.session["selectedItems"]
+    for i in request.session["selectedItems"]:
+        request.user.client.itemsBought.add(i)
     return HttpResponseRedirect(reverse('download'))
 
 @login_required
 def download(request):
-    items=[]
-    for id in request.session["selectedItems"]:
-        items.append(Item.objects.get(pk=id))
     context = {
-        'items': items
+        'items': request.user.client.itemsBought.all()
     }
     return render(request, 'download.html', context)
 
 @login_required
-def downloadFile(request, id):  
+def downloadFile(request, id):
     file="mediacloud/downloads/algo.mp3"
     fsock = open(file)
     response = HttpResponse(fsock, content_type ='audio/mpeg')

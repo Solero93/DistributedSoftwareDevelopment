@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 import json
+from django.contrib.auth.models import User
 
 
 class Item(models.Model):
@@ -39,3 +40,10 @@ class cart(models.Model):
 
     def getfoo(self):
         return json.loads(self.foo)
+
+
+
+class Client(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    money=models.FloatField(default=0)
+    itemsBought=models.ManyToManyField(Item, blank=True)
