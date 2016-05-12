@@ -51,6 +51,7 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'PracticaWeb.urls'
 LOGIN_REDIRECT_URL='/mediacloud/'
+AUTH_PROFILE_MODULE = 'mediacloud.Client'
 
 TEMPLATES = [
     {

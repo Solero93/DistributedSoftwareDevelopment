@@ -47,3 +47,6 @@ class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     money=models.FloatField(default=0)
     itemsBought=models.ManyToManyField(Item, blank=True)
+
+    def __str__(self):
+        return "[" + self.user.get_username() + "] "

@@ -15,6 +15,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
+            Client.objects.create(user=new_user)
             return HttpResponseRedirect("/mediacloud")
     else:
         form = UserCreationForm()
@@ -60,6 +61,7 @@ def error(request):
 
 def buy(request):
     items=[]
+
     for id in request.session["selectedItems"] :
         items.append(Item.objects.get(pk=id))
     context = {
@@ -69,9 +71,11 @@ def buy(request):
 
 @login_required
 def bought(request):
-
+    print request.user.get_username()
+    print Client.objects.all()
     for i in request.session["selectedItems"]:
         request.user.client.itemsBought.add(i)
+    request.session["selectedItems"]=[]
     return HttpResponseRedirect(reverse('download'))
 
 @login_required
