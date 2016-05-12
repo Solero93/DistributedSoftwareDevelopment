@@ -10,13 +10,15 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from django.db.models import Sum
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            Client.objects.create(user=new_user)
-            return redirectToIndex(request)
+            Client.objects.create(user=new_user) 
+            return redirectToIndex()
     else:
         form = UserCreationForm()
     return render(request, "registration/register.html", {
@@ -45,7 +47,7 @@ def catalog(request, type="all"):
 
 def detall(request, id):
     item_by_id = Item.objects.get(pk=id)
-    comments_by_id = item_by_id.comments
+    comments_by_id = comment.objects.filter(idItem=id)
     context = {
         'item': item_by_id,
         'comments': comments_by_id
@@ -70,7 +72,10 @@ def buy(request):
 
 @login_required
 def bought(request):
-
+    selectedItems = request.session["selectedItems"]
+    price = Item.objects.filter(pk__in=selectedItems).aggregate(Sum('price'))
+    if (price > request.user.client.money):
+        return error(request)
     for i in request.session["selectedItems"]:
         request.user.client.itemsBought.add(i)
     return HttpResponseRedirect(reverse('download'))
@@ -99,5 +104,5 @@ def shoppingcart(request):
     request.session["selectedItems"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
 
-def redirectToIndex(request):
+def redirectToIndex():
     return HttpResponseRedirect(reverse('index'))
