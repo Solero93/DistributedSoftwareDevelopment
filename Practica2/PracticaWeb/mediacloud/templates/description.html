@@ -1,19 +1,23 @@
-{% if item %}
-	<img src="{{item.img}}" alt="{{item.name}}" style="height:228px;">
-	<h1>{{item.name}}</h1>
-	<br><b>Type</b>:<i>{{item.type}}</i>
-	<br> <b>Price</b>:{{item.price}}
-	<br><b>Description</b><br>
-	{{item.description}}
-    <br><br><b>Comments</b>
-    {% for comment in comments %}
-        <hr>
-        <b>{{ comment.nick }}</b>  Score:{{ comment.score }}
-        <br>
-        {{ comment.text }}
-        <br>
-    {% endfor %}
+{% extends 'base_template.html' %}
 
-{% else %}
-    <p> Item not found.</p>
-{% endif %}
+{% block content %}
+    {% if item %}
+    	<img src="{{item.img}}" alt="{{item.name}}" style="height:228px;">
+    	<h1>{{item.name}}</h1>
+    	<br><b>Type</b>:<i>{{item.type}}</i>
+    	<br> <b>Price</b>:{{item.price}}
+    	<br><b>Description</b><br>
+    	{{item.description}}
+        <br><br><b>Comments</b>
+        {% for comment in comments %}
+            <hr>
+            <b>{{ comment.nick }}</b>  Score:{{ comment.score }}
+            <br>
+            {{ comment.text }}
+            <br>
+        {% endfor %}
+
+    {% else %}
+        <p> Item not found.</p>
+    {% endif %}
+{% endblock %}
