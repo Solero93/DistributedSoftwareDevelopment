@@ -75,7 +75,7 @@ def buy(request):
 def bought(request):
     selectedItems = request.session["selectedItems"]
     price = Item.objects.filter(pk__in=selectedItems).aggregate(Sum('price'))
-    if (price > request.user.client.money):
+    if (price["price__sum"] > request.user.client.money):
         return error(request)
     for i in request.session["selectedItems"]:
         request.user.client.itemsBought.add(i)
