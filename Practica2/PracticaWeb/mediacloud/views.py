@@ -47,7 +47,8 @@ def catalog(request, type="all"):
 
 def detall(request, id):
     item_by_id = Item.objects.get(pk=id)
-    comments_by_id = comment.objects.filter(idItem=id)
+
+    comments_by_id = item_by_id.comment_set
     context = {
         'item': item_by_id,
         'comments': comments_by_id
@@ -94,6 +95,19 @@ def downloadFile(request, id):
     response = HttpResponse(fsock, content_type ='audio/mpeg')
     response['Content-Disposition'] = "attachment; filename=" + str(file)
     return response
+
+@login_required
+def commentItem(request,id):
+    textCom=""
+    rate=3
+    for key in request.POST:
+        if key.startswith("textarea"):
+            textCom=request.POST[key]
+        elif key.startswith("radio"):
+            rate=request.POST[key]
+    Comment.objects.create(user=request.user, nick=request.user.get_username(), item=Item.objects.get(pk=id), score=rate, text=textCom)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
 
 def shoppingcart(request):
     selectedItems = []

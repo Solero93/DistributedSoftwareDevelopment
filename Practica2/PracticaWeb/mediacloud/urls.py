@@ -6,7 +6,8 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
 
     url(r'^catalog/(.*)/(?P<id>.*)/$', views.detall, name='detall'),
-    url(r'^register/$', views.register, name='register'),
+    url(r'^catalog/(.*)/(?P<id>.*)/comment/$', views.commentItem, name='commentItem'),
+    url(r'^register/$', views.register, name='register' ),
 
     url(r'^catalog/(?P<type>.*)/$', views.catalog, name='catalog'),
     url(r'^download/(?P<id>.*)/$', views.downloadFile, name='downloadFile'),

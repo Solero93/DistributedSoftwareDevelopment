@@ -17,6 +17,22 @@
             <br>
         {% endfor %}
 
+        <form action="{% url 'commentItem' item.id %}" method="post">
+        {% csrf_token %}
+             <legend>Comment the producte:</legend>
+          <textarea name="commentText" rows="10" cols="50" maxlength="600">Your Comment...</textarea>
+            <br>
+            <input type="radio" name="rate" value="0">0
+            <input type="radio" name="rate" value="1">1
+            <input type="radio" name="rate" value="2">2
+            <input type="radio" name="rate" value="3" checked>3
+            <input type="radio" name="rate" value="4">4
+            <input type="radio" name="rate" value="5">5
+
+            <br>
+         <input type="submit" value="Comment" />
+        </form>
+
     {% else %}
         <p> Item not found.</p>
     {% endif %}

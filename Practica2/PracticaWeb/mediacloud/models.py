@@ -18,10 +18,10 @@ class Types(models.Model):
 
 class Comment(models.Model):
     nick = models.CharField(max_length=40)
-    #user= models.ManyToOneRel(User)
-    #item = models.ManyToOneRel(Item)
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    item =  models.ForeignKey(Item, on_delete=models.CASCADE)
     score= models.FloatField(default=0)
-    text= models.CharField(max_length=600)
+    text= models.CharField(max_length=601)
 
     def __str__(self):
         return "[" + self.nick + "] " + self.idItem
