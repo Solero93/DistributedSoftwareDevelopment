@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
 
     url(r'^catalog/(.*)/(?P<id>.*)/$', views.detall, name='detall'),
-    url(r'^catalog/(.*)/(?P<id>.*)/comment/$', views.commentItem, name='commentItem'),
+    url(r'^commentItem/(?P<id>.*)/$', views.commentItem, name='commentItem'),
     url(r'^register/$', views.register, name='register' ),
 
     url(r'^catalog/(?P<type>.*)/$', views.catalog, name='catalog'),

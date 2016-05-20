@@ -1,156 +1,184 @@
 [
-  {
-    "model": "mediacloud.Item",
+{
+    "model": "mediacloud.item",
     "pk": 1,
     "fields": {
-      "description": "Lorem Ipsum",
-      "name": "Lennon Bio",
-      "type": "pdf",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem Ipsum",
+        "name": "Lennon Bio",
+        "type": "pdf",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 2,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Sharp Bio",
-      "type": "pdf",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Sharp Bio",
+        "type": "pdf",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 3,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Lala 1",
-      "type": "song",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Lala 1",
+        "type": "song",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 4,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Lala 2",
-      "type": "song",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Lala 2",
+        "type": "song",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 5,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Lala 3",
-      "type": "song",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Lala 3",
+        "type": "song",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 6,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Lala 4",
-      "type": "song",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Lala 4",
+        "type": "song",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 7,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Book 1",
-      "type": "book",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Book 1",
+        "type": "book",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 8,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Book 2",
-      "type": "book",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Book 2",
+        "type": "book",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 9,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Book 3",
-      "type": "book",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Book 3",
+        "type": "book",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 10,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Book 4",
-      "type": "book",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Book 4",
+        "type": "book",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 11,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Short 1",
-      "type": "video",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Short 1",
+        "type": "video",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 12,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Short 2",
-      "type": "video",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Short 2",
+        "type": "video",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 13,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Short 3",
-      "type": "video",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Short 3",
+        "type": "video",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  },
-  {
-    "model": "mediacloud.Item",
+},
+{
+    "model": "mediacloud.item",
     "pk": 14,
     "fields": {
-      "description": "Lorem ipsum dolor sit amet ",
-      "name": "Short 4",
-      "type": "video",
-      "price": "1.00",
-      "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
+        "description": "Lorem ipsum dolor sit amet ",
+        "name": "Short 4",
+        "type": "video",
+        "price": 1.0,
+        "img": "http://www.pkparaiso.com/quizmedia/5e82dd4990229f44e26850932ebdfabf876df19f.png"
     }
-  }
+},
+{
+    "model": "mediacloud.types",
+    "pk": 1,
+    "fields": {
+        "name": "pdf"
+    }
+},
+{
+    "model": "mediacloud.types",
+    "pk": 2,
+    "fields": {
+        "name": "video"
+    }
+},
+{
+    "model": "mediacloud.types",
+    "pk": 3,
+    "fields": {
+        "name": "book"
+    }
+},
+{
+    "model": "mediacloud.types",
+    "pk": 4,
+    "fields": {
+        "name": "song"
+    }
+}
 ]

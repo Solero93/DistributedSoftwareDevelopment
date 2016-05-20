@@ -16,15 +16,6 @@ class Types(models.Model):
     def __str__(self):
         return "" + self.name
 
-class Comment(models.Model):
-    nick = models.CharField(max_length=40)
-    user= models.ForeignKey(User, on_delete=models.CASCADE)
-    item =  models.ForeignKey(Item, on_delete=models.CASCADE)
-    score= models.FloatField(default=0)
-    text= models.CharField(max_length=601)
-
-    def __str__(self):
-        return "[" + self.nick + "] " + self.idItem
 
 class Item(models.Model):
     description = models.CharField(max_length=400)
@@ -55,3 +46,10 @@ class Client(models.Model):
 
     def __str__(self):
         return "[" + self.user.get_username() + "] "
+
+class Comment(models.Model):
+    nick = models.CharField(max_length=40)
+    user= models.ForeignKey(User)
+    item =  models.ForeignKey(Item)
+    score= models.FloatField(default=0)
+    text= models.CharField(max_length=601)

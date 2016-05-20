@@ -3,135 +3,135 @@
     "model": "auth.permission",
     "pk": 1,
     "fields": {
-        "name": "Can add item",
+        "name": "Can add types",
         "content_type": 1,
-        "codename": "add_item"
+        "codename": "add_types"
     }
 },
 {
     "model": "auth.permission",
     "pk": 2,
     "fields": {
-        "name": "Can change item",
+        "name": "Can change types",
         "content_type": 1,
-        "codename": "change_item"
+        "codename": "change_types"
     }
 },
 {
     "model": "auth.permission",
     "pk": 3,
     "fields": {
-        "name": "Can delete item",
+        "name": "Can delete types",
         "content_type": 1,
-        "codename": "delete_item"
+        "codename": "delete_types"
     }
 },
 {
     "model": "auth.permission",
     "pk": 4,
     "fields": {
-        "name": "Can add types",
+        "name": "Can add item",
         "content_type": 2,
-        "codename": "add_types"
+        "codename": "add_item"
     }
 },
 {
     "model": "auth.permission",
     "pk": 5,
     "fields": {
-        "name": "Can change types",
+        "name": "Can change item",
         "content_type": 2,
-        "codename": "change_types"
+        "codename": "change_item"
     }
 },
 {
     "model": "auth.permission",
     "pk": 6,
     "fields": {
-        "name": "Can delete types",
+        "name": "Can delete item",
         "content_type": 2,
-        "codename": "delete_types"
+        "codename": "delete_item"
     }
 },
 {
     "model": "auth.permission",
     "pk": 7,
     "fields": {
-        "name": "Can add comment",
+        "name": "Can add cart",
         "content_type": 3,
-        "codename": "add_comment"
+        "codename": "add_cart"
     }
 },
 {
     "model": "auth.permission",
     "pk": 8,
     "fields": {
-        "name": "Can change comment",
+        "name": "Can change cart",
         "content_type": 3,
-        "codename": "change_comment"
+        "codename": "change_cart"
     }
 },
 {
     "model": "auth.permission",
     "pk": 9,
     "fields": {
-        "name": "Can delete comment",
+        "name": "Can delete cart",
         "content_type": 3,
-        "codename": "delete_comment"
+        "codename": "delete_cart"
     }
 },
 {
     "model": "auth.permission",
     "pk": 10,
     "fields": {
-        "name": "Can add cart",
+        "name": "Can add client",
         "content_type": 4,
-        "codename": "add_cart"
+        "codename": "add_client"
     }
 },
 {
     "model": "auth.permission",
     "pk": 11,
     "fields": {
-        "name": "Can change cart",
+        "name": "Can change client",
         "content_type": 4,
-        "codename": "change_cart"
+        "codename": "change_client"
     }
 },
 {
     "model": "auth.permission",
     "pk": 12,
     "fields": {
-        "name": "Can delete cart",
+        "name": "Can delete client",
         "content_type": 4,
-        "codename": "delete_cart"
+        "codename": "delete_client"
     }
 },
 {
     "model": "auth.permission",
     "pk": 13,
     "fields": {
-        "name": "Can add client",
+        "name": "Can add comment",
         "content_type": 5,
-        "codename": "add_client"
+        "codename": "add_comment"
     }
 },
 {
     "model": "auth.permission",
     "pk": 14,
     "fields": {
-        "name": "Can change client",
+        "name": "Can change comment",
         "content_type": 5,
-        "codename": "change_client"
+        "codename": "change_comment"
     }
 },
 {
     "model": "auth.permission",
     "pk": 15,
     "fields": {
-        "name": "Can delete client",
+        "name": "Can delete comment",
         "content_type": 5,
-        "codename": "delete_client"
+        "codename": "delete_comment"
     }
 },
 {
@@ -297,31 +297,19 @@
     }
 },
 {
-    "model": "auth.group",
-    "pk": 1,
-    "fields": {
-        "name": "Expert Users",
-        "permissions": [
-            7,
-            8,
-            9
-        ]
-    }
-},
-{
     "model": "auth.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$24000$4THMHCDe7uIG$ShNQg2w280ZYEoiUjKrG6VOz/bwv9nt02xzR5D+V3Ns=",
-        "last_login": "2016-05-12T16:48:30.269Z",
-        "is_superuser": true,
-        "username": "solero",
+        "password": "pbkdf2_sha256$24000$wEjtv68VbJr1$efXXq/ixCsprrzi0PxZUStI2p9V9Q3xxJUh6CBEadC0=",
+        "last_login": "2016-05-20T09:59:35.144Z",
+        "is_superuser": false,
+        "username": "normal",
         "first_name": "",
         "last_name": "",
-        "email": "solero@solero.com",
-        "is_staff": true,
+        "email": "",
+        "is_staff": false,
         "is_active": true,
-        "date_joined": "2016-05-12T16:45:59.848Z",
+        "date_joined": "2016-05-20T09:59:24.388Z",
         "groups": [],
         "user_permissions": []
     }
@@ -330,56 +318,27 @@
     "model": "auth.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$24000$EvgVf89z8Keb$Lp1BXWs6R8NE9Fls36FinMbCoQyTh7frToEkaLGlgF8=",
-        "last_login": null,
+        "password": "pbkdf2_sha256$24000$By43R8gOWYhG$2eqLunZTs1rR22e6igk8xoKbwX+G06rs4mxIf4ronBY=",
+        "last_login": "2016-05-20T10:26:16.588Z",
         "is_superuser": true,
         "username": "nico",
         "first_name": "",
         "last_name": "",
-        "email": "nico@nico.com",
+        "email": "sdfas@dfkiasjf.fw",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2016-05-12T16:46:20.320Z",
+        "date_joined": "2016-05-20T10:23:53.064Z",
         "groups": [],
         "user_permissions": []
     }
 },
 {
-    "model": "auth.user",
-    "pk": 3,
+    "model": "mediacloud.client",
+    "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$24000$qpnfdwOzaxoy$jzHgTZiK19enJtfoCA1wrOrlOaYxDvbQuCSDKbwNyTw=",
-        "last_login": "2016-05-12T16:52:38.765Z",
-        "is_superuser": false,
-        "username": "expert",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2016-05-12T16:50:38Z",
-        "groups": [
-            1
-        ],
-        "user_permissions": []
-    }
-},
-{
-    "model": "auth.user",
-    "pk": 4,
-    "fields": {
-        "password": "pbkdf2_sha256$24000$fBwtJfkxIz4P$BZSiQc0BgcNnEkQaIs2O1XjAhrWOXhzYbpOcENLAV7A=",
-        "last_login": "2016-05-12T16:54:38.550Z",
-        "is_superuser": false,
-        "username": "normal",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2016-05-12T16:51:51.766Z",
-        "groups": [],
-        "user_permissions": []
+        "user": 1,
+        "money": 0.0,
+        "itemsBought": []
     }
 }
 ]

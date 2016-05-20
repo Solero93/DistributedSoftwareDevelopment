@@ -9,18 +9,19 @@
     	<br><b>Description</b><br>
     	{{item.description}}
         <br><br><b>Comments</b>
-        {% for comment in comments %}
+        {% for i in comments %}
             <hr>
-            <b>{{ comment.nick }}</b>  Score:{{ comment.score }}
+            <b>{{ i.nick}}</b>       &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score}}
             <br>
-            {{ comment.text }}
+            {{ i.text}}
             <br>
         {% endfor %}
-
-        <form action="{% url 'commentItem' item.id %}" method="post">
+        <br>
+        <hr><br>
+        <form action=" {% url 'commentItem'  idItem %}" method="post" id="commentForm">
         {% csrf_token %}
              <legend>Comment the producte:</legend>
-          <textarea name="commentText" rows="10" cols="50" maxlength="600">Your Comment...</textarea>
+          <textarea name="commentText" rows="10" cols="50" maxlength="600" form="commentForm">Your Comment...</textarea>
             <br>
             <input type="radio" name="rate" value="0">0
             <input type="radio" name="rate" value="1">1

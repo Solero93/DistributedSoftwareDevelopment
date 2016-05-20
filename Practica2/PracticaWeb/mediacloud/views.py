@@ -48,10 +48,13 @@ def catalog(request, type="all"):
 def detall(request, id):
     item_by_id = Item.objects.get(pk=id)
 
-    comments_by_id = item_by_id.comment_set
+    comments_by_id = Comment.objects.filter(item__pk=id)
+    comments = [(i.nick, i.score, i.text) for i in comments_by_id]
+
     context = {
         'item': item_by_id,
-        'comments': comments_by_id
+        'comments': comments_by_id,
+        'idItem': id
     }
     return render(request, 'description.html', context)
 
@@ -100,13 +103,12 @@ def downloadFile(request, id):
 def commentItem(request,id):
     textCom=""
     rate=3
-    for key in request.POST:
-        if key.startswith("textarea"):
-            textCom=request.POST[key]
-        elif key.startswith("radio"):
-            rate=request.POST[key]
-    Comment.objects.create(user=request.user, nick=request.user.get_username(), item=Item.objects.get(pk=id), score=rate, text=textCom)
-
+    try:
+        textCom=request.POST['commentText']
+        rate=request.POST['rate']
+        Comment.objects.create(user=request.user, nick=request.user.get_username(), item=Item.objects.get(pk=id), score=rate, text=textCom)
+    except:
+        return redirectToIndex()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
 
 def shoppingcart(request):
