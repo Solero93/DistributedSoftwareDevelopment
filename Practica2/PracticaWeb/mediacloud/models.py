@@ -53,3 +53,8 @@ class Comment(models.Model):
     item =  models.ForeignKey(Item)
     score= models.FloatField(default=0)
     text= models.CharField(max_length=601)
+
+    class Meta:
+        permissions = (
+            ("write_comments", "Can write a comment"),
+        )

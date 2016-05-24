@@ -17,11 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from rest_framework import routers
-from mediacloud.serializers import ItemSerializer
-from mediacloud.viewSet import ItemViewSet
+from mediacloud import viewSet
 
 router = routers.DefaultRouter()
-router.register(r'items', ItemViewSet)
+router.register(r'items', viewSet.ItemViewSet)
+router.register(r'comments', viewSet.CommentViewSet)
 
 urlpatterns = [
     url(r'^mediacloud/login/$', login, name="login"),
