@@ -127,5 +127,12 @@ def shoppingcart(request):
     return HttpResponseRedirect(reverse('buy'))
 
 
+def comparator(request, ips):
+    context = {
+        'ips': ips,
+        'items': Item.objects.all()
+    }
+    return render(request, 'comparator.html', context)
+
 def redirectToIndex():
     return HttpResponseRedirect(reverse('index'))
