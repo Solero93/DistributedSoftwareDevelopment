@@ -27,6 +27,9 @@ function compare(ips) {
         requests.push(
             $.ajax({
                 url: "http://" + ips[i] + ":8080/api/comments/",
+                success: function(data){
+
+                }
             })
         );
     }
@@ -41,7 +44,7 @@ function compare(ips) {
             for (var j = 0; j < allItems.length && !found; j++) {
                 comments = arguments[i+1][0]["results"];
                 if (allItems[j]["name"] === item) {
-                    itemList.push([ips[i/2], allItems[j]["price"], allItems[j]["description"], arguments[i+1][0]["results"]]);
+                    itemList.push([ips[i/2], allItems[j]["price"], allItems[j]["description"], allItems[j]["url"], comments]);
                     found = true;
                 }
             }
@@ -56,9 +59,11 @@ function compare(ips) {
                 "&#8195;Precio: " + itemList[i][1] + "<br>" +
                 "&#8195;Descripción: " + itemList[i][2] + "<br>" +
                 "&#8195;Comentarios: <br>";
-                comments = itemList[i][3];
+                comments = itemList[i][4];
                 for (var j=0; j<comments.length; j++){
-                    finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
+                    if (comments[j]["item"] === itemList[i][3]) {
+                        finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
+                    }
                 }
             finalHtml +="<br>"
         }
