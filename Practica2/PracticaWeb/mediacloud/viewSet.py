@@ -26,7 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows Items to be viewed or edited.
+    API endpoint that allows Comments to be viewed or edited.
     """
     queryset = Comment.objects.all().order_by('nick')
     serializer_class = CommentSerializer
