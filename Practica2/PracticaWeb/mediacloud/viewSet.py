@@ -87,7 +87,19 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 
-    def update(self, request):
+    def update(self, request, pk=None):
 
-        pass
+        if (not self.get_object().user == request.user):
+            return Response({'status': 'ERROR YOU CANT EDIT THIS'})
+
+        serializerCom = CommentSerializer(data=request.data)
+        if serializerCom.is_valid():
+            myObj = Comment.objects.get(pk=pk)
+            myObj.text = serializerCom.validated_data['text']
+            myObj.score = serializerCom.validated_data['score']
+            myObj.save()
+
+            return Response(myObj, status={'status': 'Comment set'})
+
+        return Response(serializerCom.errors, status=status.HTTP_400_BAD_REQUEST)
 
