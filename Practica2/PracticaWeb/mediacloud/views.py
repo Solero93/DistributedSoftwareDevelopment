@@ -8,7 +8,7 @@ from django.shortcuts import render
 
 from mediacloud.models import Item, Types, Comment, Client
 
-ips = ["localhost", "localhost", "localhost"]  # ,"161.116.56.65", "161.116.56.165"]
+ips = ["161.116.52.35"] # "localhost","localhost","localhost"]
 
 
 def register(request):
@@ -16,7 +16,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             new_user = form.save()
-            Client.objects.create(user=new_user)
+            Client.objects.create(user=new_user, money=100)
             return redirectToIndex()
     else:
         form = UserCreationForm()
@@ -54,6 +54,7 @@ def detall(request, id):
         'comments': comments_by_id,
         'idItem': id
     }
+
     return render(request, 'description.html', context)
 
 

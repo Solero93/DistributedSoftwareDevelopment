@@ -35,7 +35,6 @@ function compare(ips) {
     }
     var itemList = [];
     $.when.apply($, requests).done(function () {
-        console.log(arguments);
         var allItems;
         for (var i = 0; i < arguments.length; i+=2) {
             allItems = arguments[i][0]["results"];
