@@ -10,7 +10,7 @@
             <div id="checkBoxes">
                 {% for item in catalog %}
                     <label><input type=checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}"
-                                  value="{{ item.id }}"/> <a
+                                  value="{{ item.id }}" data-name="{{ item.name }}"/> <a
                             href="{% url 'catalog' type %}{{ item.id }}/">{{ item.name }}</a></label>
                     <BR>
                 {% endfor %}
@@ -32,6 +32,6 @@
         <p>No IPs to make comparison</p>
     {% endif %}
 
-    <div id="comparison">
-    </div>
+        <div id="comparison">
+        </div>
 {% endblock %}
