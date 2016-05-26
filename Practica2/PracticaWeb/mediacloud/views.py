@@ -129,5 +129,5 @@ def shoppingcart(request):
     return HttpResponseRedirect(reverse('buy'))
 
 
-def redirectToIndex():
+def redirectToIndex(request=None):
     return HttpResponseRedirect(reverse('index'))

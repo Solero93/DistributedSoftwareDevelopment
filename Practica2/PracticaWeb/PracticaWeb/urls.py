@@ -19,6 +19,7 @@ from django.contrib.auth.views import login, logout
 from rest_framework import routers
 
 from mediacloud import viewSet
+from mediacloud import views
 
 router = routers.DefaultRouter()
 router.register(r'items', viewSet.ItemViewSet)
@@ -32,4 +33,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^$', views.index, name='index'),
 ]
