@@ -22,6 +22,7 @@ from mediacloud import viewSet
 router = routers.DefaultRouter()
 router.register(r'items', viewSet.ItemViewSet)
 router.register(r'comments', viewSet.CommentViewSet)
+router.register(r'users', viewSet.UserViewSet)
 
 urlpatterns = [
     url(r'^mediacloud/login/$', login, name="login"),

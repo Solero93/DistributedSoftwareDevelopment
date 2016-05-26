@@ -4,14 +4,18 @@ from .models import Item, Comment
 from rest_framework import serializers
 
 
-class ItemSerializer(serializers.HyperlinkedModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ('description', 'name', 'type', 'price', 'img')
+        fields = ('description', 'n ame', 'type', 'price', 'img')
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('nick', 'item', 'score', 'text')
+        fields = ('pk', 'nick', 'item', 'score', 'text', 'user')
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('pk', 'username')
 

@@ -107,6 +107,9 @@ def downloadFile(request, id):
 def commentItem(request, id):
     textCom = ""
     rate = 3
+    print request.user.get_all_permissions()
+    print "hey ", ('mediacloud.write_comments' in request.user.get_all_permissions())
+
     try:
         textCom = request.POST['commentText']
         rate = request.POST['rate']
