@@ -1,68 +1,68 @@
 [
-  {
+{
     "model": "mediacloud.comment",
     "pk": 1,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  },
-  {
+},
+{
     "model": "mediacloud.comment",
     "pk": 2,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  },
-  {
+},
+{
     "model": "mediacloud.comment",
     "pk": 3,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  },
-  {
+},
+{
     "model": "mediacloud.comment",
     "pk": 4,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  },
-  {
+},
+{
     "model": "mediacloud.comment",
     "pk": 5,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  },
-  {
+},
+{
     "model": "mediacloud.comment",
     "pk": 6,
     "fields": {
-      "nick": "expert",
-      "user": 3,
-      "item": 1,
-      "score": 3.0,
-      "text": "Your Comment..."
+        "nick": "expert",
+        "user": 3,
+        "item": 1,
+        "score": 3.0,
+        "text": "Your Comment..."
     }
-  }
+}
 ]
