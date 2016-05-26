@@ -8,10 +8,10 @@
                 <li>{{ item.name }}</li>
             {% endfor %}
         </ul>
-        <form action="{% url 'bought'%}" method="post">
-        {% csrf_token %}
-       <input type="submit" value="Buy!" />
-    	</form>
+        <form action="{% url 'bought' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Buy!"/>
+        </form>
     {% else %}
         <p>No items are available.</p>
     {% endif %}

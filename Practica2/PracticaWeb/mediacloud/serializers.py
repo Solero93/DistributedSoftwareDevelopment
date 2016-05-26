@@ -7,7 +7,7 @@ from rest_framework import serializers
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
-        fields = ('description', 'n ame', 'type', 'price', 'img')
+        fields = ('description', 'name', 'type', 'price', 'img')
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):

@@ -2,26 +2,27 @@
 
 {% block content %}
     {% if item %}
-    	<img src="{{item.img}}" alt="{{item.name}}" style="height:228px;">
-    	<h1>{{item.name}}</h1>
-    	<br><b>Type</b>:<i>{{item.type}}</i>
-    	<br> <b>Price</b>:{{item.price}}
-    	<br><b>Description</b><br>
-    	{{item.description}}
+        <img src="{{ item.img }}" alt="{{ item.name }}" style="height:228px;">
+        <h1>{{ item.name }}</h1>
+        <br><b>Type</b>:<i>{{ item.type }}</i>
+        <br> <b>Price</b>:{{ item.price }}
+        <br><b>Description</b><br>
+        {{ item.description }}
         <br><br><b>Comments</b>
         {% for i in comments %}
             <hr>
-            <b>{{ i.nick}}</b>       &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score}}
+            <b>{{ i.nick }}</b>       &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score }}
             <br>
-            {{ i.text}}
+            {{ i.text }}
             <br>
         {% endfor %}
         <br>
         <hr><br>
         <form action=" {% url 'commentItem'  idItem %}" method="post" id="commentForm">
-        {% csrf_token %}
-             <legend>Comment the producte:</legend>
-          <textarea name="commentText" rows="10" cols="50" maxlength="600" form="commentForm">Your Comment...</textarea>
+            {% csrf_token %}
+            <legend>Comment the producte:</legend>
+            <textarea name="commentText" rows="10" cols="50" maxlength="600"
+                      form="commentForm">Your Comment...</textarea>
             <br>
             <input type="radio" name="rate" value="0">0
             <input type="radio" name="rate" value="1">1
@@ -31,7 +32,7 @@
             <input type="radio" name="rate" value="5">5
 
             <br>
-         <input type="submit" value="Comment" />
+            <input type="submit" value="Comment"/>
         </form>
 
     {% else %}

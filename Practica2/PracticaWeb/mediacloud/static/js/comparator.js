@@ -1,42 +1,67 @@
-function compare(ips){
-    $('#comparison').html(""); // Delete content
+function compare(ips) {
+    $('#comparison').html(""); // Delete all content inside div comparison
+    var finalHtml = "<h4>Comparación con otros mediacloud ordenado por precio</h4>";
+    var selected = [];
+    $('#checkBoxes input:checked').each(function () {
+        selected.push($(this).attr('data-name'));
+    });
 
-    var item = $('input[name=radioItem]:checked').val();
-    if (!item) return; // Nothing is selected
+    if (selected.length != 1) {
+        alert("Select exactly ONE item to compare");
+        return;
+    }
+
+    var item = selected[0];
+    if (!item) {
+        alert("Internal ERROR when comparing"); // Shouldn't arrive here
+        return;
+    }
 
     var requests = [];
-    for (var i=0; i<ips.length; i++) {
+    for (var i = 0; i < ips.length; i++) {
         requests.push(
             $.ajax({
                 url: "http://" + ips[i] + ":8080/api/items/",
             })
         );
+        requests.push(
+            $.ajax({
+                url: "http://" + ips[i] + ":8080/api/comments/",
+            })
+        );
     }
     var itemList = [];
     $.when.apply($, requests).done(function () {
+        console.log(arguments);
         var allItems;
-        for (var i=0; i<arguments.length; i++){
+        for (var i = 0; i < arguments.length; i+=2) {
             allItems = arguments[i][0]["results"];
             var found = false;
-            for (var j=0; j<allItems.length && !found; j++) {
-                if (allItems[j]["name"] === item){
-                    itemList.push([ips[i], allItems[j]["price"]]);
+            var comments;
+            for (var j = 0; j < allItems.length && !found; j++) {
+                comments = arguments[i+1][0]["results"];
+                if (allItems[j]["name"] === item) {
+                    itemList.push([ips[i/2], allItems[j]["price"], allItems[j]["description"], arguments[i+1][0]["results"]]);
                     found = true;
                 }
             }
-            if (!found) {
-                itemList.push([ips[i], "No se encontró"]);
-            }
         }
-        itemList.sort(function f(a,b) {
-           return (a[1] - b[1]);
+        itemList.sort(function f(a, b) {
+            return (a[1] - b[1]);
         });
 
-        var finalHtml = "";
-        for (var i=0; i<itemList.length; i++) {
-            finalHtml += "Ítem de: " + itemList[i][0] + " --- Precio: " + itemList[i][1] + "<br>";
+        var comments;
+        for (var i = 0; i < itemList.length; i++) {
+            finalHtml += "Ítem de: " + itemList[i][0] + "<br>" +
+                "&#8195;Precio: " + itemList[i][1] + "<br>" +
+                "&#8195;Descripción: " + itemList[i][2] + "<br>" +
+                "&#8195;Comentarios: <br>";
+                comments = itemList[i][3];
+                for (var j=0; j<comments.length; j++){
+                    finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
+                }
+            finalHtml +="<br>"
         }
-
         $('#comparison').html(finalHtml);
     });
 }

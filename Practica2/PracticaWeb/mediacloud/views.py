@@ -1,16 +1,14 @@
-from django.contrib import auth
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
-from django.shortcuts import render
-
-from mediacloud.models import Item, Types, Comment, cart, Client
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.urlresolvers import reverse
+from django.db.models import Sum
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from django.db.models import Sum
+from mediacloud.models import Item, Types, Comment, Client
+
+ips = ["localhost", "localhost", "localhost"]  # ,"161.116.56.65", "161.116.56.165"]
 
 
 def register(request):
@@ -41,6 +39,7 @@ def catalog(request, type="all"):
     context = {
         'catalog': catalog_by_type,
         'type': type,
+        'ips': ips
     }
     return render(request, 'catalog.html', context)
 
@@ -129,13 +128,6 @@ def shoppingcart(request):
     request.session["selectedItems"] = selectedItems
     return HttpResponseRedirect(reverse('buy'))
 
-
-def comparator(request, ips):
-    context = {
-        'ips': ips,
-        'items': Item.objects.all()
-    }
-    return render(request, 'comparator.html', context)
 
 def redirectToIndex():
     return HttpResponseRedirect(reverse('index'))
