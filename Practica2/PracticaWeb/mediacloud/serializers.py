@@ -13,7 +13,7 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = ('pk', 'nick', 'item', 'score', 'text', 'user')
+        fields = ('pk', 'nick', 'item', 'score', 'text')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

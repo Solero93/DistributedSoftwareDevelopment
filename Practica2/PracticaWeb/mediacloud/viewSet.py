@@ -10,11 +10,11 @@ from .models import Item, Comment
 
 
 class ItemViewSet(viewsets.ModelViewSet):
-            """
-            API endpoint that allows Items to be viewed or edited.
-            """
-            queryset = Item.objects.all().order_by('name')
-            serializer_class = ItemSerializer
+    """
+    API endpoint that allows Items to be viewed or edited.
+    """
+    queryset = Item.objects.all().order_by('name')
+    serializer_class = ItemSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,6 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('username')
     serializer_class = UserSerializer
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
@@ -33,15 +34,16 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
 
-        if  (not 'mediacloud.write_comments' in request.user.get_all_permissions()):
-            return Response({'status': 'ERROR YOU ARE NOT A EXPERT USER'})
+        if (not 'mediacloud.write_comments' in request.user.get_all_permissions()):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
             print serializerCom.validated_data
-            serializerCom.validated_data['nick']=request.user.get_username()
-            serializerCom.validated_data['user'] = request.user
-            serializerCom.save()
+            Comment.objects.create(user=request.user, nick=request.user.get_username(), item=serializerCom.validated_data['item'],
+                               score=serializerCom.validated_data['score'], text=serializerCom.validated_data['text'])
+
 
             return Response({'status': 'Comment set'})
 
@@ -51,14 +53,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     def postComment(self, request, pk=None):
 
         if (not 'mediacloud.write_comments' in request.user.get_all_permissions()):
-            return Response({'status': 'ERROR YOU ARE NOT A EXPERT USER'})
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
             print serializerCom.validated_data
-            serializerCom.validated_data['nick'] = request.user.get_username()
-            serializerCom.validated_data['user'] = request.user
-            serializerCom.save()
+            Comment.objects.create(user=request.user, nick=request.user.get_username(),
+                                   item=serializerCom.validated_data['item'],
+                                   score=serializerCom.validated_data['score'],
+                                   text=serializerCom.validated_data['text'])
 
             return Response({'status': 'Comment set'})
 
@@ -68,29 +71,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def putComment(self, request, pk=None):
 
         if (not self.get_object().user == request.user):
-            return Response({'status': 'ERROR YOU CANT EDIT THIS'})
-
-        serializerCom = CommentSerializer(data=request.data)
-        if serializerCom.is_valid():
-            myObj=Comment.objects.get(pk=pk)
-            myObj.text= serializerCom.validated_data['text']
-            myObj.score= serializerCom.validated_data['score']
-            myObj.save()
-
-
-            return Response({'status': 'Comment set'})
-
-        return Response(serializerCom.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-    def update(self, request, pk=None):
-
-        if (not self.get_object().user == request.user):
-            return Response({'status': 'ERROR YOU CANT EDIT THIS'})
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
@@ -99,7 +80,22 @@ class CommentViewSet(viewsets.ModelViewSet):
             myObj.score = serializerCom.validated_data['score']
             myObj.save()
 
-            return Response(myObj, status={'status': 'Comment set'})
+            return Response({'status': 'Comment put'})
 
         return Response(serializerCom.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, pk=None):
+
+        if (not self.get_object().user == request.user):
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        serializerCom = CommentSerializer(data=request.data)
+        if serializerCom.is_valid():
+            myObj = Comment.objects.get(pk=pk)
+            myObj.text = serializerCom.validated_data['text']
+            myObj.score = serializerCom.validated_data['score']
+            myObj.save()
+
+            return Response( status={'status': 'Comment put'})
+
+        return Response(serializerCom.errors, status=status.HTTP_400_BAD_REQUEST)
