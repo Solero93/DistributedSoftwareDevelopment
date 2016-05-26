@@ -1,17 +1,17 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-	Download
-	{% if items %}
-	    <ul>
-	        {% for item in items %}
-	            <form action="{% url 'download'%}{{item.id	}}/" method="post">
-				{% csrf_token %}
-			    <input type="submit" value="{{item.name}}" />
-				</form>
-	        {% endfor %}
-	    </ul>	
-	{% else %}
-	    <p>No items are available.</p>
-	{% endif %}
+    Download
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <form action="{% url 'download' %}{{ item.id }}/" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="{{ item.name }}"/>
+                </form>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
 {% endblock %}

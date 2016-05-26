@@ -1,15 +1,14 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-	<a href="{% url 'comparator' %}">Comparador de ítems</a><br><br>
     <a href="{% url 'catalog' %}">Catálogo general</a>
-	{% if types %}
-	    <ul>
-	        {% for item in types %}
-	            <li><a href="{% url 'catalog' item %}">Catálogo {{ item }}</a></li>
-	        {% endfor %}
-	    </ul>
-	{% else %}
-	    <p>No items are available.</p>
-	{% endif %}
+    {% if types %}
+        <ul>
+            {% for item in types %}
+                <li><a href="{% url 'catalog' item %}">Catálogo {{ item }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
 {% endblock %}

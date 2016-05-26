@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .serializers import ItemSerializer, CommentSerializer
+
 from .models import Item, Comment
+from .serializers import ItemSerializer, CommentSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):

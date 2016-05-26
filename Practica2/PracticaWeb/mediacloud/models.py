@@ -1,13 +1,9 @@
 from __future__ import unicode_literals
 
-from django.db import models
 import json
+
 from django.contrib.auth.models import User
-
-
-
-
-
+from django.db import models
 
 
 class Types(models.Model):
@@ -24,9 +20,9 @@ class Item(models.Model):
     price = models.FloatField(default=0)
     img = models.CharField(max_length=400)
 
-
     def __str__(self):
         return "[" + self.type + "] " + self.name
+
 
 class cart(models.Model):
     foo = models.CharField(max_length=200, default="[]")
@@ -38,21 +34,21 @@ class cart(models.Model):
         return json.loads(self.foo)
 
 
-
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    money=models.FloatField(default=0)
-    itemsBought=models.ManyToManyField(Item, blank=True)
+    money = models.FloatField(default=0)
+    itemsBought = models.ManyToManyField(Item, blank=True)
 
     def __str__(self):
         return "[" + self.user.get_username() + "] "
 
+
 class Comment(models.Model):
     nick = models.CharField(max_length=40)
-    user= models.ForeignKey(User)
-    item =  models.ForeignKey(Item)
-    score= models.FloatField(default=0)
-    text= models.CharField(max_length=601)
+    user = models.ForeignKey(User)
+    item = models.ForeignKey(Item)
+    score = models.FloatField(default=0)
+    text = models.CharField(max_length=601)
 
     class Meta:
         permissions = (
