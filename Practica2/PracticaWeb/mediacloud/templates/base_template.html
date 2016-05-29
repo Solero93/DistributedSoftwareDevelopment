@@ -1,18 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+
+
 <head>
     {% load staticfiles %}
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
-</head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
-<div align="right">
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+<script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
+<title>MediaCloud</title>
+
+
+</head>
+<body>
+<div class="menu-wrapper">
+  <div class="menu">
+      <ul>
+      <li><a href="{% url 'index' %}" id="home" >home</a></li>
+      <li><a href="{% url 'catalog' %}" id="catalogo">Catalog</a></li>
+      <li><a href="services.html" id="about">about</a></li>
+
+    </ul>
+  </div>
+  <div class="call">
     {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
+        <h1><a href="{% url 'logout' %}">Logout</a></h1>
     {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
+        <h1><a href="{% url 'login' %}">Login</a>
+            &nbsp &nbsp
+        <a href="{% url 'register' %}">Register</a></h1>
     {% endif %}
+    </div>
 </div>
+<div class="clearing"></div>
+<div class="border-bottom"></div>
+
 {% block content %}
 {% endblock %}
+</body>

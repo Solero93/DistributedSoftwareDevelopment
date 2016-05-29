@@ -27,18 +27,20 @@ def register(request):
 
 def index(request):
     # TODO Hacer tabla de types
-    catalog_by_type = Types.objects.all()
+    types_catalog = Types.objects.all()
     context = {
-        'types': catalog_by_type,
+        'types': types_catalog,
     }
     return render(request, 'index.html', context)
 
 
 def catalog(request, type="all"):
     catalog_by_type = Item.objects.filter(type=type) if type != "all" and type != "" else Item.objects.all()
+    types_catalog = Types.objects.all()
     context = {
         'catalog': catalog_by_type,
         'type': type,
+        'types': types_catalog,     
         'ips': ips
     }
     return render(request, 'catalog.html', context)

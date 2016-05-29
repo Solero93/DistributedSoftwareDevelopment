@@ -2,39 +2,74 @@
 
 {% block content %}
     {% if item %}
-        <img src="{{ item.img }}" alt="{{ item.name }}" style="height:228px;">
+    <div class="logo-wrapper">
+      <div class="leftshadow"></div>
+      <div class="logo">
         <h1>{{ item.name }}</h1>
-        <br><b>Type</b>:<i>{{ item.type }}</i>
-        <br> <b>Price</b>:{{ item.price }}
-        <br><b>Description</b><br>
+      </div>
+      <div class="rightshadow"></div>
+    </div>
+
+    <div class="clearing"></div>
+    <div class="container">
+    <div class="page-wrapper">
+    <div class="primary-content" >
+    <div class="panel">
+        <img src="{{ item.img }}" alt="{{ item.name }}" style="height:228px;">
+        <div class="descripObj">
+        <br><h2><b>Type</b>:</h2><i>{{ item.type }}</i>
+        <br> <h2><b>Price</b>:</h2>{{ item.price }}
+        <br><h2><b>Description</b>:<br></h2>
         {{ item.description }}
-        <br><br><b>Comments</b>
-        {% for i in comments %}
-            <hr>
-            <b>{{ i.nick }}</b>       &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score }}
-            <br>
-            {{ i.text }}
-            <br>
-        {% endfor %}
+        </div>
         <br>
-        <hr><br>
+        <br>
+    </div>
+    </div>
+    </div>
+
+    <div style="margin-top: 30px;"/>
+    <div class="page-wrapper">
+    <div class="primary-content">
+    <div class="panel">
+        <div class="title">
+            <h1>Comments</h1>
+        </div>
+        <br><br>
+        <div class="comments">
+        {% for i in comments %}
+            <div class="cap">
+            <h1><b>{{ i.nick }}</b> &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score }}</h1>
+            <br>
+            <div class="textCom">
+            <h2>{{ i.text }}</h2>
+            <br>
+            </div>
+            <hr>
+        </div>
+        {% endfor %}
+        </div>
+        <br>
+        <br>
+        <div class="contact-form">
         <form action=" {% url 'commentItem'  idItem %}" method="post" id="commentForm">
             {% csrf_token %}
-            <legend>Comment the producte:</legend>
-            <textarea name="commentText" rows="10" cols="50" maxlength="600"
+            <legend><h2>Comment the producte:</h2></legend>
+            <textarea name="commentText" class="message" rows="10" cols="50" maxlength="600"
                       form="commentForm">Your Comment...</textarea>
             <br>
+            <h2>
             <input type="radio" name="rate" value="0">0
             <input type="radio" name="rate" value="1">1
             <input type="radio" name="rate" value="2">2
             <input type="radio" name="rate" value="3" checked>3
             <input type="radio" name="rate" value="4">4
             <input type="radio" name="rate" value="5">5
-
+            </h2>
             <br>
-            <input type="submit" value="Comment"/>
+            <input class="button" type="submit" value="Comment"/>
         </form>
-
+        </div>
     {% else %}
         <p> Item not found.</p>
     {% endif %}

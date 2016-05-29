@@ -1,37 +1,97 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
+
+
+
+
     {% if catalog %}
-        <H2>
-            You're looking at our {{ type }} catalog:
-        </H2>
-        <form action="{% url 'shoppingcart' %}" method="post">
-            {% csrf_token %}
-            <div id="checkBoxes">
-                {% for item in catalog %}
-                    <label><input type=checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}"
-                                  value="{{ item.id }}" data-name="{{ item.name }}"/> <a
-                            href="{% url 'catalog' type %}{{ item.id }}/">{{ item.name }}</a></label>
-                    <BR>
-                {% endfor %}
+    <script>
+        document.getElementById("catalogo").className="active";
+    </script>
+        <div class="logo-wrapper">
+          <div class="leftshadow"></div>
+          <div class="logo">
+            <h1>Catalogo</h1>
+          </div>
+          <div class="rightshadow"></div>
+        </div>
+
+        <div class="clearing"></div>
+        <div class="container">
+        <div class="page-wrapper">
+        <div class="primary-content">
+        <div class="panel">
+            <div class="title">
+                <h1>{{ type }}</h1>
             </div>
-            <input type="submit" value="Go to Shopping cart"/>
-            <input type="button" value="Compare!" onclick="compare({{ ips }})"/><br>
-        </form>
+            <div class="content ">
+                <form action="{% url 'shoppingcart' %}" method="post">
+                    {% csrf_token %}
+                    <div id="checkBoxes" >
+                        {% for item in catalog %}
+                            <label><input type=checkbox name="checkbox{{ item.id }}" id="checkbox{{ item.id }}"
+                                          value="{{ item.id }}" data-name="{{ item.name }}"/> <img src="{{ item.img }}" alt="{{ item.name }}" ><a
+                                    href="{% url 'catalog' type %}{{ item.id }}/">{{ item.name }}</a></label>
+                            <BR>
+                            <hr>
+                            <BR>
+                        {% endfor %}
+                    </div>
+                    <div class="contact-form">
+                    <input class="button" type="submit" value="Go to Shopping cart" />
+                    <input class="button"   type="button" value="Compare!" onclick="compare({{ ips }})" /><br>
+                    </div>
+                </form>
+            </div>
+          </div>
+
+
     {% else %}
         <p>No items are available.</p>
     {% endif %}
-    <br><br>Petition to compare will be made to the next IPs:<br>
-    {% if ips %}
-        [
-        {% for ip in ips %}
-            {{ ip }},
-        {% endfor %}
-        ]
-    {% else %}
-        <p>No IPs to make comparison</p>
-    {% endif %}
+    </div>
+    <div class="sidebar">
+      <h2 style="padding-left:30px">Categories:</h2>
+      <div class="panel" style="padding:10px">
 
-        <div id="comparison">
-        </div>
+          <a href="{% url 'catalog' %}" id="catalogall">All</a>
+          {% if types %}
+              <ul>
+                  {% for i in types %}
+                      <li><a href="{% url 'catalog' i %}" id="catalogo{{ i }}">{{ i }}</a></li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+      </div>
+    </div>
+    </div>
+
+<script>
+    document.getElementById("catalogo{{type}}").className="active";
+</script>
+<div class="clearing"></div>
+<div class="panel-wrapper">
+      <div class="title">
+        <h1>Comparation</h1>
+      </div>
+      <div class="content">
+          <h2>Petition to compare will be made to the next IPs:</h2><br>
+            {% if ips %}
+                [
+                {% for ip in ips %}
+                    {{ ip }},
+                {% endfor %}
+                ]
+            {% else %}
+                <p>No IPs to make comparison</p>
+            {% endif %}
+
+            <div id="comparison">
+            </div>
+
+</div>
+</div>
+</div>
+
 {% endblock %}
