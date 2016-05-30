@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^catalog/.*$', views.catalog, name='catalog'),
     url(r'^buy/$', views.buy, name='buy'),
     url(r'^download/$', views.download, name='download'),
+    url(r'^profile/$', views.profile, name='profile'),
     url(r'^bought/$', views.bought, name='bought'),
     url(r'^shoppingcart/$', views.shoppingcart, name='shoppingcart'),
 

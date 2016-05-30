@@ -1,1 +1,37 @@
-<h1>ERROR 404: PAGE NOT FOUND ;)</h1>
+
+
+{% extends 'base_template.html' %}
+
+{% block content %}
+
+
+    <div class="logo-wrapper">
+      <div class="leftshadow"></div>
+      <div class="logo">
+        <h1>ERROR</h1>
+      </div>
+      <div class="rightshadow"></div>
+    </div>
+
+    <div class="clearing"></div>
+    <div class="container">
+    <div class="page-wrapper">
+    <div class="primary-content">
+    <div class="panel">
+
+        <div class="content">
+            {% if textError %}
+                <h1>{{textError}}</h1>
+            {% else %}
+                <h1>ERROR NOT FOUND</h1>
+            {% endif %}
+            <br style="margin-bottom:40px;">
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+
+{% endblock %}

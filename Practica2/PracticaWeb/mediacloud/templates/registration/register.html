@@ -1,11 +1,50 @@
-{% block title %}Create an account{% endblock %}
+
 
 {% block content %}
+<head>
+    {% load staticfiles %}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+<script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
+<title>MediaCloud</title>
+
+
+</head>
+<body>
+<div class="menu-wrapper">
+  <div class="menu">
+      <ul>
+      <li><a href="{% url 'index' %}" id="home" >home</a></li>
+
+    </ul>
+  </div>
+
+</div>
+<div class="logo-wrapper">
+  <div class="leftshadow"></div>
+  <div class="logo">
     <h1>Create an account</h1>
+  </div>
+  <div class="rightshadow"></div>
+</div>
+<div class="clearing"></div>
+<div class="container">
+<div class="page-wrapper">
+<div class="primary-content">
+<div class="panel">
+
+    <div class="content contact-form">
+
 
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Create the account">
+        <input type="submit" class="button"     value="Create the account">
     </form>
+</div>
+</div>
+</div>
+</div>
+</div>
 {% endblock %}

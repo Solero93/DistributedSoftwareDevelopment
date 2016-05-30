@@ -40,7 +40,7 @@ def catalog(request, type="all"):
     context = {
         'catalog': catalog_by_type,
         'type': type,
-        'types': types_catalog,     
+        'types': types_catalog,
         'ips': ips
     }
     return render(request, 'catalog.html', context)
@@ -60,16 +60,20 @@ def detall(request, id):
     return render(request, 'description.html', context)
 
 
-def error(request):
+def error(request, textError='404 Page not found'):
     context = {
+        'textError' : textError
     }
     return render(request, 'error.html', context)
 
 
 def buy(request):
     items = []
-    for id in request.session["selectedItems"]:
-        items.append(Item.objects.get(pk=id))
+    try:
+        for id in request.session["selectedItems"]:
+            items.append(Item.objects.get(pk=id))
+    except:
+        return error(request, textError='Empty cart')
     context = {
         'items': items
     }
@@ -81,9 +85,12 @@ def bought(request):
     selectedItems = request.session["selectedItems"]
     price = Item.objects.filter(pk__in=selectedItems).aggregate(Sum('price'))
     if price["price__sum"] > request.user.client.money:
-        return error(request)
+        return error(request, textError='Not enough money   ')
     for i in request.session["selectedItems"]:
-        request.user.client.itemsBought.add(i)
+        try:
+            request.user.client.itemsBought.add(i)
+        except:
+            return error(request, textError='You are not a normal user, you need to register again')
     return HttpResponseRedirect(reverse('download'))
 
 
@@ -93,6 +100,18 @@ def download(request):
         'items': request.user.client.itemsBought.all()
     }
     return render(request, 'download.html', context)
+
+@login_required
+def profile(request):
+    try:
+        context = {
+            'infoClient':request.user.client,
+            'items': request.user.client.itemsBought.all()
+        }
+    except:
+        return error(request, textError='You are not a normal user, you need to register again')
+    return render(request, 'profile.html', context)
+
 
 
 @login_required
@@ -107,10 +126,6 @@ def downloadFile(request, id):
 @login_required
 @permission_required('mediacloud.write_comments', raise_exception=True)
 def commentItem(request, id):
-    textCom = ""
-    rate = 3
-    print request.user.get_all_permissions()
-    print "hey ", ('mediacloud.write_comments' in request.user.get_all_permissions())
 
     try:
         textCom = request.POST['commentText']
@@ -118,7 +133,7 @@ def commentItem(request, id):
         Comment.objects.create(user=request.user, nick=request.user.get_username(), item=Item.objects.get(pk=id),
                                score=rate, text=textCom)
     except:
-        return redirectToIndex()
+        return error(request, textError='Error commenting, comment again')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 

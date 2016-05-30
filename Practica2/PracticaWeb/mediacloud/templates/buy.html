@@ -1,18 +1,44 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-    BUY
-    {% if items %}
-        <ul>
-            {% for item in items %}
-                <li>{{ item.name }}</li>
-            {% endfor %}
-        </ul>
-        <form action="{% url 'bought' %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Buy!"/>
-        </form>
-    {% else %}
-        <p>No items are available.</p>
-    {% endif %}
+
+
+    <div class="logo-wrapper">
+      <div class="leftshadow"></div>
+      <div class="logo">
+        <h1>ShopingCart</h1>
+      </div>
+      <div class="rightshadow"></div>
+    </div>
+
+    <div class="clearing"></div>
+    <div class="container">
+    <div class="page-wrapper">
+    <div class="primary-content">
+    <div class="panel">
+
+        <div class="content contact-form">
+            {% if items %}
+                <ul class="shoppingcart">
+                    {% for item in items %}
+
+                        <li>{{ item.name }}</li>
+                    {% endfor %}
+                </ul>
+                <form action="{% url 'bought' %}" method="post">
+                    {% csrf_token %}
+
+                    <input type="submit" class="button" value="Buy!"/>
+                </form>
+            {% else %}
+                <p>No items are available.</p>
+            {% endif %}
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+
 {% endblock %}

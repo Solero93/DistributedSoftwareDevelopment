@@ -1,14 +1,58 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-    <a href="{% url 'catalog' %}">Catálogo general</a>
-    {% if types %}
-        <ul>
-            {% for item in types %}
-                <li><a href="{% url 'catalog' item %}">Catálogo {{ item }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No items are available.</p>
-    {% endif %}
+<div class="clearing"></div>
+<div class="border-bottom"></div>
+<div class="logo-wrapper">
+
+  <div class="logo">
+    <h1>Mediacloud</h1>
+  </div>
+
+</div>
+<div class="clearing"></div>
+<div class="banner-wrapper">
+  <div class="bannerlef"><img src="http://www.yoizen.com/img/uploads/social/social-media-cloud.png  " /></div>
+  <div class="banner-container">
+    <div class="banner">
+      <div class="banner-content">
+          <br><br><br><br>
+        <a href="{% url 'catalog' %}">BUY</a> </div>
+    </div>
+  </div>
+
+</div>
+<!--- banner wrapper div end -->
+<div class="clearing"></div>
+<div class="container">
+  <div class="page-wrapper">
+    <div class="primary-content">
+      <div class="panel">
+        <div class="title">
+          <h1>Neque porro quisquam</h1>
+          <h2>Sed ut perspiciatis unde omnis iste natus error sit voluptatem </h2>
+        </div>
+        <div class="content">
+          <p>Accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veri
+            tatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores </p>
+          <div class="button-link"><a href="#">more</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <h2 style="padding-left:30px">Categories:</h2>
+      <div class="panel" style="padding:10px">
+
+          <a href="{% url 'catalog' %}" id="catalogall">All</a>
+          {% if types %}
+              <ul>
+                  {% for i in types %}
+                      <li><a href="{% url 'catalog' i %}" id="catalogo{{ i }}">{{ i }}</a></li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

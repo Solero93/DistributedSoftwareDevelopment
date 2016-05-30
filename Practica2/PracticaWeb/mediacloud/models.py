@@ -24,8 +24,8 @@ class Item(models.Model):
         return "[" + self.type + "] " + self.name
 
 
-class cart(models.Model):
-    foo = models.CharField(max_length=200, default="[]")
+class Cart(models.Model):
+    foo = models.ManyToManyField(User, blank=True)
 
     def setfoo(self, x):
         self.foo = json.dumps(x)

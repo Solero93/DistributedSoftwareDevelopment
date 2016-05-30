@@ -1,8 +1,41 @@
 {% block content %}
+<head>
+    {% load staticfiles %}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+<script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
+<title>MediaCloud</title>
+
+
+</head>
+<body>
+<div class="menu-wrapper">
+  <div class="menu">
+      <ul>
+      <li><a href="{% url 'index' %}" id="home" >home</a></li>
+
+    </ul>
+  </div>
+
+</div>
+<div class="logo-wrapper">
+  <div class="leftshadow"></div>
+  <div class="logo">
+    <h1>Create an account</h1>
+  </div>
+  <div class="rightshadow"></div>
+</div>
+<div class="clearing"></div>
+<div class="container">
+<div class="page-wrapper">
+<div class="primary-content">
+<div class="panel">
     {% if form.errors %}
-        <p class="error">Sorry, that's not a valid username or password</p>
+        <h1>Sorry, that's not a valid username or password</h1  >
     {% endif %}
+    <div class="content contact-form">
+
 
     <form action="" method="post">
         {% csrf_token %}
@@ -11,7 +44,14 @@
         <label for="password">Password:</label>
         <input type="password" name="password" value="" id="password">
         <input type="hidden" name="next" value="{{ next|escape }}"/>
-        <input type="submit" value="login"/>
+        <br>
+        <input type="submit" class="button" value="login"/>
     </form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
 
 {% endblock %}
