@@ -6,9 +6,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from mediacloud.models import Item, Types, Comment, Client
+from mediacloud.models import Item, Types, Comment, Client, Cart
 
-ips = ["161.116.52.35"] # "localhost","localhost","localhost"]
+ips = ["161.116.52.35"]  # "localhost","localhost","localhost"]
 
 
 def register(request):
@@ -26,7 +26,7 @@ def register(request):
 
 
 def index(request):
-    # TODO Hacer tabla de types
+    request.user.is_superuser
     types_catalog = Types.objects.all()
     context = {
         'types': types_catalog,
@@ -62,7 +62,7 @@ def detall(request, id):
 
 def error(request, textError='404 Page not found'):
     context = {
-        'textError' : textError
+        'textError': textError
     }
     return render(request, 'error.html', context)
 
@@ -70,27 +70,39 @@ def error(request, textError='404 Page not found'):
 def buy(request):
     items = []
     try:
-        for id in request.session["selectedItems"]:
-            items.append(Item.objects.get(pk=id))
+        if request.session["cart"] == -1 or len(Cart.objects.get(pk=request.session["cart"]).itemList.all()) <= 0:
+            return error(request, textError='Empty cart')
+        for item in Cart.objects.get(pk=request.session["cart"]).itemList.all():
+            items.append(item)
     except:
+        request.session["cart"] = -1
         return error(request, textError='Empty cart')
+    try:
+        userItem = request.user.client.itemsBought.all()
+    except:
+        userItem = []
     context = {
-        'items': items
+        'items': items,
+        'userItems': userItem
     }
     return render(request, 'buy.html', context)
 
 
 @login_required
 def bought(request):
-    selectedItems = request.session["selectedItems"]
-    price = Item.objects.filter(pk__in=selectedItems).aggregate(Sum('price'))
+    price = Cart.objects.get(pk=request.session["cart"]).itemList.all().aggregate(Sum('price'))
+
     if price["price__sum"] > request.user.client.money:
         return error(request, textError='Not enough money   ')
-    for i in request.session["selectedItems"]:
+    for i in Cart.objects.get(pk=request.session["cart"]).itemList.all():
         try:
             request.user.client.itemsBought.add(i)
         except:
             return error(request, textError='You are not a normal user, you need to register again')
+    Cart.objects.get(pk=request.session["cart"]).delete()
+    userClient = request.user.client
+    userClient.money = request.user.client.money - price["price__sum"]
+    userClient.save()
     return HttpResponseRedirect(reverse('download'))
 
 
@@ -101,11 +113,12 @@ def download(request):
     }
     return render(request, 'download.html', context)
 
+
 @login_required
 def profile(request):
     try:
         context = {
-            'infoClient':request.user.client,
+            'infoClient': request.user.client,
             'items': request.user.client.itemsBought.all()
         }
     except:
@@ -113,9 +126,13 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
-
 @login_required
 def downloadFile(request, id):
+    try:
+        if not Item.objects.get(pk=id) in request.user.client.itemsBought.all():
+            return error(request, textError="You can't download this")
+    except:
+        return  error(request, textError="This item doesn't exist")
     file = "mediacloud/downloads/algo.mp3"
     fsock = open(file)
     response = HttpResponse(fsock, content_type='audio/mpeg')
@@ -126,24 +143,40 @@ def downloadFile(request, id):
 @login_required
 @permission_required('mediacloud.write_comments', raise_exception=True)
 def commentItem(request, id):
-
     try:
         textCom = request.POST['commentText']
         rate = request.POST['rate']
         Comment.objects.create(user=request.user, nick=request.user.get_username(), item=Item.objects.get(pk=id),
                                score=rate, text=textCom)
     except:
-        return error(request, textError='Error commenting, comment again')
+        return error(request, textError='Error commenting, comment again    ')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def shoppingcart(request):
-    selectedItems = []
+    try:
+        if request.session["cart"] != -1:
+            carrito = Cart.objects.get(pk=request.session["cart"])
+        else:
+            carrito = Cart.objects.create()
+            carrito.save()
+            request.session["cart"] = carrito.pk
+    except:
+        carrito = Cart.objects.create()
+        carrito.save()
+        request.session["cart"] = carrito.pk
+
     for key in request.POST:
         if key.startswith("checkbox"):
-            selectedItems.append(request.POST[key])
+            carrito.itemList.add(Item.objects.get(pk=request.POST[key]))
+            carrito.save()
 
-    request.session["selectedItems"] = selectedItems
+    return HttpResponseRedirect(reverse('buy'))
+
+
+def removeItem(request, id):
+    carrito = Cart.objects.get(pk=request.session["cart"])
+    carrito.itemList.remove(Item.objects.get(pk=id))
     return HttpResponseRedirect(reverse('buy'))
 
 

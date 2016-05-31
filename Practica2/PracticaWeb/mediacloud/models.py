@@ -25,13 +25,9 @@ class Item(models.Model):
 
 
 class Cart(models.Model):
-    foo = models.ManyToManyField(User, blank=True)
 
-    def setfoo(self, x):
-        self.foo = json.dumps(x)
+    itemList = models.ManyToManyField(Item)
 
-    def getfoo(self):
-        return json.loads(self.foo)
 
 
 class Client(models.Model):

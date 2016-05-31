@@ -16,9 +16,9 @@
       <ul>
       <li><a href="{% url 'index' %}" id="home" >home</a></li>
       <li><a href="{% url 'catalog' %}" id="catalogo">Catalog</a></li>
-      <li><a href="{% url 'buy' %}">Cart</a></li>
+      <li><a href="{% url 'buy' %}" id="cart">Cart</a></li>
       {% if user.is_authenticated %}
-          <li><a href="{% url 'profile' %}">Profile</a></li>
+          <li><a href="{% url 'profile' %}" id="profile">Profile</a></li>
 
       {% endif %}
 

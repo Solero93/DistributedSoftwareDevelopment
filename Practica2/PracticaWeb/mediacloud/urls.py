@@ -11,6 +11,7 @@ urlpatterns = [
 
     url(r'^catalog/(?P<type>.*)/$', views.catalog, name='catalog'),
     url(r'^download/(?P<id>.*)/$', views.downloadFile, name='downloadFile'),
+    url(r'^removeItem/(?P<id>.*)/$', views.removeItem, name='removeItem'),
 
     url(r'^catalog/.*$', views.catalog, name='catalog'),
     url(r'^buy/$', views.buy, name='buy'),

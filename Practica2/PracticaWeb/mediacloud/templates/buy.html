@@ -1,7 +1,9 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-
+<script>
+    document.getElementById("cart").className="active";
+</script>
 
     <div class="logo-wrapper">
       <div class="leftshadow"></div>
@@ -21,8 +23,13 @@
             {% if items %}
                 <ul class="shoppingcart">
                     {% for item in items %}
+                        {% if item in userItems %}
+                        <li style="margin-top:10px;margin-bottom:10px">{{ item.name }} <a href="{% url 'removeItem' item.pk%}"  class="button" style="float:right">Remove</a><br> <font style="font-size:15px">(You already bought this product.Do you want to pay for it again?)</font></li>
+                        {% else %}
+                        <li style="margin-top:10px;margin-bottom:10px">{{ item.name }} <a href="{% url 'removeItem' item.pk%}"  class="button" style="float:right">Remove</a><br><br><br></li>
 
-                        <li>{{ item.name }}</li>
+                        {% endif %}
+                        <hr>
                     {% endfor %}
                 </ul>
                 <form action="{% url 'bought' %}" method="post">
