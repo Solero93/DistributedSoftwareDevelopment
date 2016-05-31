@@ -18,14 +18,14 @@ function compare(ips, item) {
     var itemList = [];
     $.when.apply($, requests).done(function () {
         var allItems;
-        for (var i = 0; i < arguments.length; i+=2) {
+        for (var i = 0; i < arguments.length; i += 2) {
             allItems = arguments[i][0]["results"];
             var found = false;
             var comments;
             for (var j = 0; j < allItems.length && !found; j++) {
-                comments = arguments[i+1][0]["results"];
+                comments = arguments[i + 1][0]["results"];
                 if (allItems[j]["name"] === item) {
-                    itemList.push([ips[i/2], allItems[j]["price"], allItems[j]["description"], allItems[j]["url"], comments]);
+                    itemList.push([ips[i / 2], allItems[j]["price"], allItems[j]["description"], allItems[j]["url"], comments]);
                     found = true;
                 }
             }
@@ -40,13 +40,13 @@ function compare(ips, item) {
                 "&#8195;Precio: " + itemList[i][1] + "<br>" +
                 "&#8195;Descripción: " + itemList[i][2] + "<br>" +
                 "&#8195;Comentarios: <br>";
-                comments = itemList[i][4];
-                for (var j=0; j<comments.length; j++){
-                    if (comments[j]["item"] === itemList[i][3]) {
-                        finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
-                    }
+            comments = itemList[i][4];
+            for (var j = 0; j < comments.length; j++) {
+                if (comments[j]["item"] === itemList[i][3]) {
+                    finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
                 }
-            finalHtml +="<br>"
+            }
+            finalHtml += "<br>"
         }
         $('#comparison').html(finalHtml);
     });

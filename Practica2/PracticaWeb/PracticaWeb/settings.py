@@ -57,11 +57,11 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'PracticaWeb.urls'
-LOGIN_URL = '/mediacloud/login/'    
+LOGIN_URL = '/mediacloud/login/'
 LOGIN_REDIRECT_URL = '/mediacloud/'
 AUTH_PROFILE_MODULE = 'mediacloud.Client'
 

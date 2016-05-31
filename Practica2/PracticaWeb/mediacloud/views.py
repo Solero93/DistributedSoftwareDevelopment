@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
@@ -7,8 +9,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from mediacloud.models import Item, Types, Comment, Client, Cart
-
-import json
 
 ips = ["localhost", "localhost", "localhost"]
 
@@ -133,7 +133,7 @@ def downloadFile(request, id):
         if not Item.objects.get(pk=id) in request.user.client.itemsBought.all():
             return error(request, textError="You can't download this")
     except:
-        return  error(request, textError="This item doesn't exist")
+        return error(request, textError="This item doesn't exist")
     file = "mediacloud/downloads/algo.mp3"
     fsock = open(file)
     response = HttpResponse(fsock, content_type='audio/mpeg')

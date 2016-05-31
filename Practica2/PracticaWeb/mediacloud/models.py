@@ -1,7 +1,5 @@
 from __future__ import unicode_literals
 
-import json
-
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -25,9 +23,7 @@ class Item(models.Model):
 
 
 class Cart(models.Model):
-
     itemList = models.ManyToManyField(Item)
-
 
 
 class Client(models.Model):
