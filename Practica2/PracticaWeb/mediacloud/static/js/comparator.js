@@ -1,21 +1,6 @@
-function compare(ips) {
+function compare(ips, item) {
     $('#comparison').html(""); // Delete all content inside div comparison
-    var finalHtml = "<h4>Comparación con otros mediacloud ordenado por precio</h4>";
-    var selected = [];
-    $('#checkBoxes input:checked').each(function () {
-        selected.push($(this).attr('data-name'));
-    });
-
-    if (selected.length != 1) {
-        alert("Select exactly ONE item to compare");
-        return;
-    }
-
-    var item = selected[0];
-    if (!item) {
-        alert("Internal ERROR when comparing"); // Shouldn't arrive here
-        return;
-    }
+    var finalHtml = "<h4>Comparison with other mediacloud ordered by price</h4>";
 
     var requests = [];
     for (var i = 0; i < ips.length; i++) {
@@ -27,9 +12,6 @@ function compare(ips) {
         requests.push(
             $.ajax({
                 url: "http://" + ips[i] + ":8080/api/comments/",
-                success: function(data){
-
-                }
             })
         );
     }

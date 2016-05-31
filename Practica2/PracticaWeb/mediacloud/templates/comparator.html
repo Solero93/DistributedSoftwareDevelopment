@@ -1,0 +1,22 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    {% if ips and item %}
+        <h2>Petition to compare will be made to the next IPs:
+        [
+        {% for ip in ips %}
+            {{ ip }},
+        {% endfor %}
+        ]<br><br>
+        </h2>
+        Petition of item : {{ item }}<br><br>
+        <div id="comparison">
+        </div>
+        <script type="text/javascript">
+            compare({{ ips|safe}} , {{ item|safe }});
+        </script>
+    {% else %}
+        <p> Item not found.</p>
+    {% endif %}
+
+{% endblock %}

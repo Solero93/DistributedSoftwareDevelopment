@@ -1,10 +1,6 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
-
-
-
-
     {% if catalog %}
     <script>
         document.getElementById("catalogo").className="active";
@@ -40,7 +36,6 @@
                     </div>
                     <div class="contact-form">
                     <input class="button" type="submit" value="Go to Shopping cart" />
-                    <input class="button"   type="button" value="Compare!" onclick="compare({{ ips }})" /><br>
                     </div>
                 </form>
             </div>
@@ -71,27 +66,6 @@
     document.getElementById("catalogo{{type}}").className="active";
 </script>
 <div class="clearing"></div>
-<div class="panel-wrapper">
-      <div class="title">
-        <h1>Comparation</h1>
-      </div>
-      <div class="content">
-          <h2>Petition to compare will be made to the next IPs:</h2><br>
-            {% if ips %}
-                [
-                {% for ip in ips %}
-                    {{ ip }},
-                {% endfor %}
-                ]
-            {% else %}
-                <p>No IPs to make comparison</p>
-            {% endif %}
-
-            <div id="comparison">
-            </div>
-
-</div>
-</div>
 </div>
 
 {% endblock %}

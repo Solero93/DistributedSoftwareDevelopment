@@ -7,6 +7,7 @@ urlpatterns = [
 
     url(r'^catalog/(.*)/(?P<id>.*)/$', views.detall, name='detall'),
     url(r'^commentItem/(?P<id>.*)/$', views.commentItem, name='commentItem'),
+    url(r'^comparator/(?P<item>.*)/$', views.comparator, name='comparator'),
     url(r'^register/$', views.register, name='register'),
 
     url(r'^catalog/(?P<type>.*)/$', views.catalog, name='catalog'),
