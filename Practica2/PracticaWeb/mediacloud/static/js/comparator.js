@@ -1,21 +1,6 @@
-function compare(ips) {
+function compare(ips, item) {
     $('#comparison').html(""); // Delete all content inside div comparison
-    var finalHtml = "<h4>Comparación con otros mediacloud ordenado por precio</h4>";
-    var selected = [];
-    $('#checkBoxes input:checked').each(function () {
-        selected.push($(this).attr('data-name'));
-    });
-
-    if (selected.length != 1) {
-        alert("Select exactly ONE item to compare");
-        return;
-    }
-
-    var item = selected[0];
-    if (!item) {
-        alert("Internal ERROR when comparing"); // Shouldn't arrive here
-        return;
-    }
+    var finalHtml = "<h4>Comparison with other mediacloud ordered by price</h4>";
 
     var requests = [];
     for (var i = 0; i < ips.length; i++) {
@@ -27,23 +12,20 @@ function compare(ips) {
         requests.push(
             $.ajax({
                 url: "http://" + ips[i] + ":8080/api/comments/",
-                success: function(data){
-
-                }
             })
         );
     }
     var itemList = [];
     $.when.apply($, requests).done(function () {
         var allItems;
-        for (var i = 0; i < arguments.length; i+=2) {
+        for (var i = 0; i < arguments.length; i += 2) {
             allItems = arguments[i][0]["results"];
             var found = false;
             var comments;
             for (var j = 0; j < allItems.length && !found; j++) {
-                comments = arguments[i+1][0]["results"];
+                comments = arguments[i + 1][0]["results"];
                 if (allItems[j]["name"] === item) {
-                    itemList.push([ips[i/2], allItems[j]["price"], allItems[j]["description"], allItems[j]["url"], comments]);
+                    itemList.push([ips[i / 2], allItems[j]["price"], allItems[j]["description"], allItems[j]["url"], comments]);
                     found = true;
                 }
             }
@@ -58,13 +40,13 @@ function compare(ips) {
                 "&#8195;Precio: " + itemList[i][1] + "<br>" +
                 "&#8195;Descripción: " + itemList[i][2] + "<br>" +
                 "&#8195;Comentarios: <br>";
-                comments = itemList[i][4];
-                for (var j=0; j<comments.length; j++){
-                    if (comments[j]["item"] === itemList[i][3]) {
-                        finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
-                    }
+            comments = itemList[i][4];
+            for (var j = 0; j < comments.length; j++) {
+                if (comments[j]["item"] === itemList[i][3]) {
+                    finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
                 }
-            finalHtml +="<br>"
+            }
+            finalHtml += "<br>"
         }
         $('#comparison').html(finalHtml);
     });

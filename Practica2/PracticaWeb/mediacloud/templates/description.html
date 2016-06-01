@@ -2,73 +2,87 @@
 
 {% block content %}
     {% if item %}
-    <div class="logo-wrapper">
-      <div class="leftshadow"></div>
-      <div class="logo">
-        <h1>{{ item.name }}</h1>
-      </div>
-      <div class="rightshadow"></div>
-    </div>
-
-    <div class="clearing"></div>
-    <div class="container">
-    <div class="page-wrapper">
-    <div class="primary-content" >
-    <div class="panel">
-        <img src="{{ item.img }}" alt="{{ item.name }}" style="height:228px;">
-        <div class="descripObj">
-        <br><h2><b>Type</b>:</h2><i>{{ item.type }}</i>
-        <br> <h2><b>Price</b>:</h2>{{ item.price }}
-        <br><h2><b>Description</b>:<br></h2>
-        {{ item.description }}
+        <div class="logo-wrapper">
+            <div class="leftshadow"></div>
+            <div class="logo">
+                <h1>{{ item.name }}</h1>
+            </div>
+            <div class="rightshadow"></div>
         </div>
-        <br>
-        <br>
-    </div>
-    </div>
-    </div>
 
-    <div style="margin-top: 30px;"/>
-    <div class="page-wrapper">
-    <div class="primary-content">
-    <div class="panel">
+        <div class="clearing"></div>
+        <div class="container">
+        <div class="page-wrapper">
+            <div class="primary-content">
+                <div class="panel">
+                    <img src="{{ item.img }}" alt="{{ item.name }}" style="height:228px;">
+                    <div class="descripObj">
+                        <br>
+                        <h2><b>Type</b>:</h2><i>{{ item.type }}</i>
+                        <br>
+                        <h2><b>Price</b>:</h2>{{ item.price }}
+                        <br>
+                        <h2><b>Description</b>:<br></h2>
+                        {{ item.description }}
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;"/>
+        <div class="page-wrapper">
+        <div class="primary-content">
+        <div class="panel">
         <div class="title">
             <h1>Comments</h1>
         </div>
         <br><br>
         <div class="comments">
-        {% for i in comments %}
-            <div class="cap">
-            <h1><b>{{ i.nick }}</b> &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score }}</h1>
-            <br>
-            <div class="textCom">
-            <h2>{{ i.text }}</h2>
-            <br>
-            </div>
-            <hr>
-        </div>
-        {% endfor %}
+            {% for i in comments %}
+                <div class="cap">
+                    <h1><b>{{ i.nick }}</b> &nbsp &nbsp &nbsp<b>Score:</b>{{ i.score }}</h1>
+                    <br>
+                    <div class="textCom">
+                        <h2>{{ i.text }}</h2>
+                        <br>
+                    </div>
+                    <hr>
+                </div>
+            {% endfor %}
         </div>
         <br>
         <br>
         <div class="contact-form">
-        <form action=" {% url 'commentItem'  idItem %}" method="post" id="commentForm">
-            {% csrf_token %}
-            <legend><h2>Comment the producte:</h2></legend>
+            <form action=" {% url 'commentItem' idItem %}" method="post" id="commentForm">
+                {% csrf_token %}
+                <legend><h2>Comment the product:</h2></legend>
             <textarea name="commentText" class="message" rows="10" cols="50" maxlength="600"
                       form="commentForm">Your Comment...</textarea>
-            <br>
-            <h2>
-            <input type="radio" name="rate" value="0">0
-            <input type="radio" name="rate" value="1">1
-            <input type="radio" name="rate" value="2">2
-            <input type="radio" name="rate" value="3" checked>3
-            <input type="radio" name="rate" value="4">4
-            <input type="radio" name="rate" value="5">5
-            </h2>
-            <br>
-            <input class="button" type="submit" value="Comment"/>
-        </form>
+                <br>
+                <h2>
+                    <input type="radio" name="rate" value="0">0
+                    <input type="radio" name="rate" value="1">1
+                    <input type="radio" name="rate" value="2">2
+                    <input type="radio" name="rate" value="3" checked>3
+                    <input type="radio" name="rate" value="4">4
+                    <input type="radio" name="rate" value="5">5
+                </h2>
+                <br>
+                <input class="button" type="submit" value="Comment"/>
+            </form>
+        </div>
+        <div class="panel-wrapper">
+            <div class="title">
+                <h1>Comparison</h1>
+            </div>
+            <div class="content">
+                <div class="contact-form">
+                    <a href="{% url 'comparator' item.name %}" class="button">Compare!</a>
+                </div>
+            </div>
+
         </div>
     {% else %}
         <p> Item not found.</p>

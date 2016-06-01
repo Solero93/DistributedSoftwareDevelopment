@@ -1,40 +1,35 @@
-
-
 <head>
     {% load staticfiles %}
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
-<script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
-<title>MediaCloud</title>
-
-
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static "js/comparator.js" %}"></script>
+    <title>MediaCloud</title>
 </head>
 <body>
 <div class="menu-wrapper">
-  <div class="menu">
-      <ul>
-      <li><a href="{% url 'index' %}" id="home" >home</a></li>
-      <li><a href="{% url 'catalog' %}" id="catalogo">Catalog</a></li>
-      <li><a href="{% url 'buy' %}" id="cart">Cart</a></li>
-      {% if user.is_authenticated %}
-          <li><a href="{% url 'profile' %}" id="profile">Profile</a></li>
+    <div class="menu">
+        <ul>
+            <li><a href="{% url 'index' %}" id="home">home</a></li>
+            <li><a href="{% url 'catalog' %}" id="catalogo">Catalog</a></li>
+            <li><a href="{% url 'buy' %}" id="cart">Cart</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}" id="profile">Profile</a></li>
 
-      {% endif %}
+            {% endif %}
 
-    </ul>
-  </div>
-  <div class="call">
+        </ul>
+    </div>
+    <div class="call">
 
-    {% if user.is_authenticated %}
-        <h1>{{user.username}} &nbsp &nbsp(<a href="{% url 'logout' %}">Logout</a>)</h1>
-    {% else %}
-        <h1>
-        <a href="{% url 'login' %}">Login</a>
-            &nbsp &nbsp
-        <a href="{% url 'register' %}">Register</a>
-        </h1>
-    {% endif %}
+        {% if user.is_authenticated %}
+            <h1>{{ user.username }} &nbsp &nbsp(<a href="{% url 'logout' %}">Logout</a>)</h1>
+        {% else %}
+            <h1>
+                <a href="{% url 'login' %}">Login</a>
+                &nbsp &nbsp
+                <a href="{% url 'register' %}">Register</a>
+            </h1>
+        {% endif %}
     </div>
 </div>
 <div class="clearing"></div>

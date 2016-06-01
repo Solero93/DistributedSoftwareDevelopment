@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
@@ -8,7 +10,7 @@ from django.shortcuts import render
 
 from mediacloud.models import Item, Types, Comment, Client, Cart
 
-ips = ["161.116.52.35"]  # "localhost","localhost","localhost"]
+ips = ["localhost", "localhost", "localhost"]
 
 
 def register(request):
@@ -40,8 +42,7 @@ def catalog(request, type="all"):
     context = {
         'catalog': catalog_by_type,
         'type': type,
-        'types': types_catalog,
-        'ips': ips
+        'types': types_catalog
     }
     return render(request, 'catalog.html', context)
 
@@ -132,7 +133,7 @@ def downloadFile(request, id):
         if not Item.objects.get(pk=id) in request.user.client.itemsBought.all():
             return error(request, textError="You can't download this")
     except:
-        return  error(request, textError="This item doesn't exist")
+        return error(request, textError="This item doesn't exist")
     file = "mediacloud/downloads/algo.mp3"
     fsock = open(file)
     response = HttpResponse(fsock, content_type='audio/mpeg')
@@ -178,6 +179,14 @@ def removeItem(request, id):
     carrito = Cart.objects.get(pk=request.session["cart"])
     carrito.itemList.remove(Item.objects.get(pk=id))
     return HttpResponseRedirect(reverse('buy'))
+
+
+def comparator(request, item):
+    context = {
+        'ips': ips,
+        'item': json.dumps(item),
+    }
+    return render(request, 'comparator.html', context)
 
 
 def redirectToIndex(request=None):

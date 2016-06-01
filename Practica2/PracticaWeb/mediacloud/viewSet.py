@@ -1,12 +1,12 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
-from rest_framework import status
 
 from mediacloud.permissions import IsExpertOrReadOnly
-from .serializers import ItemSerializer, CommentSerializer, UserSerializer
 from .models import Item, Comment
+from .serializers import ItemSerializer, CommentSerializer, UserSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
@@ -35,7 +35,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def create(self, request):
 
         if (not 'mediacloud.write_comments' in request.user.get_all_permissions()):
-            return Response({'status': 'Not AN EXPERT USER'},status=status.HTTP_403_FORBIDDEN)
+            return Response({'status': 'Not AN EXPERT USER'}, status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
@@ -53,7 +53,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def postComment(self, request, pk=None):
 
         if (not 'mediacloud.write_comments' in request.user.get_all_permissions()):
-            return Response({'status': 'Not AN EXPERT USER'},status=status.HTTP_403_FORBIDDEN)
+            return Response({'status': 'Not AN EXPERT USER'}, status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
@@ -71,7 +71,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def putComment(self, request, pk=None):
 
         if (not self.get_object().user == request.user):
-            return Response({'status': 'Not your comment'},status=status.HTTP_403_FORBIDDEN)
+            return Response({'status': 'Not your comment'}, status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
@@ -87,7 +87,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
 
         if not self.get_object().user == request.user:
-            return Response({'status': 'Not your comment'},status=status.HTTP_403_FORBIDDEN)
+            return Response({'status': 'Not your comment'}, status=status.HTTP_403_FORBIDDEN)
 
         serializerCom = CommentSerializer(data=request.data)
         if serializerCom.is_valid():
