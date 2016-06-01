@@ -1,22 +1,45 @@
 {% extends 'base_template.html' %}
 
 {% block content %}
+<div class="logo-wrapper">
+    <div class="leftshadow"></div>
+    <div class="logo">
+        <h1>Comparator</h1>
+    </div>
+    <div class="rightshadow"></div>
+</div>
+
+<div class="clearing"></div>
+<div class="container">
+    <div class="page-wrapper">
+        <div class="primary-content">
+            <div class="panel">
+                <div class="title">
+                    <h1>Petition of item : {{ item }}</h1>
+                </div>
+
+                <div class="content ">
     {% if ips and item %}
         <h2>Petition to compare will be made to the next IPs:
-            [
-            {% for ip in ips %}
-                {{ ip }},
-            {% endfor %}
-            ]<br><br>
+            <br>{{ ips }}<br>
         </h2>
-        Petition of item : {{ item }}<br><br>
-        <div id="comparison">
+    </div>
+    <div class="content ">
+        <h2>Comparison with other mediacloud ordered by price</h2>
+        <div id="comparison" class="comparator">
         </div>
         <script type="text/javascript">
             compare({{ ips|safe}}, {{ item|safe }});
         </script>
+    </div>
     {% else %}
         <p> Item not found.</p>
+    </div>
     {% endif %}
+</div>
+</div>
+</div>
+
+
 
 {% endblock %}

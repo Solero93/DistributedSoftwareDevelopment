@@ -417,6 +417,28 @@ GENERAL CLASSES
 .descripObj h2 {
     font-size: 15px;
 }
+.descripObj h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    color: #96577a;
+    font-weight: normal;
+    font-size: 15px;
+    margin-left: 10px;
+}
+.descripObj h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    color: #96577a;
+    font-weight: normal;
+    font-size: 15px;
+    margin-left: 10px;
+}
+.h3Obj{
+    margin-left: 10px;
+}
+.descripObj .comment{
+    margin-left: 30px;
+}
 
 .shoppingcart li {
     margin-bottom: 14px;
@@ -915,4 +937,10 @@ FOOTER CLASSS
 .footer p {
     text-align: center;
     padding-bottom: 50px;
+}
+.comparator{
+    margin-bottom:20px;
+}
+.comparator p{
+
 }

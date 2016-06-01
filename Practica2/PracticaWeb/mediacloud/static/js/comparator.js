@@ -1,6 +1,6 @@
 function compare(ips, item) {
     $('#comparison').html(""); // Delete all content inside div comparison
-    var finalHtml = "<h4>Comparison with other mediacloud ordered by price</h4>";
+    var finalHtml = "";
 
     var requests = [];
     for (var i = 0; i < ips.length; i++) {
@@ -36,17 +36,19 @@ function compare(ips, item) {
 
         var comments;
         for (var i = 0; i < itemList.length; i++) {
-            finalHtml += "Ítem de: " + itemList[i][0] + "<br>" +
-                "&#8195;Precio: " + itemList[i][1] + "<br>" +
-                "&#8195;Descripción: " + itemList[i][2] + "<br>" +
-                "&#8195;Comentarios: <br>";
+
+            finalHtml += '<div class="descripObj"><br><h2><b>Ítem de</b>:</h2><i>' + itemList[i][0] + "</i>"+
+                "<br><h2><b>Precio</b>:</h2><i>" + itemList[i][1] + "</i>" +
+                "<br><h2><b>Descripción</b>:</h2><i>" + itemList[i][2] + "</i>" +
+                    "<br><h2><b>Comentarios</b>:</h2><div class='comment'>";
             comments = itemList[i][4];
             for (var j = 0; j < comments.length; j++) {
                 if (comments[j]["item"] === itemList[i][3]) {
-                    finalHtml += "&#8195;&#8195;" + comments[j]["text"] + "<br>";
+                    console.log(comments[j]["text"] );
+                    finalHtml +=   comments[j]["text"] + "<br>";
                 }
             }
-            finalHtml += "<br>"
+            finalHtml += "</div><br>"
         }
         $('#comparison').html(finalHtml);
     });

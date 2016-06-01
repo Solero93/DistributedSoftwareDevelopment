@@ -182,10 +182,13 @@ def removeItem(request, id):
 
 
 def comparator(request, item):
-    context = {
-        'ips': ips,
-        'item': json.dumps(item),
-    }
+    try:
+        context = {
+            'ips': ips,
+            'item': json.dumps(item),
+        }
+    except:
+        return error(request, textError='Error comparing.')
     return render(request, 'comparator.html', context)
 
 
