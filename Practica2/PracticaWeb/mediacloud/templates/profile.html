@@ -1,0 +1,58 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<script>
+    document.getElementById("profile").className="active";
+</script>
+    <div class="logo-wrapper">
+      <div class="leftshadow"></div>
+      <div class="logo">
+        <h1>Profile</h1>
+      </div>
+      <div class="rightshadow"></div>
+    </div>
+
+    <div class="clearing"></div>
+    <div class="container">
+    <div class="page-wrapper">
+    <div class="primary-content">
+    <div class="panel">
+        <div class="title">
+            <h1>{{user.username}}</h1>
+        </div>
+        <div class="descripObj">
+        <br><h2><b>Money</b>:</h2><i>{{ infoClient.money }}</i>
+        <br> <h2><b>Email</b>:</h2>{{ user.email }}
+
+        </div>
+
+        <br>
+    </div>
+    </div>
+    </div>
+    <div style="margin-top: 30px;"/>
+    <div class="page-wrapper">
+    <div class="primary-content">
+    <div class="panel">
+        <div class="title">
+            <h1>Items bougth</h1>
+        </div>
+        <div class="content contact-form">
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <form action="{% url 'download' %}{{ item.id }}/" method="post">
+                    {% csrf_token %}
+                    <input type="submit" class="button" value="{{ item.name }}"/>
+                </form>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
